@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Les Santes 2026 – Mataró</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #c9a84c;
+      --gold-light: #e8c96b;
+      --bg: #1a1a1a;
+      --bg2: #222222;
+      --bg3: #2a2a2a;
+      --text: #f0ece0;
+      --text-muted: #9e9a8e;
+      --border: #333;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 72px;
+      background: rgba(10,10,10,0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+    }
+
+    .nav-logo .logo-icon {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, #c0392b 50%, #2980b9 50%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 900;
+      color: #fff;
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+
+    .nav-logo-text { line-height: 1; }
+
+    .nav-logo-name {
+      display: block;
+      font-weight: 800;
+      font-size: 16px;
+      color: var(--text);
+      letter-spacing: 0.01em;
+    }
+
+    .nav-logo-sub {
+      display: block;
+      font-size: 9px;
+      color: var(--gold);
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 4px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: color 0.15s, background 0.15s;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .nav-links a.active {
+      color: var(--gold);
+      background: rgba(201,168,76,0.1);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-search {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 13px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .nav-search:hover {
+      border-color: rgba(201,168,76,0.4);
+      background: rgba(255,255,255,0.07);
+      color: var(--text);
+    }
+
+    .nav-cta {
+      background: var(--gold);
+      color: #111;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 18px;
+      border-radius: 8px;
+      letter-spacing: 0.03em;
+      transition: opacity 0.15s;
+      white-space: nowrap;
+    }
+
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* ── HERO ── */
+    .hero {
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, #2a1f0a 0%, var(--bg) 70%);
+      text-align: center;
+      padding: 80px 24px 64px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 50%, rgba(201,168,76,0.07) 0%, transparent 50%),
+        radial-gradient(circle at 80% 50%, rgba(201,168,76,0.05) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      background: rgba(201,168,76,0.15);
+      border: 1px solid rgba(201,168,76,0.3);
+      color: var(--gold);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 5px 16px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-size: clamp(30px, 4.5vw, 52px);
+      font-weight: 700;
+      line-height: 1.15;
+      max-width: 640px;
+      margin: 0 auto 44px;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      font-weight: 300;
+      color: #ccc;
+    }
+
+    .countdown {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .countdown-box {
+      background: rgba(42,42,42,0.9);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-radius: 10px;
+      padding: 20px 28px;
+      min-width: 88px;
+      backdrop-filter: blur(4px);
+    }
+
+    .countdown-box .num {
+      display: block;
+      font-size: 40px;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--gold-light);
+    }
+
+    .countdown-box .label {
+      display: block;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    /* ── BADGE ── */
+    .badge-strip {
+      padding: 0 32px 0;
+      max-width: 900px;
+      margin: 40px auto 0;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--gold);
+      color: #111;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── QUÈ SÓN ── */
+    .que-son {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 32px 32px 48px;
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .que-son h2 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .que-son h2 span { color: var(--gold); }
+
+    .que-son p {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .que-son p strong { color: var(--text); }
+
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 10px 22px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.15s;
+    }
+
+    .btn:hover { opacity: 0.85; }
+
+    .btn-gold {
+      background: var(--gold);
+      color: #111;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    /* ── VIDEO CARD ── */
+    .video-card {
+      background: var(--bg3);
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .video-thumb {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: linear-gradient(135deg, #2c2c2c, #3a3a3a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .play-btn {
+      width: 52px;
+      height: 52px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .play-btn::after {
+      content: '';
+      width: 0;
+      height: 0;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-left: 16px solid #111;
+      margin-left: 4px;
+    }
+
+    .video-meta {
+      padding: 10px 14px;
+      font-size: 11px;
+    }
+
+    .video-meta .vtitle { font-weight: 600; font-size: 12px; }
+    .video-meta .vdur { color: var(--text-muted); }
+
+    /* ── AGENDA ── */
+    .agenda-section {
+      background: var(--bg2);
+      padding: 48px 32px;
+    }
+
+    .agenda-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .agenda-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .agenda-header h2 {
+      font-size: 26px;
+      font-weight: 700;
+    }
+
+    .dia-badge {
+      background: var(--gold);
+      color: #111;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 20px;
+    }
+
+    .day-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .day-tab {
+      flex: 1;
+      min-width: 70px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .day-tab:hover { border-color: var(--gold); }
+
+    .day-tab.active {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #111;
+    }
+
+    .day-tab .dow {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+      opacity: 0.7;
+    }
+
+    .day-tab.active .dow { opacity: 0.6; }
+
+    .day-tab .num {
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1;
+      display: block;
+    }
+
+    .day-tab .name {
+      font-size: 10px;
+      margin-top: 4px;
+      opacity: 0.7;
+    }
+
+    .actes-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gold);
+      margin-bottom: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .acte-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .acte-item {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+
+    .acte-item:hover { border-color: var(--gold); }
+
+    .acte-time {
+      font-weight: 700;
+      color: var(--gold);
+      min-width: 52px;
+      font-size: 13px;
+    }
+
+    .acte-name { flex: 1; }
+
+    .acte-arrow {
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    /* ── MINISANTES ── */
+    .minisantes-section {
+      padding: 48px 32px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .minisantes-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .minisantes-header h2 {
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+    }
+
+    .btn-mini {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 18px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: border-color 0.15s;
+    }
+
+    .btn-mini:hover { border-color: var(--gold); color: var(--gold); }
+
+    .minisantes-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      max-width: 480px;
+    }
+
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .game-card {
+      border-radius: 14px;
+      overflow: hidden;
+      position: relative;
+      aspect-ratio: 3/4;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+
+    .game-card:hover { transform: translateY(-3px); }
+
+    .game-card .gc-bg {
+      position: absolute;
+      inset: 0;
+      border-radius: 14px;
+    }
+
+    .game-card:nth-child(1) .gc-bg { background: linear-gradient(160deg, #e84393 0%, #f06292 100%); }
+    .game-card:nth-child(2) .gc-bg { background: linear-gradient(160deg, #e53935 0%, #ef9a9a 100%); }
+    .game-card:nth-child(3) .gc-bg { background: linear-gradient(160deg, #1565c0 0%, #64b5f6 100%); }
+    .game-card:nth-child(4) .gc-bg { background: linear-gradient(160deg, #6a1b9a 0%, #ce93d8 100%); }
+
+    .game-card .gc-emoji {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -65%);
+      font-size: 40px;
+    }
+
+    .game-card .gc-body {
+      position: relative;
+      z-index: 1;
+      padding: 10px 12px 12px;
+      background: rgba(0,0,0,0.35);
+      backdrop-filter: blur(2px);
+    }
+
+    .gc-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    .gc-btn {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border: 1px solid rgba(255,255,255,0.3);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .gc-btn:hover { background: rgba(255,255,255,0.35); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #0d0d0d;
+      border-top: 1px solid rgba(201,168,76,0.15);
+      padding: 0;
+    }
+
+    .footer-top {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 48px 48px 40px;
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .footer-brand .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .footer-brand .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #c0392b 50%, #2980b9 50%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 900;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .footer-brand .logo-name {
+      font-weight: 800;
+      font-size: 16px;
+      color: var(--text);
+    }
+
+    .footer-brand .logo-sub {
+      font-size: 9px;
+      color: var(--gold);
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      display: block;
+      margin-top: 1px;
+    }
+
+    .footer-brand p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 280px;
+    }
+
+    .footer-col h4 {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-col ul a {
+      font-size: 13px;
+      color: var(--text-muted);
+      transition: color 0.15s;
+    }
+
+    .footer-col ul a:hover { color: var(--text); }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-bottom-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 10px;
+    }
+
+    .social-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 14px;
+      transition: border-color 0.15s, color 0.15s;
+    }
+
+    .social-link:hover {
+      border-color: var(--gold);
+      color: var(--text);
+    }
+
+    .social-icon {
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    .footer-legal {
+      display: flex;
+      gap: 20px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .footer-legal a:hover { color: var(--text); }
+
+    .footer-copy {
+      font-size: 12px;
+      color: #555;
+    }
+
+    /* ── SCROLL CTA ── */
+    .scroll-cta {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 44px;
+      height: 44px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      color: #111;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+      transition: transform 0.15s;
+    }
+
+    .scroll-cta:hover { transform: scale(1.1); }
+
+    /* ── HAMBURGER (hidden on desktop) ── */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: opacity 0.2s;
+    }
+
+    /* ── MOBILE MENU ── */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 60px 0 0 0;
+      background: #111;
+      z-index: 99;
+      padding: 32px 24px;
+      flex-direction: column;
+      gap: 24px;
+      border-top: 1px solid var(--border);
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text);
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .mobile-menu a:hover { color: var(--gold); }
+
+    /* ── TABLET ≤ 900px ── */
+    @media (max-width: 900px) {
+      .que-son {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+      .video-card { max-width: 480px; }
+      .games-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    /* ── TABLET ≤ 700px ── */
+    @media (max-width: 700px) {
+      nav { padding: 0 20px; height: 64px; }
+      .nav-links { display: none; }
+      .nav-search { display: none; }
+      .nav-hamburger { display: flex; }
+
+      .hero { padding: 48px 20px 40px; }
+
+      .countdown-box { padding: 14px 16px; min-width: 68px; }
+      .countdown-box .num { font-size: 28px; }
+
+      .badge-strip { padding: 0 20px; margin-top: 32px; }
+
+      .que-son { padding: 24px 20px 36px; }
+      .agenda-section { padding: 36px 20px; }
+
+      .day-tabs { gap: 8px; }
+      .day-tab { min-width: 56px; padding: 10px 6px; }
+      .day-tab .num { font-size: 20px; }
+
+      .minisantes-section { padding: 36px 20px; }
+      .games-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+
+      .footer-top { grid-template-columns: 1fr; gap: 32px; padding: 36px 24px 28px; }
+      .footer-bottom-inner { padding: 16px 24px; flex-direction: column; align-items: flex-start; gap: 12px; }
+    }
+
+    /* ── MOBILE ≤ 420px ── */
+    @media (max-width: 420px) {
+      .countdown { gap: 8px; }
+      .countdown-box { padding: 10px 12px; min-width: 58px; }
+      .countdown-box .num { font-size: 24px; }
+      .countdown-box .label { font-size: 9px; }
+
+      .que-son h2 { font-size: 22px; }
+      .agenda-header h2 { font-size: 20px; }
+      .minisantes-header h2 { font-size: 20px; }
+
+      .day-tabs { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; }
+      .day-tab { flex: 0 0 60px; }
+
+      .btn-group { flex-direction: column; }
+      .btn { width: 100%; text-align: center; }
+
+      .minisantes-header { flex-direction: column; align-items: flex-start; }
+      .games-grid { grid-template-columns: repeat(2, 1fr); }
+
+      .footer-social { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAVIGATION ── -->
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="logo-icon">LS</div>
+    <div class="nav-logo-text">
+      <span class="nav-logo-name">Les Santes</span>
+      <span class="nav-logo-sub">Festa Major de Mataró</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#" class="active">La Festa</a></li>
+    <li><a href="#">Minisantes</a></li>
+    <li><a href="#">Galeria</a></li>
+    <li><a href="#">Les Santes 2026</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="nav-search">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      Cerca
+    </div>
+    <a href="#" class="nav-cta">Agenda →</a>
+    <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#">La Festa</a>
+  <a href="#">Minisantes</a>
+  <a href="#">Galeria</a>
+  <a href="#">Les Santes 2025</a>
+</div>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-tag">Les Santes 2025 · Mataró</div>
+  <h1><em>Encara / Només falten</em><br>per a Les Santes 2025!</h1>
+  <div class="countdown">
+    <div class="countdown-box">
+      <span class="num cd-dies">96</span>
+      <span class="label">dies</span>
+    </div>
+    <div class="countdown-box">
+      <span class="num cd-hores">04</span>
+      <span class="label">hores</span>
+    </div>
+    <div class="countdown-box">
+      <span class="num cd-minuts">06</span>
+      <span class="label">minuts</span>
+    </div>
+    <div class="countdown-box">
+      <span class="num cd-segons">49</span>
+      <span class="label">segons</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── QUÈ SÓN LES SANTES ── -->
+<div class="badge-strip">
+  <span class="badge">La Festa Major de Mataró</span>
+</div>
+
+<section class="que-son">
+  <div>
+    <h2>Què són <span>Les Santes</span>?</h2>
+    <p>Les Santes és la Festa Major de Mataró, una celebració única que té lloc cada any del 24 al 29 de juliol en honor a les patrones de Mataró: <strong>Santa Juliana i Santa Semproniana.</strong></p>
+    <p>Foc, música, gegants i la inconfusible Família Robafaves omplen els carrers de Mataró durant cinc dies de festa. Des de la <strong>Nit Boja</strong> fins al <strong>Castell de Focs</strong>, Les Santes són considerades una de les millors festes majors Catalunya.</p>
+    <div class="btn-group">
+      <button class="btn btn-gold">Descobreix la Festa</button>
+      <button class="btn btn-outline">El Seguici &rarr;</button>
+    </div>
+  </div>
+
+  <div class="video-card">
+    <div class="video-thumb">
+      <div class="play-btn"></div>
+    </div>
+    <div class="video-meta">
+      <div class="vtitle">Vídeo resum</div>
+      <div class="vdur">Les Santes 2025 · Resum · 8:45</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── AGENDA ── -->
+<section class="agenda-section">
+  <div class="agenda-inner">
+    <div class="agenda-header">
+      <h2>Agenda Completa</h2>
+      <span class="dia-badge">Dia 27</span>
+    </div>
+
+    <div class="day-tabs">
+      <div class="day-tab">
+        <div class="dow">Dj</div>
+        <span class="num">24</span>
+        <div class="name">Vigília</div>
+      </div>
+      <div class="day-tab">
+        <div class="dow">Dj</div>
+        <span class="num">25</span>
+        <div class="name">Nit Boja</div>
+      </div>
+      <div class="day-tab">
+        <div class="dow">Dj</div>
+        <span class="num">26</span>
+        <div class="name">Diada</div>
+      </div>
+      <div class="day-tab active">
+        <div class="dow">Dj</div>
+        <span class="num">27</span>
+        <div class="name">Canviares</div>
+      </div>
+      <div class="day-tab">
+        <div class="dow">Dj</div>
+        <span class="num">28</span>
+        <div class="name">Tancament</div>
+      </div>
+    </div>
+
+    <div class="actes-title">Actes del 27 de juliol – Nit Boja</div>
+
+    <div class="acte-list">
+      <div class="acte-item">
+        <span class="acte-time">07:00</span>
+        <span class="acte-name">Matinades</span>
+        <span class="acte-arrow">›</span>
+      </div>
+      <div class="acte-item">
+        <span class="acte-time">10:30</span>
+        <span class="acte-name">Missa de los Santos</span>
+        <span class="acte-arrow">›</span>
+      </div>
+      <div class="acte-item">
+        <span class="acte-time">18:00</span>
+        <span class="acte-name">Tarda Gaillada</span>
+        <span class="acte-arrow">›</span>
+      </div>
+      <div class="acte-item">
+        <span class="acte-time">23:00</span>
+        <span class="acte-name">Castell de Focs</span>
+        <span class="acte-arrow">›</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MINISANTES ── -->
+<section class="minisantes-section">
+  <div class="minisantes-header">
+    <h2>MINISANTES</h2>
+    <button class="btn-mini">ACCEDIR A MINISANTES &rarr;</button>
+  </div>
+  <p class="minisantes-desc">Un espai per als més petits amb jocs, activitats i tot el que necessites per viure les festes!</p>
+
+  <div class="games-grid">
+    <div class="game-card">
+      <div class="gc-bg"></div>
+      <span class="gc-emoji">🎨</span>
+      <div class="gc-body">
+        <div class="gc-title">Pinta els gegants</div>
+        <span class="gc-btn">Accedeix</span>
+      </div>
+    </div>
+    <div class="game-card">
+      <div class="gc-bg"></div>
+      <span class="gc-emoji">✂️</span>
+      <div class="gc-body">
+        <div class="gc-title">Encaballles</div>
+        <span class="gc-btn">Accedeix</span>
+      </div>
+    </div>
+    <div class="game-card">
+      <div class="gc-bg"></div>
+      <span class="gc-emoji">🧠</span>
+      <div class="gc-body">
+        <div class="gc-title">Memory dels Gegants</div>
+        <span class="gc-btn">Accedeix</span>
+      </div>
+    </div>
+    <div class="game-card">
+      <div class="gc-bg"></div>
+      <span class="gc-emoji">🧩</span>
+      <div class="gc-body">
+        <div class="gc-title">Puzzle del Correfoc</div>
+        <span class="gc-btn">Accedeix</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <div class="logo-icon">LS</div>
+        <div>
+          <span class="logo-name">Les Santes</span>
+          <span class="logo-sub">Festa Major de Mataró</span>
+        </div>
+      </div>
+      <p>La celebració més gran de Mataró, cada any al juliol en honor a Santa Juliana i Santa Semproniana.</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>La Festa</h4>
+      <ul>
+        <li><a href="#">Què són Les Santes?</a></li>
+        <li><a href="#">El Seguici</a></li>
+        <li><a href="#">Agenda Completa</a></li>
+        <li><a href="#">Galeria</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Participa</h4>
+      <ul>
+        <li><a href="#">Minisantes</a></li>
+        <li><a href="#">Activitats</a></li>
+        <li><a href="#">Contacte</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner">
+      <div class="footer-social">
+        <a class="social-link" href="#">
+          <span class="social-icon">📷</span> @lessantes
+        </a>
+        <a class="social-link" href="#">
+          <span class="social-icon">𝕏</span> @lessantesmtro
+        </a>
+      </div>
+      <span class="footer-copy">© 2026 Ajuntament de Mataró</span>
+      <div class="footer-legal">
+        <a href="#">Contacte</a>
+        <a href="#">Crèdits i nota legal</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ── SCROLL TOP ── -->
+<div class="scroll-cta" onclick="window.scrollTo({top:0,behavior:'smooth'})">?</div>
+
+<script>
+  // Countdown starting from 96d 04h 06m 49s
+  let total = (96 * 86400) + (4 * 3600) + (6 * 60) + 49;
+
+  function update() {
+    if (total <= 0) { total = 0; }
+    const d = Math.floor(total / 86400);
+    const h = Math.floor((total % 86400) / 3600);
+    const m = Math.floor((total % 3600) / 60);
+    const s = total % 60;
+    document.querySelector('.cd-dies').textContent = String(d).padStart(2,'0');
+    document.querySelector('.cd-hores').textContent = String(h).padStart(2,'0');
+    document.querySelector('.cd-minuts').textContent = String(m).padStart(2,'0');
+    document.querySelector('.cd-segons').textContent = String(s).padStart(2,'0');
+    if (total > 0) total--;
+  }
+
+  update();
+  setInterval(update, 1000);
+
+  // Mobile menu toggle
+  function toggleMenu() {
+    const menu = document.getElementById('mobile-menu');
+    menu.classList.toggle('open');
+  }
+
+  // Close menu on link click
+  document.querySelectorAll('.mobile-menu a').forEach(a => {
+    a.addEventListener('click', () => document.getElementById('mobile-menu').classList.remove('open'));
+  });
+
+  // Day tab switching
+  document.querySelectorAll('.day-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
