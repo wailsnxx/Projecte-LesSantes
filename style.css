@@ -1073,3 +1073,342 @@ body.favorits-page {
         right: 0;
     }
 }
+
+/* ==========================================================================
+   CARTES DE LES SANTES — Joc de cartes roguelite
+   Prefix: ms-cg- (minisantes-cardgame) — evita col·lisions amb l'estil global
+   ========================================================================== */
+
+/* --- Entrada del joc a la graella --- */
+.ms-cg-game-entry {
+    background: linear-gradient(135deg, #ce93d8, #f48fb1, #ffb74d);
+    color: #fff;
+}
+.ms-cg-game-entry h3,
+.ms-cg-game-entry p { color: #fff; }
+
+/* --- Overlay de fons --- */
+.ms-cg-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.78);
+    z-index: 9000;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+}
+
+/* --- Contenidor del modal --- */
+.ms-cg-modal {
+    background: #fff;
+    border-radius: 24px;
+    width: 100%;
+    max-width: 640px;
+    max-height: 92vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
+    color: #222;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* --- Botó de tancar --- */
+.ms-cg-close-btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: rgba(0, 0, 0, 0.15);
+    border: none;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    transition: background 0.2s;
+}
+.ms-cg-close-btn:hover { background: rgba(0, 0, 0, 0.35); }
+
+/* --- Capçalera festiva --- */
+.ms-cg-modal-header {
+    background: linear-gradient(135deg, #e57373, #f06292, #ce93d8);
+    padding: 28px 20px 18px;
+    text-align: center;
+    border-radius: 24px 24px 0 0;
+}
+.ms-cg-modal-header h2 {
+    font-size: 1.8rem;
+    color: #fff;
+    margin: 0 0 6px;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+.ms-cg-modal-subtitle {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.97rem;
+    margin: 0;
+}
+
+/* --- Pantalles genèriques --- */
+.ms-cg-screen { padding: 20px; }
+
+/* ── PANTALLA INICI ── */
+.ms-cg-start-art {
+    text-align: center;
+    font-size: 3.5rem;
+    letter-spacing: 12px;
+    margin-bottom: 22px;
+}
+.ms-cg-instr-box {
+    background: #fff8e1;
+    border: 2px solid #ffca28;
+    border-radius: 16px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+}
+.ms-cg-instr-box p {
+    margin: 6px 0;
+    font-size: 0.95rem;
+    color: #444;
+}
+
+/* ── HUD (barra d'estat) ── */
+.ms-cg-hud {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+.ms-cg-hud-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f5f5f5;
+    border-radius: 14px;
+    padding: 8px 14px;
+    flex: 1;
+    min-width: 90px;
+}
+.ms-cg-hud-pts   { background: #fff8e1; border: 2px solid #ffca28; }
+.ms-cg-hud-bonus { background: #f3e5f5; border: 2px solid #ce93d8; }
+.ms-cg-hud-icon  { font-size: 1.5rem; }
+.ms-cg-hud-label {
+    font-size: 0.68rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.ms-cg-hud-val        { font-size: 1.1rem; font-weight: bold; color: #222; }
+.ms-cg-hud-bonus-name { font-size: 0.82rem !important; color: #7b1fa2 !important; }
+
+/* ── Barra de progrés ── */
+.ms-cg-prg-wrap     { margin-bottom: 18px; }
+.ms-cg-prg-track    { background: #e0e0e0; border-radius: 10px; height: 18px; overflow: hidden; }
+.ms-cg-prg-fill {
+    height: 100%;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #ef9a9a, #ffb74d);
+    transition: width 0.5s ease, background 0.5s ease;
+    width: 0%;
+}
+.ms-cg-prg-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: #888;
+    margin-top: 4px;
+}
+
+/* ── Títol de fase ── */
+.ms-cg-phase-title {
+    text-align: center;
+    font-size: 1.05rem;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 14px;
+}
+
+/* ── Contenidor de cartes ── */
+.ms-cg-cards-cont {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+/* ── Carta individual ── */
+.ms-cg-card {
+    border-radius: 20px;
+    padding: 16px 12px;
+    width: 158px;
+    min-height: 205px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+    transition: transform 0.18s, box-shadow 0.18s;
+    border: 3px solid transparent;
+    user-select: none;
+}
+.ms-cg-card:hover:not(.ms-cg-card-dim) {
+    transform: translateY(-7px) scale(1.04);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+    border-color: rgba(255, 255, 255, 0.65);
+}
+.ms-cg-card-dim {
+    opacity: 0.38;
+    filter: grayscale(40%);
+    cursor: default;
+    pointer-events: none;
+}
+.ms-cg-card-chosen {
+    border-color: #fff !important;
+    box-shadow: 0 0 0 4px rgba(255, 202, 40, 0.65),
+                0 10px 26px rgba(0, 0, 0, 0.3) !important;
+    transform: translateY(-5px) scale(1.07) !important;
+    opacity: 1 !important;
+    filter: none !important;
+}
+.ms-cg-card-emoji { font-size: 2.8rem; margin-bottom: 8px; line-height: 1; }
+.ms-cg-card-name  { font-size: 0.88rem; font-weight: bold; margin-bottom: 5px; line-height: 1.2; }
+.ms-cg-card-pts   { font-size: 1.3rem; font-weight: 900; margin-bottom: 5px; }
+.ms-cg-card-badge {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    font-size: 0.68rem;
+    font-weight: bold;
+    padding: 2px 8px;
+    margin-bottom: 5px;
+}
+.ms-cg-card-desc {
+    font-size: 0.7rem;
+    opacity: 0.85;
+    line-height: 1.3;
+    margin-top: auto;
+}
+
+/* ── Contenidor de millores ── */
+.ms-cg-upg-cont {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* ── Targeta de millora ── */
+.ms-cg-upg-card {
+    background: linear-gradient(135deg, #fff8e1, #fffde7);
+    border: 2px solid #ffca28;
+    border-radius: 20px;
+    padding: 20px 16px;
+    width: 200px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+    transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+    user-select: none;
+}
+.ms-cg-upg-card:hover:not(.ms-cg-upg-dim) {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.2);
+    border-color: #ff9800;
+    background: linear-gradient(135deg, #fff3e0, #fff8e1);
+}
+.ms-cg-upg-dim {
+    opacity: 0.38;
+    cursor: default;
+    filter: grayscale(30%);
+    pointer-events: none;
+}
+.ms-cg-upg-emoji { font-size: 2.5rem; margin-bottom: 10px; }
+.ms-cg-upg-name  { font-size: 0.97rem; font-weight: bold; color: #e65100; margin-bottom: 8px; }
+.ms-cg-upg-desc  { font-size: 0.82rem; color: #555; }
+
+/* ── Missatge de feedback ── */
+.ms-cg-msg-box {
+    display: none;
+    border-radius: 14px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    text-align: center;
+    animation: ms-cg-fadein 0.3s ease;
+}
+.ms-cg-msg-success { background: #e8f5e9; color: #2e7d32; border: 2px solid #66bb6a; }
+.ms-cg-msg-upgrade { background: #fff3e0; color: #e65100; border: 2px solid #ffb74d; }
+.ms-cg-msg-info    { background: #e3f2fd; color: #1565c0; border: 2px solid #42a5f5; }
+
+@keyframes ms-cg-fadein {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Pantalla de resultat ── */
+.ms-cg-res-win  { background: linear-gradient(180deg, #e8f5e9 0%, #f1f8e9 100%); border-radius: 0 0 24px 24px; }
+.ms-cg-res-lose { background: linear-gradient(180deg, #e3f2fd 0%, #e1f5fe 100%); border-radius: 0 0 24px 24px; }
+.ms-cg-res-art {
+    text-align: center;
+    font-size: 3.8rem;
+    letter-spacing: 10px;
+    margin-bottom: 18px;
+    animation: ms-cg-bounce 0.6s ease;
+}
+@keyframes ms-cg-bounce {
+    0%   { transform: scale(0.4); opacity: 0; }
+    70%  { transform: scale(1.12); }
+    100% { transform: scale(1); opacity: 1; }
+}
+.ms-cg-res-text  { text-align: center; font-size: 1.2rem; color: #333; margin-bottom: 12px; line-height: 1.5; }
+.ms-cg-res-score { text-align: center; font-size: 1rem; color: #555; margin-bottom: 24px; }
+
+/* ── Botons genèrics ── */
+.ms-cg-btn {
+    border: none;
+    border-radius: 30px;
+    padding: 14px 32px;
+    font-size: 1.05rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+.ms-cg-btn:hover  { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2); }
+.ms-cg-btn:active { transform: translateY(0); }
+.ms-cg-btn-primary {
+    background: linear-gradient(135deg, #e57373, #f06292);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(229, 115, 115, 0.4);
+}
+.ms-cg-btn-secondary {
+    background: #f5f5f5;
+    color: #555;
+    border: 2px solid #ddd;
+}
+
+/* ── Peu del modal ── */
+.ms-cg-modal-footer {
+    padding: 12px 20px 20px;
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid #eee;
+}
+
+/* ── Responsive mòbil ── */
+@media (max-width: 480px) {
+    .ms-cg-card           { width: 128px; min-height: 175px; padding: 12px 8px; }
+    .ms-cg-card-emoji     { font-size: 2.2rem; }
+    .ms-cg-card-pts       { font-size: 1.1rem; }
+    .ms-cg-upg-card       { width: 148px; padding: 14px 10px; }
+    .ms-cg-modal-header h2 { font-size: 1.4rem; }
+    .ms-cg-btn            { padding: 12px 22px; font-size: 0.97rem; }
+}

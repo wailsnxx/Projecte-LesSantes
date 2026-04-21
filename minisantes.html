@@ -70,7 +70,7 @@
 
         <div class="section-header">
             <h2>🎮 Jocs online</h2>
-            <div class="badge-green">6 jocs disponibles</div>
+            <div class="badge-green">7 jocs disponibles</div>
         </div>
 
         <div class="grid-3">
@@ -115,10 +115,117 @@
                 <p><strong>Pinta les figures amb colors màgics</strong></p>
                 <button class="btn">▶ Jugar ara</button>
             </div>
+
+            <div class="card ms-cg-game-entry">
+                <div class="card-icon">🃏</div>
+                <h3>Cartes de Les Santes</h3>
+                <p><strong>Joc de cartes roguelite!</strong><br>Recull l'Alegria de Festa en 4 rondes.</p>
+                <button class="btn" onclick="msCGOpen()">▶ Jugar ara</button>
+            </div>
         </div>
     </div>
 
     <div class="fab">💬</div>
+
+    <!-- ===== MODAL: CARTES DE LES SANTES ===== -->
+    <div id="ms-cg-overlay" class="ms-cg-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="ms-cg-title">
+        <div class="ms-cg-modal">
+
+            <!-- Botó de tancar -->
+            <button class="ms-cg-close-btn" id="ms-cg-close-btn" aria-label="Tancar el joc">✕</button>
+
+            <!-- Capçalera festiva -->
+            <div class="ms-cg-modal-header">
+                <h2 id="ms-cg-title">🎪 Cartes de Les Santes</h2>
+                <p class="ms-cg-modal-subtitle">Recull l'Alegria de la Festa de Mataró!</p>
+            </div>
+
+            <!-- ── PANTALLA INICI ── -->
+            <div id="ms-cg-start-screen" class="ms-cg-screen">
+                <div class="ms-cg-start-art">🎪 🃏 🎊</div>
+                <div class="ms-cg-instr-box">
+                    <p>🎯 <strong>Objectiu:</strong> Reunir <strong>70 ⭐ d'Alegria</strong> en 4 rondes</p>
+                    <p>🃏 <strong>Com jugar:</strong> Cada ronda tries <strong>1 carta</strong> de 3</p>
+                    <p>🌟 <strong>Entre rondes:</strong> Escull una <strong>millora especial!</strong></p>
+                </div>
+                <div style="text-align:center">
+                    <button class="ms-cg-btn ms-cg-btn-primary" id="ms-cg-start-btn">🎉 Comença la Festa!</button>
+                </div>
+            </div>
+
+            <!-- ── PANTALLA JOC ── -->
+            <div id="ms-cg-game-screen" class="ms-cg-screen" style="display:none">
+
+                <!-- Barra d'estat (HUD) -->
+                <div class="ms-cg-hud">
+                    <div class="ms-cg-hud-item">
+                        <span class="ms-cg-hud-icon">🎪</span>
+                        <div>
+                            <div class="ms-cg-hud-label">Ronda</div>
+                            <div class="ms-cg-hud-val" id="ms-cg-round-disp">1 / 4</div>
+                        </div>
+                    </div>
+                    <div class="ms-cg-hud-item ms-cg-hud-pts">
+                        <span class="ms-cg-hud-icon">⭐</span>
+                        <div>
+                            <div class="ms-cg-hud-label">Alegria</div>
+                            <div class="ms-cg-hud-val" id="ms-cg-pts-disp">0</div>
+                        </div>
+                    </div>
+                    <div class="ms-cg-hud-item ms-cg-hud-bonus" id="ms-cg-bonus-item" style="display:none">
+                        <span class="ms-cg-hud-icon">💫</span>
+                        <div>
+                            <div class="ms-cg-hud-label">Millora activa</div>
+                            <div class="ms-cg-hud-val ms-cg-hud-bonus-name" id="ms-cg-bonus-label">—</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Barra de progrés cap a 70 ⭐ -->
+                <div class="ms-cg-prg-wrap">
+                    <div class="ms-cg-prg-track">
+                        <div class="ms-cg-prg-fill" id="ms-cg-prg-fill" style="width:0%"></div>
+                    </div>
+                    <div class="ms-cg-prg-labels">
+                        <span>0 ⭐</span>
+                        <span>Meta: 70 ⭐</span>
+                    </div>
+                </div>
+
+                <!-- Fase: Cartes -->
+                <div id="ms-cg-phase-cards">
+                    <p class="ms-cg-phase-title" id="ms-cg-phase-title">🃏 Ronda 1: Tria una carta!</p>
+                    <div class="ms-cg-cards-cont" id="ms-cg-cards-cont"></div>
+                </div>
+
+                <!-- Fase: Millora (oculta inicialment) -->
+                <div id="ms-cg-phase-upg" style="display:none">
+                    <p class="ms-cg-phase-title">🌟 Escull una millora per continuar!</p>
+                    <div class="ms-cg-upg-cont" id="ms-cg-upg-cont"></div>
+                </div>
+
+                <!-- Missatge de feedback -->
+                <div class="ms-cg-msg-box" id="ms-cg-msg" style="display:none" aria-live="polite"></div>
+
+            </div><!-- /game-screen -->
+
+            <!-- ── PANTALLA RESULTAT ── -->
+            <div id="ms-cg-result-screen" class="ms-cg-screen" style="display:none">
+                <div class="ms-cg-res-art" id="ms-cg-res-art">🎉🎪🎊</div>
+                <div class="ms-cg-res-text" id="ms-cg-res-text"></div>
+                <div class="ms-cg-res-score" id="ms-cg-res-score"></div>
+                <div style="text-align:center">
+                    <button class="ms-cg-btn ms-cg-btn-primary" id="ms-cg-play-again">🔄 Tornar a jugar!</button>
+                </div>
+            </div>
+
+            <!-- Peu del modal -->
+            <div class="ms-cg-modal-footer">
+                <button class="ms-cg-btn ms-cg-btn-secondary" id="ms-cg-restart-btn">🔄 Reiniciar partida</button>
+            </div>
+
+        </div><!-- /ms-cg-modal -->
+    </div><!-- /ms-cg-overlay -->
 
     <footer>
         <div class="footer-logos">
@@ -135,5 +242,6 @@
         </div>
     </footer>
 
+    <script src="script.js"></script>
 </body>
 </html>
