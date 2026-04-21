@@ -8,6 +8,38 @@
 </head>
 <body class="agenda-page">
 
+    <nav class="main-nav">
+      <a class="nav-logo" href="home.html">
+        <div class="logo-icon">LS</div>
+        <div class="nav-logo-text">
+          <span class="nav-logo-name">Les Santes</span>
+          <span class="nav-logo-sub">Festa Major de Mataró</span>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="home.html">Les Santes 2026</a></li>
+        <li><a href="minisantes.html">Minisantes</a></li>
+        <li><a href="agenda.html" class="active">Agenda</a></li>
+        <li><a href="actes.html">Actes preferits</a></li>
+      </ul>
+      <div class="nav-right">
+        <div class="nav-search">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          Cercador
+        </div>
+        <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    </nav>
+
+    <div class="mobile-menu" id="mobile-menu">
+      <a href="home.html">Les Santes 2026</a>
+      <a href="minisantes.html">Minisantes</a>
+      <a href="agenda.html">Agenda</a>
+      <a href="actes.html">Actes preferits</a>
+    </div>
+
     <header class="agenda-header">
         <h1>Agenda Les Santes 2026</h1>
     </header>
@@ -186,20 +218,65 @@
         </main>
     </div>
 
-    <footer class="agenda-footer">
-        <div class="footer-left">
-            <a href="#">Arxiu</a>
-            <a href="#">Programa</a>
-            <a href="#">Mapa del lloc</a>
+    <footer class="main-footer">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <div class="logo-icon">LS</div>
+            <div>
+              <span class="logo-name">Les Santes</span>
+              <span class="logo-sub">Festa Major de Mataró</span>
+            </div>
+          </div>
+          <p>La celebració més gran de Mataró, cada any al juliol en honor a Santa Juliana i Santa Semproniana.</p>
         </div>
-        <div class="footer-center">
-            <p>Les Santes de Mataró | Tradició i cultura catalana des del segle XVI</p>
+        <div class="footer-col">
+          <h4>La Festa</h4>
+          <ul>
+            <li><a href="home.html">Què són Les Santes?</a></li>
+            <li><a href="actes.html">El Seguici</a></li>
+            <li><a href="agenda.html">Agenda Completa</a></li>
+            <li><a href="actes.html">Galeria</a></li>
+          </ul>
         </div>
-        <div class="footer-right">
-            <a href="#">Galeria</a>
+        <div class="footer-col">
+          <h4>Participa</h4>
+          <ul>
+            <li><a href="minisantes.html">Minisantes</a></li>
+            <li><a href="agenda.html">Activitats</a></li>
+            <li><a href="#">Contacte</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-bottom-inner">
+          <div class="footer-social">
+            <a class="social-link" href="#"><span class="social-icon">📷</span> @lessantes</a>
+            <a class="social-link" href="#"><span class="social-icon">𝕏</span> @lessantesmtro</a>
+          </div>
+          <span class="footer-copy">© 2026 Ajuntament de Mataró</span>
+          <div class="footer-legal">
             <a href="#">Contacte</a>
+            <a href="#">Crèdits i nota legal</a>
+          </div>
         </div>
+      </div>
     </footer>
+
+    <div class="scroll-cta" id="chatbot-btn">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+    </div>
+
+    <script>
+      function toggleMenu() {
+        document.getElementById('mobile-menu').classList.toggle('open');
+      }
+      document.querySelectorAll('.mobile-menu a').forEach(a => {
+        a.addEventListener('click', () => document.getElementById('mobile-menu').classList.remove('open'));
+      });
+    </script>
 
 </body>
 </html>

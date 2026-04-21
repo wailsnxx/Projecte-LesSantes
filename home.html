@@ -129,6 +129,8 @@
       color: var(--text-muted);
       cursor: pointer;
       transition: border-color 0.15s, background 0.15s;
+      flex: 1;
+      min-width: 260px;
     }
 
     .nav-search:hover {
@@ -745,8 +747,8 @@
       position: fixed;
       bottom: 24px;
       right: 24px;
-      width: 44px;
-      height: 44px;
+      width: 58px;
+      height: 58px;
       background: var(--gold);
       border-radius: 50%;
       display: flex;
@@ -874,17 +876,16 @@
     </div>
   </a>
   <ul class="nav-links">
-    <li><a href="#" class="active">La Festa</a></li>
-    <li><a href="#">Minisantes</a></li>
-    <li><a href="#">Galeria</a></li>
-    <li><a href="#">Les Santes 2026</a></li>
+    <li><a href="home.html" class="active">Les Santes 2026</a></li>
+    <li><a href=".html">Minisantes</a></li>
+    <li><a href=".html">Agenda</a></li>
+    <li><a href=".html">Actes preferits</a></li>
   </ul>
   <div class="nav-right">
     <div class="nav-search">
       <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      Cerca
+      Cercador
     </div>
-    <a href="#" class="nav-cta">Agenda →</a>
     <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
       <span></span><span></span><span></span>
     </div>
@@ -892,10 +893,10 @@
 </nav>
 
 <div class="mobile-menu" id="mobile-menu">
-  <a href="#">La Festa</a>
-  <a href="#">Minisantes</a>
-  <a href="#">Galeria</a>
-  <a href="#">Les Santes 2025</a>
+  <a href="home.html">Les Santes 2026</a>
+  <a href="minisantes.html">Minisantes</a>
+  <a href="agenda.html">Agenda</a>
+  <a href="actes.html">Actes preferits</a>
 </div>
 
 <!-- ── HERO ── -->
@@ -933,8 +934,8 @@
     <p>Les Santes és la Festa Major de Mataró, una celebració única que té lloc cada any del 24 al 29 de juliol en honor a les patrones de Mataró: <strong>Santa Juliana i Santa Semproniana.</strong></p>
     <p>Foc, música, gegants i la inconfusible Família Robafaves omplen els carrers de Mataró durant cinc dies de festa. Des de la <strong>Nit Boja</strong> fins al <strong>Castell de Focs</strong>, Les Santes són considerades una de les millors festes majors Catalunya.</p>
     <div class="btn-group">
-      <button class="btn btn-gold">Descobreix la Festa</button>
-      <button class="btn btn-outline">El Seguici &rarr;</button>
+      <a href=".html" class="btn btn-gold">Descobreix la Festa</a>
+      <a href=".html" class="btn btn-outline">El Seguici &rarr;</a>
     </div>
   </div>
 
@@ -1016,7 +1017,7 @@
 <section class="minisantes-section">
   <div class="minisantes-header">
     <h2>MINISANTES</h2>
-    <button class="btn-mini">ACCEDIR A MINISANTES &rarr;</button>
+    <a href=".html" class="btn-mini">ACCEDIR A MINISANTES &rarr;</a>
   </div>
   <p class="minisantes-desc">Un espai per als més petits amb jocs, activitats i tot el que necessites per viure les festes!</p>
 
@@ -1026,7 +1027,7 @@
       <span class="gc-emoji">🎨</span>
       <div class="gc-body">
         <div class="gc-title">Pinta els gegants</div>
-        <span class="gc-btn">Accedeix</span>
+        <a href=".html" class="gc-btn">Accedeix</a>
       </div>
     </div>
     <div class="game-card">
@@ -1034,7 +1035,7 @@
       <span class="gc-emoji">✂️</span>
       <div class="gc-body">
         <div class="gc-title">Encaballles</div>
-        <span class="gc-btn">Accedeix</span>
+        <a href=".html" class="gc-btn">Accedeix</a>
       </div>
     </div>
     <div class="game-card">
@@ -1042,7 +1043,7 @@
       <span class="gc-emoji">🧠</span>
       <div class="gc-body">
         <div class="gc-title">Memory dels Gegants</div>
-        <span class="gc-btn">Accedeix</span>
+        <a href=".html" class="gc-btn">Accedeix</a>
       </div>
     </div>
     <div class="game-card">
@@ -1050,7 +1051,7 @@
       <span class="gc-emoji">🧩</span>
       <div class="gc-body">
         <div class="gc-title">Puzzle del Correfoc</div>
-        <span class="gc-btn">Accedeix</span>
+        <a href=".html" class="gc-btn">Accedeix</a>
       </div>
     </div>
   </div>
@@ -1067,26 +1068,6 @@
           <span class="logo-sub">Festa Major de Mataró</span>
         </div>
       </div>
-      <p>La celebració més gran de Mataró, cada any al juliol en honor a Santa Juliana i Santa Semproniana.</p>
-    </div>
-
-    <div class="footer-col">
-      <h4>La Festa</h4>
-      <ul>
-        <li><a href="#">Què són Les Santes?</a></li>
-        <li><a href="#">El Seguici</a></li>
-        <li><a href="#">Agenda Completa</a></li>
-        <li><a href="#">Galeria</a></li>
-      </ul>
-    </div>
-
-    <div class="footer-col">
-      <h4>Participa</h4>
-      <ul>
-        <li><a href="#">Minisantes</a></li>
-        <li><a href="#">Activitats</a></li>
-        <li><a href="#">Contacte</a></li>
-      </ul>
     </div>
   </div>
 
@@ -1094,13 +1075,16 @@
     <div class="footer-bottom-inner">
       <div class="footer-social">
         <a class="social-link" href="#">
-          <span class="social-icon">📷</span> @lessantes
+          <img src="imgs/instagram.png" alt="Instagram">
+          @lessantes
         </a>
         <a class="social-link" href="#">
           <span class="social-icon">𝕏</span> @lessantesmtro
         </a>
       </div>
+
       <span class="footer-copy">© 2026 Ajuntament de Mataró</span>
+
       <div class="footer-legal">
         <a href="#">Contacte</a>
         <a href="#">Crèdits i nota legal</a>
@@ -1110,7 +1094,11 @@
 </footer>
 
 <!-- ── SCROLL TOP ── -->
-<div class="scroll-cta" onclick="window.scrollTo({top:0,behavior:'smooth'})">?</div>
+<div class="scroll-cta" id="chatbot-btn">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+  </svg>
+</div>
 
 <script>
   // Countdown starting from 96d 04h 06m 49s
