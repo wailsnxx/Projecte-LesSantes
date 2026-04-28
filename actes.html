@@ -3,238 +3,253 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Els meus actes preferits - Les Santes</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Els meus actes preferits – Les Santes 2025</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --crimson: #3f9fcb; --crimson-dark: #2d7ea8; --crimson-light: #63bfe3;
+            --gold: #3f9fcb; --gold-light: #7bcde9;
+            --bg: #e6e6e6; --bg2: #efefef; --bg3: #ffffff; --bg4: #f6f8fa;
+            --text: #0d1117; --text-muted: #4f5b64; --border: rgba(63,159,203,0.25);
+        }
+        body { background:var(--bg); color:var(--text); font-family:'Nunito','Segoe UI',system-ui,sans-serif; font-size:15px; line-height:1.6; }
+        a { color:inherit; text-decoration:none; }
+        nav { display:flex; align-items:center; justify-content:space-between; padding:0 48px; height:68px; background:#3f9fcb; backdrop-filter:blur(12px); border-bottom:1px solid rgba(63,159,203,0.2); position:sticky; top:0; z-index:100; }
+        .nav-logo { display:flex; align-items:center; gap:12px; }
+        .logo-icon { width:40px; height:40px; background:linear-gradient(135deg,var(--crimson) 50%,#1a3a6b 50%); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:900; color:#fff; }
+        .logo-name { font-weight:800; font-size:15px; color:#ffffff; }
+        .logo-sub { font-size:9px; color:#dff3fb; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; display:block; margin-top:1px; }
+        .nav-links { display:flex; gap:4px; list-style:none; }
+        .nav-links a { font-size:13px; font-weight:500; color:rgba(255,255,255,0.95); padding:7px 14px; border-radius:6px; transition:color 0.15s,background 0.15s; }
+        .nav-links a:hover { color:#ffffff; background:rgba(255,255,255,0.18); }
+        .nav-links a.active { color:#ffffff; background:rgba(255,255,255,0.24); }
+        .page-header { background:linear-gradient(180deg,#d5edf7 0%,var(--bg) 100%); padding:48px 48px 36px; border-bottom:1px solid var(--border); }
+        .page-header-inner { max-width:1100px; margin:0 auto; }
+        .page-header h1 { font-family:'Playfair Display',Georgia,serif; font-size:clamp(26px,3vw,40px); font-weight:700; margin-bottom:6px; }
+        .page-header h1 span { color:var(--crimson-light); }
+        .page-header p { color:var(--text-muted); font-size:14px; }
+        .page-header .stats { display:flex; gap:24px; margin-top:20px; }
+        .stat { font-size:13px; color:var(--text-muted); }
+        .stat strong { color:#dff3fb; font-size:20px; display:block; font-weight:700; }
+        .main-layout { max-width:1100px; margin:0 auto; padding:40px 48px; display:grid; grid-template-columns:200px 1fr; gap:40px; align-items:start; }
+        .sidebar { position:sticky; top:88px; }
+        .sidebar h3 { font-family:'Playfair Display',Georgia,serif; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:#dff3fb; margin-bottom:12px; }
+        .category-menu { display:flex; flex-direction:column; gap:4px; }
+        .category-btn { display:flex; align-items:center; gap:10px; padding:8px 12px; border-radius:8px; font-size:13px; font-weight:500; color:var(--text-muted); transition:all 0.15s; }
+        .category-btn:hover,.category-btn.active { background:var(--bg3); color:var(--text); }
+        .category-btn.active { color:var(--crimson-light); }
+        .color-dot { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
+        .sidebar-sep { height:1px; background:var(--border); margin:14px 0; }
+        .favorits-content { min-width:0; }
+        .favorits-empty { text-align:center; padding:80px 32px; color:var(--text-muted); }
+        .favorits-empty .empty-icon { font-size:4rem; margin-bottom:16px; display:block; }
+        .favorits-empty h2 { font-family:'Playfair Display',serif; font-size:22px; font-weight:700; color:var(--text); margin-bottom:8px; }
+        .agenda-day { margin-bottom:40px; }
+        .day-title { font-family:'Playfair Display',Georgia,serif; font-size:20px; font-weight:700; margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:10px; color:var(--text-muted); }
+        .day-title span { color:var(--crimson-light); font-size:16px; }
+        .events-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px; }
+        .event-card { background:var(--bg3); border:1px solid rgba(63,159,203,0.25); border-radius:12px; overflow:hidden; transition:transform 0.2s,border-color 0.2s; position:relative; }
+        .event-card:hover { transform:translateY(-3px); border-color:rgba(63,159,203,0.5); }
+        .event-card-img { width:100%; aspect-ratio:16/9; object-fit:cover; display:block; }
+        .event-card-img-placeholder { width:100%; aspect-ratio:16/9; background:linear-gradient(135deg,var(--bg4) 0%,var(--bg3) 100%); display:flex; align-items:center; justify-content:center; font-size:2rem; }
+        .event-card-body { padding:12px 14px; }
+        .event-meta { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
+        .event-time { font-size:12px; font-weight:800; color:#dff3fb; }
+        .heart-btn { background:rgba(63,159,203,0.15); border:1px solid rgba(63,159,203,0.3); color:#f87171; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; cursor:pointer; transition:all 0.15s; }
+        .heart-btn:hover,.heart-btn.active { background:var(--crimson); border-color:var(--crimson); color:#fff; }
+        .event-tag { font-size:9px; font-weight:700; padding:2px 7px; border-radius:20px; text-transform:uppercase; letter-spacing:0.06em; }
+        .tag-tradicio { background:rgba(63,159,203,0.2); color:#f87171; }
+        .tag-musica { background:rgba(123,205,233,0.2); color:var(--gold-light); }
+        .tag-familiar { background:rgba(39,174,96,0.2); color:#6ee7b7; }
+        .tag-espectacle { background:rgba(142,68,173,0.2); color:#c4b5fd; }
+        .tag-exposicio { background:rgba(41,128,185,0.2); color:#93c5fd; }
+        .tag-foc { background:rgba(231,76,60,0.2); color:#fca5a5; }
+        .event-title { font-family:'Playfair Display',Georgia,serif; font-size:14px; font-weight:700; margin-bottom:4px; line-height:1.3; }
+        .event-location { font-size:11px; color:var(--text-muted); }
+        .cta-banner { background:var(--bg3); border:1px solid var(--border); border-radius:14px; padding:32px; text-align:center; margin-bottom:32px; }
+        .cta-banner h2 { font-family:'Playfair Display',serif; font-size:20px; font-weight:700; margin-bottom:8px; }
+        .cta-banner p { font-size:13px; color:var(--text-muted); margin-bottom:20px; }
+        .btn-crimson { background:var(--crimson); color:#fff; padding:10px 24px; border-radius:8px; font-size:13px; font-weight:700; display:inline-block; transition:opacity 0.15s; }
+        .btn-crimson:hover { opacity:0.85; }
+        footer { background:#0a0808; border-top:1px solid rgba(63,159,203,0.2); padding:28px 48px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-top:60px; }
+        footer p { font-size:12px; color:var(--text-muted); }
+        footer a { font-size:12px; color:var(--text-muted); transition:color 0.15s; }
+        footer a:hover { color:var(--text); }
+        @media (max-width:900px) { .main-layout { grid-template-columns:1fr; padding:24px; } .sidebar { position:static; } .page-header { padding:32px 24px 24px; } nav { padding:0 20px; } .nav-links { display:none; } }
+    </style>
 </head>
-<body class="favorits-page">
+<body>
+<nav>
+    <a class="nav-logo" href="home.html">
+        <div class="logo-icon">LS</div>
+        <div>
+            <span class="logo-name">Les Santes</span>
+            <span class="logo-sub">Festa Major de Mataró</span>
+        </div>
+    </a>
+    <ul class="nav-links">
+        <li><a href="home.html">Inici</a></li>
+        <li><a href="agenda.html">Agenda</a></li>
+        <li><a href="actes.html" class="active">Els meus actes</a></li>
+        <li><a href="minisantes.html">Minisantes</a></li>
+    </ul>
+</nav>
 
-    <nav class="top-navbar">
-        <div class="logo-text">LES SANTES</div>
-        <ul class="nav-links">
-            <li><a href="#">Inici</a></li>
-            <li><a href="#">Agenda</a></li>
-            <li><a href="#">Miniatures</a></li>
-            <li><a href="#">La Flora</a></li>
-            <li><a href="#" class="active">Favorits</a></li>
-        </ul>
-    </nav>
+<div class="page-header">
+    <div class="page-header-inner">
+        <h1>Els meus actes <span>preferits</span></h1>
+        <p>La teva selecció personal dels actes imprescindibles de Les Santes 2025. No els perdis!</p>
+        <div class="stats">
+            <div class="stat"><strong>8</strong> actes guardats</div>
+            <div class="stat"><strong>4</strong> dies de festa</div>
+            <div class="stat"><strong>5</strong> ubicacions</div>
+        </div>
+    </div>
+</div>
 
-    <div class="container">
-        <header class="hero-favorits">
-            <h1>ELS MEUS ACTES PREFERITS</h1>
-            <p>La meva selecció personal dels actes imprescindibles de Les Santes.<br>No els perdis!</p>
-        </header>
+<div class="main-layout">
+    <aside class="sidebar">
+        <h3>Categories</h3>
+        <nav class="category-menu">
+            <a href="#" class="category-btn active"><span class="color-dot" style="background:#fff"></span> Tots els actes</a>
+            <a href="#" class="category-btn"><span class="color-dot" style="background:#f87171"></span> Tradicional</a>
+            <a href="#" class="category-btn"><span class="color-dot" style="background:var(--gold)"></span> Música</a>
+            <a href="#" class="category-btn"><span class="color-dot" style="background:#6ee7b7"></span> Familiar</a>
+            <a href="#" class="category-btn"><span class="color-dot" style="background:#fca5a5"></span> Foc</a>
+            <a href="#" class="category-btn"><span class="color-dot" style="background:#c4b5fd"></span> Espectacle</a>
+        </nav>
+        <div class="sidebar-sep"></div>
+        <h3>Navegar</h3>
+        <nav class="category-menu">
+            <a href="agenda.html" class="category-btn">📅 Agenda completa</a>
+            <a href="home.html" class="category-btn">🏠 Inici</a>
+        </nav>
+    </aside>
 
-        <div class="horizontal-filters">
-            <select>
-                <option>Tots els dies</option>
-            </select>
-            <select>
-                <option>Totes les festes</option>
-            </select>
-            <select>
-                <option>Totes les ubicacions</option>
-            </select>
+    <section class="favorits-content">
+
+        <div class="cta-banner">
+            <h2>Descobreix l'agenda completa</h2>
+            <p>Explora tots els actes de Les Santes 2025 i afegeix els teus preferits aquí.</p>
+            <a href="agenda.html" class="btn-crimson">Veure tota l'agenda →</a>
         </div>
 
-        <main class="agenda-layout favorits-layout">
-            
-            <aside class="sidebar categories-sidebar">
-                <h3>CATEGORIES</h3>
-                <nav class="category-menu">
-                    <a href="#" class="category-btn active">
-                        <span class="color-box box-all"></span> Tots els actes
-                    </a>
-                    <a href="#" class="category-btn">
-                        <span class="color-box box-concerts"></span> Concerts
-                    </a>
-                    <a href="#" class="category-btn">
-                        <span class="color-box box-familiar"></span> Familiar
-                    </a>
-                    <a href="#" class="category-btn">
-                        <span class="color-box box-tradicio"></span> Tradició
-                    </a>
-                    <a href="#" class="category-btn">
-                        <span class="color-box box-foc"></span> Foc
-                    </a>
-                    <a href="#" class="category-btn">
-                        <span class="color-box box-espectacles"></span> Espectacles
-                    </a>
-                </nav>
-            </aside>
-
-            <section class="agenda-content">
-                
-                <div class="agenda-day">
-                    <h2 class="day-title-small"><span>›</span> Dijous, 25 de Juliol</h2>
-                    <div class="grid-3">
-                        <div class="event-card favorited">
-                            <div class="card-header">
-                                <span class="event-time">10:00h</span>
-                                <span class="heart-icon">♥</span>
-                            </div>
-                            <h3 class="event-title">Pregó de les Santes</h3>
-                            <p class="event-location">📍 Plaça Santa Anna</p>
-                            <span class="event-tag badge-tradicio">TRADICIÓ</span>
-                        </div>
-                        <div class="event-card favorited">
-                            <div class="card-header">
-                                <span class="event-time">12:00h</span>
-                                <span class="heart-icon">♥</span>
-                            </div>
-                            <h3 class="event-title">Cervesa amb Deguenta</h3>
-                            <p class="event-location">📍 Carboneria</p>
-                            <span class="event-tag badge-familiar">FAMILIAR</span>
-                        </div>
-                        <div class="event-card favorited">
-                            <div class="card-header">
-                                <span class="event-time">19:00h</span>
-                                <span class="heart-icon">♥</span>
-                            </div>
-                            <h3 class="event-title">Obertura Fira Artesana</h3>
-                            <p class="event-location">📍 Rambla</p>
-                            <span class="event-tag badge-espectacles">ESPECTACLES</span>
-                        </div>
+        <div class="agenda-day">
+            <h2 class="day-title"><span>›</span> Divendres, 18 de juliol</h2>
+            <div class="events-grid">
+                <div class="event-card">
+                    <img class="event-card-img" src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_61,y_132,w_1900,h_1054|c_fit,w_768,h_426|c_auto/d670a50f88ba8761324868be0a082348.jpeg" alt="Cor Madrigalista" />
+                    <div class="event-card-body">
+                        <div class="event-meta"><span class="event-time">20:00h</span><button class="heart-btn active" title="Treure dels favorits">♥</button></div>
+                        <span class="event-tag tag-musica">Música</span>
+                        <h3 class="event-title">Cor Madrigalista de Mataró. 50 anys</h3>
+                        <p class="event-location">📍 Teatre Monumental</p>
                     </div>
                 </div>
-
-                <div class="agenda-day">
-                    <h2 class="day-title-small"><span>›</span> Divendres, 26 de Juliol</h2>
-                    <div class="grid-3">
-                        <div class="event-card favorited">
-                            <div class="card-header">
-                                <span class="event-time">11:00h</span>
-                                <span class="heart-icon">♥</span>
-                            </div>
-                            <h3 class="event-title">Castelleres de Mataró</h3>
-                            <p class="event-location">📍 Plaça Santa Anna</p>
-                            <span class="event-tag badge-tradicio">TRADICIÓ</span>
-                        </div>
-                        <div class="event-card favorited">
-                            <div class="card-header">
-                                <span class="event-time">19:00h</span>
-                                <span class="heart-icon">♥</span>
-                            </div>
-                            <h3 class="event-title">Ball de Gegants</h3>
-                            <p class="event-location">📍 Rambla / Rambla</p>
-                            <span class="event-tag badge-tradicio">TRADICIÓ</span>
-                        </div>
-                        <div class="event-card favorited">
-                            <div class="card-header">
-                                <span class="event-time">22:00h</span>
-                                <span class="heart-icon">♥</span>
-                            </div>
-                            <h3 class="event-title">Concert de Havaneres</h3>
-                            <p class="event-location">📍 Port de Mataró</p>
-                            <span class="event-tag badge-concerts">CONCERTS</span>
-                        </div>
+                <div class="event-card">
+                    <img class="event-card-img" src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_5,y_542,w_954,h_529|c_fit,w_768,h_426|c_auto/acf4078b0cd1ee266494c66890ebbe1a.png" alt="Toc de Novena" />
+                    <div class="event-card-body">
+                        <div class="event-meta"><span class="event-time">19:15h</span><button class="heart-btn active" title="Treure dels favorits">♥</button></div>
+                        <span class="event-tag tag-tradicio">Tradicional</span>
+                        <h3 class="event-title">Toc de novena</h3>
+                        <p class="event-location">📍 Basílica de Santa Maria</p>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <div class="agenda-day">
-                    <h2 class="day-title-small"><span>›</span> Dissabte, 27 de Juliol</h2>
-                    <div class="grid-3">
-                        <div class="event-card favorited">
-                            <div class="card-header">
-                                <span class="event-time">09:00h</span>
-                                <span class="heart-icon">♥</span>
-                            </div>
-                            <h3 class="event-title">Gala Sportsrow</h3>
-                            <p class="event-location">📍 Balneari Espanya</p>
-                            <span class="event-tag badge-espectacles">ESPECTACLES</span>
-                        </div>
-                        <div class="event-card favorited">
-                            <div class="card-header">
-                                <span class="event-time">12:30h</span>
-                                <span class="heart-icon">♥</span>
-                            </div>
-                            <h3 class="event-title">El Seguici Popular</h3>
-                            <p class="event-location">📍 Ajuntament Carres</p>
-                            <span class="event-tag badge-tradicio">TRADICIÓ</span>
-                        </div>
-                        <div class="event-card favorited">
-                            <div class="card-header">
-                                <span class="event-time">23:00h</span>
-                                <span class="heart-icon">♥</span>
-                            </div>
-                            <h3 class="event-title">Castell de Foc</h3>
-                            <p class="event-location">📍 Platja de Mataró</p>
-                            <span class="event-tag badge-foc">FOC</span>
-                        </div>
+        <div class="agenda-day">
+            <h2 class="day-title"><span>›</span> Dissabte, 19 de juliol — Dissantes</h2>
+            <div class="events-grid">
+                <div class="event-card">
+                    <img class="event-card-img" src="https://assets.appculturamataro.cat/medias/agenda/2022/c_crop,x_0,y_0,w_1140,h_632|c_fit,w_768,h_426|c_auto/432441039f3f3cb8a48b4ddca4c7c0ac.jpeg" alt="Diada Castellera" />
+                    <div class="event-card-body">
+                        <div class="event-meta"><span class="event-time">18:00h</span><button class="heart-btn active">♥</button></div>
+                        <span class="event-tag tag-tradicio">Tradicional</span>
+                        <h3 class="event-title">Diada castellera de Les Santes</h3>
+                        <p class="event-location">📍 Plaça de Santa Anna</p>
                     </div>
                 </div>
-
-                <div class="agenda-day">
-                    <h2 class="day-title-small"><span>›</span> Diumenge, 28 de Juliol</h2>
-                    <div class="grid-3">
-                        <div class="event-card favorited">
-                            <div class="card-header">
-                                <span class="event-time">10:00h</span>
-                                <span class="heart-icon">♥</span>
-                            </div>
-                            <h3 class="event-title">Sardanes a la Plaça</h3>
-                            <p class="event-location">📍 Rambla</p>
-                            <span class="event-tag badge-tradicio">TRADICIÓ</span>
-                        </div>
-                        <div class="event-card favorited">
-                            <div class="card-header">
-                                <span class="event-time">17:00h</span>
-                                <span class="heart-icon">♥</span>
-                            </div>
-                            <h3 class="event-title">Taller Infantil</h3>
-                            <p class="event-location">📍 Centre Cultural</p>
-                            <span class="event-tag badge-familiar">FAMILIAR</span>
-                        </div>
-                        <div class="event-card favorited">
-                            <div class="card-header">
-                                <span class="event-time">21:00h</span>
-                                <span class="heart-icon">♥</span>
-                            </div>
-                            <h3 class="event-title">Concert de Cloenda</h3>
-                            <p class="event-location">📍 Rambla Principal</p>
-                            <span class="event-tag badge-concerts">CONCERTS</span>
-                        </div>
+                <div class="event-card">
+                    <img class="event-card-img" src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_134,w_960,h_533|c_fit,w_768,h_426|c_auto/3ed3afd91d825859b5ff69ccd5a7ce70.jpeg" alt="Concerts Dissantes" />
+                    <div class="event-card-body">
+                        <div class="event-meta"><span class="event-time">22:30h</span><button class="heart-btn active">♥</button></div>
+                        <span class="event-tag tag-musica">Música</span>
+                        <h3 class="event-title">Mama Dousha + Hotel Cochambre + Dj Lin</h3>
+                        <p class="event-location">📍 Espai Firal del Nou Parc Central</p>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <div class="agenda-day">
-                    <h2 class="day-title-small"><span>›</span> Dilluns, 29 de Juliol</h2>
-                    <div class="grid-3">
-                        <div class="event-card favorited">
-                            <div class="card-header">
-                                <span class="event-time">17:00h</span>
-                                <span class="heart-icon">♥</span>
-                            </div>
-                            <h3 class="event-title">El Seguici Popular</h3>
-                            <p class="event-location">📍 Parc Central</p>
-                            <span class="event-tag badge-tradicio">TRADICIÓ</span>
-                        </div>
-                        <div class="event-card favorited">
-                            <div class="card-header">
-                                <span class="event-time">19:00h</span>
-                                <span class="heart-icon">♥</span>
-                            </div>
-                            <h3 class="event-title">Havaneres Final</h3>
-                            <p class="event-location">📍 Rambla Santa Maria</p>
-                            <span class="event-tag badge-concerts">CONCERTS</span>
-                        </div>
-                        <div class="event-card favorited">
-                            <div class="card-header">
-                                <span class="event-time">22:30h</span>
-                                <span class="heart-icon">♥</span>
-                            </div>
-                            <h3 class="event-title">Concert de Cloenda</h3>
-                            <p class="event-location">📍 Ajuntament Carres</p>
-                            <span class="event-tag badge-concerts">CONCERTS</span>
-                        </div>
+        <div class="agenda-day">
+            <h2 class="day-title"><span>›</span> Diumenge, 20 de juliol</h2>
+            <div class="events-grid">
+                <div class="event-card">
+                    <img class="event-card-img" src="https://assets.appculturamataro.cat/medias/agenda/2023/c_crop,x_29,y_90,w_1539,h_854|c_fit,w_768,h_426|c_auto/fef48a3daef386a8d91bccb00e8369f2.jpeg" alt="L'Encesa" />
+                    <div class="event-card-body">
+                        <div class="event-meta"><span class="event-time">18:30h</span><button class="heart-btn active">♥</button></div>
+                        <span class="event-tag tag-foc">Foc</span>
+                        <h3 class="event-title">L'Encesa — Ball de Diables</h3>
+                        <p class="event-location">📍 Des de l'Ajuntament</p>
                     </div>
                 </div>
+            </div>
+        </div>
 
-            </section>
-        </main>
+        <div class="agenda-day">
+            <h2 class="day-title"><span>›</span> Dijous, 24 de juliol — Vigília</h2>
+            <div class="events-grid">
+                <div class="event-card">
+                    <img class="event-card-img" src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_4,y_19,w_1963,h_1090|c_fit,w_768,h_426|c_auto/bea354601387219072c5daee94e91605.jpeg" alt="Gegantada" />
+                    <div class="event-card-body">
+                        <div class="event-meta"><span class="event-time">18:00h</span><button class="heart-btn active">♥</button></div>
+                        <span class="event-tag tag-familiar">Familiar</span>
+                        <h3 class="event-title">Gegantada</h3>
+                        <p class="event-location">📍 Esmandies → Plaça Santa Anna</p>
+                    </div>
+                </div>
+                <div class="event-card">
+                    <img class="event-card-img" src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_0,w_2146,h_1191|c_fit,w_768,h_426|c_auto/c22c63569648f5d08561ef4ecfc55e8f.jpeg" alt="Havaneres" />
+                    <div class="event-card-body">
+                        <div class="event-meta"><span class="event-time">22:00h</span><button class="heart-btn active">♥</button></div>
+                        <span class="event-tag tag-musica">Música</span>
+                        <h3 class="event-title">Havaneres i rom cremat</h3>
+                        <p class="event-location">📍 Passeig del Callao</p>
+                    </div>
+                </div>
+                <div class="event-card">
+                    <div class="event-card-img-placeholder">📣</div>
+                    <div class="event-card-body">
+                        <div class="event-meta"><span class="event-time">20:00h</span><button class="heart-btn active">♥</button></div>
+                        <span class="event-tag tag-tradicio">Tradicional</span>
+                        <h3 class="event-title">La Crida — Inici oficial de la Festa Major</h3>
+                        <p class="event-location">📍 Balcó de l'Ajuntament</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+</div>
+
+<footer>
+    <p>© 2025 Ajuntament de Mataró · <a href="https://www.lessantes.cat/" target="_blank">www.lessantes.cat</a></p>
+    <div style="display:flex;gap:20px;">
+        <a href="home.html">Inici</a>
+        <a href="agenda.html">Agenda</a>
+        <a href="minisantes.html">Minisantes</a>
     </div>
-
+</footer>
+<script>
+    document.querySelectorAll('.heart-btn').forEach(btn => {
+        btn.addEventListener('click', () => btn.classList.toggle('active'));
+    });
+</script>
 </body>
 </html>
 
-<script src="script.js"></script>
+

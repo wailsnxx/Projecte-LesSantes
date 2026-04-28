@@ -30,328 +30,418 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // =============================================================================
-// CARTES DE LES SANTES — Joc de cartes roguelite
-// Prefix ms-cg- en IDs/classes per evitar col·lisions
+// LA RUTA DE LES SANTES — Joc de cartes estratègic
+// Prefix ms-cg- — evita col·lisions amb l'espai global
 // =============================================================================
 (function () {
     'use strict';
 
-    // ── Constants del joc ─────────────────────────────────────────────────────
-    const GOAL   = 70;   // punts d'alegria necessaris per guanyar
-    const ROUNDS = 4;    // nombre de rondes
-    const HAND   = 3;    // cartes per ronda
-
-    // ── Catàleg de cartes ────────────────────────────────────────────────────
-    // effect: 'base' | 'bonus_next' | 'double_if_low' | 'recurring'
-    const CARDS = [
-        { id:1,  name:'Robafaves',        emoji:'🎪', pts:20, color:'#e57373', tc:'#fff',
-          effect:'base',         desc:'El gran protagonista de la festa!' },
-        { id:2,  name:'La Geganta',       emoji:'💃', pts:16, color:'#ce93d8', tc:'#fff',
-          effect:'base',         desc:'Elegant i majestuosa pels carrers!' },
-        { id:3,  name:'Toneta',           emoji:'🌸', pts:14, color:'#f48fb1', tc:'#fff',
-          effect:'bonus_next',   bonusVal:5,
-          desc:'+5 ⭐ extra a la ronda següent!' },
-        { id:4,  name:'Maneló',           emoji:'🎭', pts:12, color:'#ffb74d', tc:'#333',
-          effect:'base',         desc:'Anima tothom amb la seva energia!' },
-        { id:5,  name:'Nan Alegre',       emoji:'🤹', pts:10, color:'#a5d6a7', tc:'#333',
-          effect:'double_if_low',threshold:30,
-          desc:'Si tens menys de 30 ⭐, guanyes el doble!' },
-        { id:6,  name:'Ball de Gegants',  emoji:'💫', pts:15, color:'#81d4fa', tc:'#333',
-          effect:'base',         desc:'Tots ballen junts pels carrers!' },
-        { id:7,  name:'Cercavila',        emoji:'🎺', pts:11, color:'#b2ebf2', tc:'#333',
-          effect:'base',         desc:'El seguici avança per la ciutat!' },
-        { id:8,  name:'Tabalada',         emoji:'🥁', pts:13, color:'#ffca28', tc:'#333',
-          effect:'base',         desc:'La música omple els carrers!' },
-        { id:9,  name:'Pluja de Confeti', emoji:'🎊', pts:8,  color:'#fff9c4', tc:'#555',
-          effect:'recurring',    recurVal:4, recurRounds:2,
-          desc:'+4 ⭐ en les 2 rondes següents!' },
-        { id:10, name:'Música al Carrer', emoji:'🎵', pts:9,  color:'#c5e1a5', tc:'#333',
-          effect:'base',         desc:'La festa continua fins la matinada!' },
-        { id:11, name:'Seguici Festiu',   emoji:'🏮', pts:12, color:'#ffe082', tc:'#333',
-          effect:'base',         desc:'Tot el seguici festiu, unit!' },
-        { id:12, name:'Nans de la Festa', emoji:'🎩', pts:10, color:'#80cbc4', tc:'#333',
-          effect:'base',         desc:'Els Nans porten alegria a tothom!' },
+    // ── Definició de les etapes ──────────────────────────────────────────────
+    var STAGES = [
+        { id:1, name:'El Pregó',          sub:"L'inici oficial de la festa",        target:35 },
+        { id:2, name:'La Cercavila',       sub:'El seguici pels carrers de Mataró',   target:55 },
+        { id:3, name:'Ball de Gegants',    sub:"La plaça gran s'omple de vida",       target:75 },
+        { id:4, name:'La Gran Final',      sub:"L'espectacle que ho corona tot",      target:95 },
     ];
 
-    // ── Catàleg de millores ───────────────────────────────────────────────────
-    // bonusType: 'instant' → suma val punts immediatament
-    const UPGRADES = [
-        { id:1, name:"Toneta canta!",          emoji:'🌸', val:10, desc:"+10 ⭐ d'Alegria immediata!" },
-        { id:2, name:"Els Nans ballen!",        emoji:'🤹', val:8,  desc:"+8 ⭐ d'Alegria immediata!" },
-        { id:3, name:"Maneló porta la banda!",  emoji:'🎭', val:12, desc:"+12 ⭐ d'Alegria immediata!" },
-        { id:4, name:"Geganta ens cuida!",      emoji:'💃', val:15, desc:"+15 ⭐ d'Alegria immediata!" },
-        { id:5, name:"Cercavila especial!",     emoji:'🎺', val:8,  desc:"+8 ⭐ d'Alegria immediata!" },
-        { id:6, name:"Ball de Gegants!",        emoji:'💫', val:11, desc:"+11 ⭐ d'Alegria immediata!" },
-        { id:7, name:"Robafaves hi és!",        emoji:'🎪', val:18, desc:"+18 ⭐ d'Alegria immediata!" },
-        { id:8, name:"Pluja de Confeti!",       emoji:'🎊', val:9,  desc:"+9 ⭐ d'Alegria immediata!" },
+    // ── Catàleg de cartes (14 cartes) ────────────────────────────────────────
+    // Types: PERSONATGE / MUSICA / TRADICIO / FESTA
+    var CARDS = [
+        // PERSONATGE — vermell #c23030
+        { id:1,  name:'Robafaves',        type:'PERSONATGE', pts:22, desc:'El gran protagonista de Les Santes. La seva presència omple els carrers.' },
+        { id:2,  name:'La Geganta',       type:'PERSONATGE', pts:19, desc:'Majestuosa i serena, dansa pels carrers de Mataró.' },
+        { id:3,  name:'Toneta',           type:'PERSONATGE', pts:16, desc:"La petita del seguici. Estimada per tots els infants de la città." },
+        { id:4,  name:'Maneló',           type:'PERSONATGE', pts:14, desc:'Ple d\'energia i humor. Fa riure tothom allà on va.' },
+        // MÚSICA — blau #1e5fa8
+        { id:5,  name:'Tabalada',         type:'MUSICA', pts:21, desc:'El ritme del tabaler marca el pas del seguici.' },
+        { id:6,  name:'Les Gralles',      type:'MUSICA', pts:17, desc:'El so de les gralles anuncia que la festa ha començat.' },
+        { id:7,  name:'El Cornet',        type:'MUSICA', pts:13, desc:'La trompeta obri el camí de la cercavila.' },
+        // TRADICIÓ — daurat #a87820
+        { id:8,  name:'Cercavila',        type:'TRADICIO', pts:20, desc:'Tot el seguici festiu recorre els carrers de la ciutat.' },
+        { id:9,  name:'Ball de Gegants',  type:'TRADICIO', pts:18, desc:'El moment més esperat: els gegants dansen a la plaça.' },
+        { id:10, name:'Castellers',       type:'TRADICIO', pts:15, desc:'La torre humana: força, equilibri i coratge.' },
+        // FESTA — verd #1e6b3a
+        { id:11, name:'Confeti',          type:'FESTA', pts:11, desc:'Una allau de colors baixa del cel sobre la multitud.' },
+        { id:12, name:'Coets de Foc',     type:'FESTA', pts:15, desc:"El foc anuncia que la Gran Final s'acosta." },
+        { id:13, name:'Sardanes',         type:'FESTA', pts:17, desc:'Tots de la mà, en cercle, la dansa que uneix.' },
+        { id:14, name:'Foc de Festa',     type:'FESTA', pts:20, desc:'El gran espectacle pirotècnic que clou la festa.' },
     ];
 
-    // ── Estat global de la partida ─────────────────────────────────────────────
-    let gs = {};
+    // ── Catàleg de millores (8 millores) ────────────────────────────────────
+    var UPGRADES = [
+        { id:1, name:'Força de la Família',   type:'PERSONATGE', val:7,  desc:'Les cartes de Personatge guanyen +7 punts.' },
+        { id:2, name:'Ritme Imparable',       type:'MUSICA',     val:7,  desc:'Les cartes de Música guanyen +7 punts.' },
+        { id:3, name:'Arrel Tradicional',     type:'TRADICIO',   val:7,  desc:'Les cartes de Tradició guanyen +7 punts.' },
+        { id:4, name:'Alegria Popular',       type:'FESTA',      val:7,  desc:'Les cartes de Festa guanyen +7 punts.' },
+        { id:5, name:'El Gran Seguici',       type:'SYNERGY',    val:8,  desc:'El bonus de sinergia puja de +10 a +18.' },
+        { id:6, name:'Cor de la Festa',       type:'FLAT',       val:12, desc:'+12 punts directes a la propera etapa.' },
+        { id:7, name:'Robafaves Hi És!',      type:'PERSONATGE', val:10, desc:'Les cartes de Personatge guanyen +10 punts.' },
+        { id:8, name:'Nit de Llum',           type:'FLAT',       val:16, desc:'+16 punts directes a la propera etapa.' },
+    ];
+
+    // ── Configuració visual per tipus ────────────────────────────────────────
+    var TYPE_CFG = {
+        PERSONATGE: { label:'Personatge', sym:'&#9670;', color:'#c23030', bg:'#180608' },
+        MUSICA:     { label:'Música',     sym:'&#9650;', color:'#1e5fa8', bg:'#060e1a' },
+        TRADICIO:   { label:'Tradició',   sym:'&#9733;', color:'#a87820', bg:'#161008' },
+        FESTA:      { label:'Festa',      sym:'&#9679;', color:'#1e7040', bg:'#081408' },
+    };
+
+    // ── Estat de la partida ──────────────────────────────────────────────────
+    var gs = {};
 
     function initState() {
         gs = {
-            round:          1,
-            points:         0,
-            bonusNext:      0,              // bonus afegit a la propera carta triada
-            recurring:      { val:0, rounds:0 }, // confeti recurrent
-            usedUpgradeIds: [],
+            stageIdx:    0,
+            hearts:      3,
+            bonuses:     { PERSONATGE:0, MUSICA:0, TRADICIO:0, FESTA:0, synergy:10, flatNext:0 },
+            usedUpgIds:  [],
+            hand:        [],
+            selected:    [],
         };
     }
 
     // ── Utilitats ────────────────────────────────────────────────────────────
     function shuffle(arr) {
-        const a = [...arr];
-        for (let i = a.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [a[i], a[j]] = [a[j], a[i]];
+        var a = arr.slice();
+        for (var i = a.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
         }
         return a;
     }
+    function $id(id) { return document.getElementById(id); }
 
     // ── Refs DOM ─────────────────────────────────────────────────────────────
-    const $ = id => document.getElementById(id);
+    var overlay     = $id('ms-cg-overlay');
+    var startScreen = $id('ms-cg-start-screen');
+    var gameScreen  = $id('ms-cg-game-screen');
+    var resultScr   = $id('ms-cg-result-screen');
 
-    const overlay      = $('ms-cg-overlay');
-    const startScreen  = $('ms-cg-start-screen');
-    const gameScreen   = $('ms-cg-game-screen');
-    const resultScreen = $('ms-cg-result-screen');
-    const roundDisp    = $('ms-cg-round-disp');
-    const ptsDisp      = $('ms-cg-pts-disp');
-    const prgFill      = $('ms-cg-prg-fill');
-    const cardsCont    = $('ms-cg-cards-cont');
-    const upgCont      = $('ms-cg-upg-cont');
-    const phaseCards   = $('ms-cg-phase-cards');
-    const phaseUpg     = $('ms-cg-phase-upg');
-    const msgBox       = $('ms-cg-msg');
-    const bonusItem    = $('ms-cg-bonus-item');
-    const bonusLabel   = $('ms-cg-bonus-label');
-    const phaseTitle   = $('ms-cg-phase-title');
-
-    // ── Obrir / Tancar modal ──────────────────────────────────────────────────
+    // ── Obrir / Tancar ───────────────────────────────────────────────────────
     function openModal() {
         overlay.style.display = 'flex';
-        overlay.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
         showScreen('start');
     }
-
     function closeModal() {
         overlay.style.display = 'none';
-        overlay.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
     }
-
     function showScreen(name) {
-        startScreen.style.display  = name === 'start'  ? 'block' : 'none';
-        gameScreen.style.display   = name === 'game'   ? 'block' : 'none';
-        resultScreen.style.display = name === 'result' ? 'block' : 'none';
+        startScreen.style.display  = name === 'start'  ? '' : 'none';
+        gameScreen.style.display   = name === 'game'   ? '' : 'none';
+        resultScr.style.display    = name === 'result' ? '' : 'none';
     }
 
-    // ── Inici de partida ──────────────────────────────────────────────────────
+    // ── Inici de partida ─────────────────────────────────────────────────────
     function startGame() {
         initState();
         showScreen('game');
-        bonusItem.style.display = 'none';
-        updateHUD();
-        showCardsPhase();
+        renderTrack();
+        showStage();
     }
 
-    // ── Actualitzar HUD ──────────────────────────────────────────────────────
-    function updateHUD() {
-        roundDisp.textContent = gs.round + ' / ' + ROUNDS;
-        ptsDisp.textContent   = gs.points;
-        const pct = Math.min(100, (gs.points / GOAL) * 100);
-        prgFill.style.width = pct + '%';
-        // Color de la barra segons progrés
-        if (pct >= 100) {
-            prgFill.style.background = 'linear-gradient(90deg,#66bb6a,#43a047)';
-        } else if (pct >= 50) {
-            prgFill.style.background = 'linear-gradient(90deg,#ffd54f,#ffca28)';
+    // ── Renderitzar la ruta d'etapes ─────────────────────────────────────────
+    function renderTrack() {
+        var cont = $id('ms-cg-stage-track');
+        if (!cont) return;
+        cont.innerHTML = '';
+        STAGES.forEach(function (s, i) {
+            var dot  = document.createElement('div');
+            var cls  = 'ms-cg-stage-dot';
+            if (i < gs.stageIdx) cls += ' done';
+            if (i === gs.stageIdx) cls += ' current';
+            dot.className = cls;
+            dot.innerHTML =
+                '<span class="ms-cg-stage-num">' + (i < gs.stageIdx ? '&#10003;' : (i + 1)) + '</span>' +
+                '<span class="ms-cg-stage-lbl">' + s.name + '</span>';
+            cont.appendChild(dot);
+            if (i < STAGES.length - 1) {
+                var line = document.createElement('div');
+                line.className = 'ms-cg-stage-line' + (i < gs.stageIdx ? ' done' : '');
+                cont.appendChild(line);
+            }
+        });
+    }
+
+    // ── Renderitzar vides ────────────────────────────────────────────────────
+    function renderHearts() {
+        var cont = $id('ms-cg-hearts');
+        if (!cont) return;
+        cont.innerHTML = '';
+        for (var i = 0; i < 3; i++) {
+            var h = document.createElement('span');
+            h.className = 'ms-cg-heart ' + (i < gs.hearts ? 'full' : 'empty');
+            h.innerHTML = '&#9829;';
+            cont.appendChild(h);
+        }
+    }
+
+    // ── Mostrar etapa ─────────────────────────────────────────────────────────
+    function showStage() {
+        var stage  = STAGES[gs.stageIdx];
+        var target = stage.target - gs.bonuses.flatNext;
+        gs.bonuses.flatNext = 0;
+
+        $id('ms-cg-stage-name').textContent  = stage.name;
+        $id('ms-cg-stage-subtitle').textContent = stage.sub;
+        $id('ms-cg-stage-target').textContent = target;
+        $id('ms-cg-stage-target').dataset.target = target;
+
+        renderHearts();
+        renderTrack();
+
+        $id('ms-cg-phase-cards').style.display   = '';
+        $id('ms-cg-phase-upgrade').style.display = 'none';
+        $id('ms-cg-play-btn').disabled = true;
+        clearMsg();
+
+        gs.hand     = shuffle(CARDS).slice(0, 4);
+        gs.selected = [];
+        renderHand();
+        updateSelInfo();
+    }
+
+    // ── Renderitzar la mà ─────────────────────────────────────────────────────
+    function renderHand() {
+        var cont = $id('ms-cg-hand');
+        cont.innerHTML = '';
+        gs.hand.forEach(function (card, idx) {
+            cont.appendChild(makeCardEl(card, idx));
+        });
+    }
+
+    function makeCardEl(card, idx) {
+        var tc    = TYPE_CFG[card.type];
+        var bonus = gs.bonuses[card.type] || 0;
+        var total = card.pts + bonus;
+
+        var el = document.createElement('div');
+        el.className = 'ms-cg-card';
+        el.dataset.idx = idx;
+        el.style.setProperty('--card-color', tc.color);
+        el.style.setProperty('--card-bg',    tc.bg);
+        el.innerHTML =
+            '<div class="ms-cg-card-type">' +
+                '<span class="ms-cg-card-type-sym">' + tc.sym + '</span>' +
+                '<span class="ms-cg-card-type-lbl">' + tc.label + '</span>' +
+                (bonus > 0 ? '<span class="ms-cg-card-bonus">+' + bonus + '</span>' : '') +
+            '</div>' +
+            '<div class="ms-cg-card-body">' +
+                '<div class="ms-cg-card-name">' + card.name + '</div>' +
+                '<div class="ms-cg-card-pts">' + total + '<span class="ms-cg-card-pts-star">&#9733;</span></div>' +
+            '</div>' +
+            '<div class="ms-cg-card-desc">' + card.desc + '</div>';
+
+        el.addEventListener('click', function () { toggleCard(card, el, idx); });
+        return el;
+    }
+
+    // ── Seleccionar / deseleccionar carta ────────────────────────────────────
+    function toggleCard(card, el, idx) {
+        var pos = -1;
+        for (var i = 0; i < gs.selected.length; i++) {
+            if (gs.selected[i].idx === idx) { pos = i; break; }
+        }
+        if (pos !== -1) {
+            gs.selected.splice(pos, 1);
+            el.classList.remove('selected');
         } else {
-            prgFill.style.background = 'linear-gradient(90deg,#ef9a9a,#ffb74d)';
-        }
-    }
-
-    function showMsg(text, type) {
-        msgBox.textContent   = text;
-        msgBox.className     = 'ms-cg-msg-box ms-cg-msg-' + type;
-        msgBox.style.display = 'block';
-    }
-
-    // ── Fase: Cartes ──────────────────────────────────────────────────────────
-    function showCardsPhase() {
-        phaseCards.style.display = 'block';
-        phaseUpg.style.display   = 'none';
-        msgBox.style.display     = 'none';
-        phaseTitle.textContent   = gs.round === ROUNDS
-            ? '🎉 Ronda final! Tria la teva última carta!'
-            : '🃏 Ronda ' + gs.round + ': Tria una carta!';
-
-        const hand = shuffle(CARDS).slice(0, HAND);
-        cardsCont.innerHTML = '';
-
-        hand.forEach(function (card) {
-            const el = document.createElement('div');
-            el.className        = 'ms-cg-card';
-            el.style.background = card.color;
-            el.style.color      = card.tc;
-
-            // Insígnia d'efecte especial
-            let badge = '';
-            if (card.effect === 'bonus_next')
-                badge = '<span class="ms-cg-card-badge">+' + card.bonusVal + '⭐ seg.</span>';
-            if (card.effect === 'double_if_low')
-                badge = '<span class="ms-cg-card-badge">×2 si poc!</span>';
-            if (card.effect === 'recurring')
-                badge = '<span class="ms-cg-card-badge">+' + card.recurVal + '⭐×' + card.recurRounds + '</span>';
-
-            el.innerHTML =
-                '<div class="ms-cg-card-emoji">' + card.emoji + '</div>' +
-                '<div class="ms-cg-card-name">'  + card.name  + '</div>' +
-                '<div class="ms-cg-card-pts">+'  + card.pts   + ' ⭐</div>' +
-                badge +
-                '<div class="ms-cg-card-desc">'  + card.desc  + '</div>';
-
-            el.addEventListener('click', function () { pickCard(card, el); });
-            cardsCont.appendChild(el);
-        });
-    }
-
-    function pickCard(card, el) {
-        // Bloquejar totes les cartes
-        cardsCont.querySelectorAll('.ms-cg-card').forEach(function (c) {
-            c.classList.add('ms-cg-card-dim');
-        });
-        el.classList.remove('ms-cg-card-dim');
-        el.classList.add('ms-cg-card-chosen');
-
-        let earned = card.pts;
-        var extras = [];
-
-        // Bonus de la ronda anterior (carta Toneta)
-        if (gs.bonusNext > 0) {
-            earned += gs.bonusNext;
-            extras.push('+' + gs.bonusNext + '⭐ bonus ronda anterior');
-            gs.bonusNext = 0;
-        }
-
-        // Confeti recurrent
-        if (gs.recurring.rounds > 0) {
-            earned += gs.recurring.val;
-            extras.push('+' + gs.recurring.val + '⭐ confeti');
-            gs.recurring.rounds--;
-        }
-
-        // Efecte propi de la carta
-        if (card.effect === 'bonus_next') {
-            gs.bonusNext += card.bonusVal;
-            extras.push('Propera ronda: +' + card.bonusVal + '⭐');
-        } else if (card.effect === 'double_if_low') {
-            if (gs.points < card.threshold) {
-                earned *= 2;
-                extras.push("Nan Alegre dobla l'alegria!");
+            if (gs.selected.length >= 2) {
+                // Desselecciona la primera
+                var first    = gs.selected.shift();
+                var firstEl  = $id('ms-cg-hand').querySelector('[data-idx="' + first.idx + '"]');
+                if (firstEl) firstEl.classList.remove('selected');
             }
-        } else if (card.effect === 'recurring') {
-            gs.recurring.val    += card.recurVal;
-            gs.recurring.rounds += card.recurRounds;
-            extras.push('+' + card.recurVal + '⭐ per ' + card.recurRounds + ' rondes');
+            gs.selected.push({ card: card, idx: idx });
+            el.classList.add('selected');
         }
+        $id('ms-cg-play-btn').disabled = gs.selected.length < 2;
+        updateSelInfo();
+    }
 
-        gs.points += earned;
-        updateHUD();
-
-        var msg = '✨ ' + card.name + '! Guanyes +' + earned + ' ⭐';
-        if (extras.length) msg += '  (' + extras.join(' · ') + ')';
-        showMsg(msg, 'success');
-
-        setTimeout(function () {
-            if (gs.round >= ROUNDS) {
-                showResult();
+    function updateSelInfo() {
+        var el = $id('ms-cg-sel-info');
+        if (!el) return;
+        if (gs.selected.length === 0) {
+            el.textContent  = 'Selecciona 2 cartes per jugar';
+            el.className    = 'ms-cg-sel-info';
+        } else if (gs.selected.length === 1) {
+            el.textContent  = '1 seleccionada — tria\'n una altra';
+            el.className    = 'ms-cg-sel-info';
+        } else {
+            var c1 = gs.selected[0].card;
+            var c2 = gs.selected[1].card;
+            var pts = calcPoints(c1, c2);
+            var syn = c1.type === c2.type;
+            if (syn) {
+                el.innerHTML = 'Sin&#232;rgia! &nbsp; <strong>' + pts + ' &#9733;</strong> (' +
+                    (c1.pts + (gs.bonuses[c1.type]||0)) + ' + ' +
+                    (c2.pts + (gs.bonuses[c2.type]||0)) + ' + ' +
+                    gs.bonuses.synergy + ' bonus)';
+                el.className = 'ms-cg-sel-info has-synergy';
             } else {
-                showUpgradePhase();
+                el.innerHTML = '<strong>' + pts + ' &#9733;</strong> potencials — ' +
+                    (c1.pts + (gs.bonuses[c1.type]||0)) + ' + ' +
+                    (c2.pts + (gs.bonuses[c2.type]||0));
+                el.className = 'ms-cg-sel-info';
             }
-        }, 1700);
+        }
     }
 
-    // ── Fase: Millora ─────────────────────────────────────────────────────────
+    function calcPoints(c1, c2) {
+        var b1 = gs.bonuses[c1.type] || 0;
+        var b2 = gs.bonuses[c2.type] || 0;
+        var pts = (c1.pts + b1) + (c2.pts + b2);
+        if (c1.type === c2.type) pts += gs.bonuses.synergy;
+        return pts;
+    }
+
+    // ── Jugar les cartes seleccionades ───────────────────────────────────────
+    function playSelected() {
+        if (gs.selected.length < 2) return;
+        var s1   = gs.selected[0];
+        var s2   = gs.selected[1];
+        var pts  = calcPoints(s1.card, s2.card);
+        var target = parseInt($id('ms-cg-stage-target').dataset.target);
+        var syn  = s1.card.type === s2.card.type;
+
+        // Dimming de cartes no jugades
+        var hand = $id('ms-cg-hand').querySelectorAll('.ms-cg-card');
+        hand.forEach(function (c) {
+            if (parseInt(c.dataset.idx) !== s1.idx && parseInt(c.dataset.idx) !== s2.idx) {
+                c.classList.add('ms-cg-card-dim');
+            }
+        });
+        $id('ms-cg-play-btn').disabled = true;
+
+        // Construir missatge
+        var base = pts + ' &#9733; aconseguits';
+        if (syn) base = 'Sin&#232;rgia ' + TYPE_CFG[s1.card.type].label + '! &nbsp;' + base;
+
+        if (pts >= target) {
+            showMsg(base + ' &mdash; <strong>Etapa superada!</strong>', 'success');
+            setTimeout(function () {
+                if (gs.stageIdx >= STAGES.length - 1) {
+                    showResult(true);
+                } else {
+                    gs.stageIdx++;
+                    showUpgradePhase();
+                }
+            }, 1900);
+        } else {
+            gs.hearts--;
+            var diff = target - pts;
+            showMsg(base + ' &mdash; Calen ' + target + ' &#9733;, en falten <strong>' + diff + '</strong>.', 'fail');
+            renderHearts();
+            setTimeout(function () {
+                if (gs.hearts <= 0) {
+                    showResult(false);
+                } else {
+                    gs.stageIdx++;
+                    if (gs.stageIdx >= STAGES.length) {
+                        showResult(true);
+                    } else {
+                        showStage();
+                    }
+                }
+            }, 2200);
+        }
+    }
+
+    // ── Fase de millora ──────────────────────────────────────────────────────
     function showUpgradePhase() {
-        phaseCards.style.display = 'none';
-        phaseUpg.style.display   = 'block';
-        msgBox.style.display     = 'none';
+        $id('ms-cg-phase-cards').style.display   = 'none';
+        $id('ms-cg-phase-upgrade').style.display = '';
+        clearMsg();
+        renderTrack();
 
-        // Escull 2 millores no usades (o reutilitza si s'esgoten)
-        var pool  = UPGRADES.filter(function (u) { return !gs.usedUpgradeIds.includes(u.id); });
+        var pool  = UPGRADES.filter(function (u) { return !gs.usedUpgIds.includes(u.id); });
         var picks = shuffle(pool.length >= 2 ? pool : UPGRADES).slice(0, 2);
+        var cont  = $id('ms-cg-upg-cont');
+        cont.innerHTML = '';
 
-        upgCont.innerHTML = '';
         picks.forEach(function (upg) {
+            var tc  = (upg.type !== 'SYNERGY' && upg.type !== 'FLAT' && TYPE_CFG[upg.type])
+                        ? TYPE_CFG[upg.type] : null;
+            var col = tc ? tc.color : '#c9943a';
+            var lbl = tc ? (tc.sym + ' ' + tc.label) : '&#9733; Especial';
+
             var el = document.createElement('div');
             el.className = 'ms-cg-upg-card';
+            el.style.setProperty('--upg-color', col);
             el.innerHTML =
-                '<div class="ms-cg-upg-emoji">' + upg.emoji + '</div>' +
-                '<div class="ms-cg-upg-name">'  + upg.name  + '</div>' +
-                '<div class="ms-cg-upg-desc">'  + upg.desc  + '</div>';
-            el.addEventListener('click', function () { pickUpgrade(upg); });
-            upgCont.appendChild(el);
+                '<div class="ms-cg-upg-type">' + lbl + '</div>' +
+                '<div class="ms-cg-upg-name">' + upg.name + '</div>' +
+                '<div class="ms-cg-upg-desc">' + upg.desc + '</div>' +
+                '<div class="ms-cg-upg-cta">Escollir &rarr;</div>';
+            el.addEventListener('click', function () { pickUpgrade(upg, el, cont); });
+            cont.appendChild(el);
         });
     }
 
-    function pickUpgrade(upg) {
-        // Bloquejar ambdues opcions
-        upgCont.querySelectorAll('.ms-cg-upg-card').forEach(function (u) {
+    function pickUpgrade(upg, el, cont) {
+        cont.querySelectorAll('.ms-cg-upg-card').forEach(function (u) {
             u.classList.add('ms-cg-upg-dim');
         });
+        el.classList.remove('ms-cg-upg-dim');
+        el.classList.add('ms-cg-upg-chosen');
+        gs.usedUpgIds.push(upg.id);
 
-        gs.usedUpgradeIds.push(upg.id);
-        gs.points += upg.val;
-        updateHUD();
-
-        // Mostrar millora activa al HUD
-        bonusItem.style.display = 'flex';
-        bonusLabel.textContent  = upg.name;
-
-        showMsg('💫 ' + upg.name + ' +' + upg.val + '⭐ activada!', 'upgrade');
-
-        setTimeout(function () {
-            gs.round++;
-            showCardsPhase();
-        }, 1600);
+        if (upg.type === 'SYNERGY') {
+            gs.bonuses.synergy += upg.val;
+        } else if (upg.type === 'FLAT') {
+            gs.bonuses.flatNext += upg.val;
+        } else {
+            gs.bonuses[upg.type] = (gs.bonuses[upg.type] || 0) + upg.val;
+        }
+        setTimeout(function () { showStage(); }, 1100);
     }
 
-    // ── Resultat final ────────────────────────────────────────────────────────
-    function showResult() {
+    // ── Pantalla de resultat ──────────────────────────────────────────────────
+    function showResult(won) {
         showScreen('result');
-        var won = gs.points >= GOAL;
+        resultScr.className = 'ms-cg-screen ms-cg-res-' + (won ? 'win' : 'lose');
+        $id('ms-cg-res-mark').innerHTML  = won ? '&#9733;' : '&#9829;';
+        $id('ms-cg-res-title').textContent = won
+            ? 'La Festa Ha Estat un Èxit'
+            : 'La Festa S\'Ha Acabat';
+        $id('ms-cg-res-sub').textContent = won
+            ? "Has guiat el seguici de Mataró fins al final. Les Santes han estat inoblidables per a tothom."
+            : "L'energia s'ha esgotat abans del final. La pròxima vegada el seguici arribarà fins al final!";
+        $id('ms-cg-res-stages').textContent =
+            'Etapes completades: ' + gs.stageIdx + ' / ' + STAGES.length;
+    }
 
-        $('ms-cg-res-art').textContent = won ? '🎉🎪🎊' : '💙🌸🎺';
-        $('ms-cg-res-text').innerHTML  = won
-            ? '<strong>La festa ha estat un èxit!</strong><br>Has organitzat una celebració inoblidable per a Mataró!'
-            : '<strong>Bon intent!</strong><br>La festa segueix! La propera vegada ho aconseguiràs. Les Santes t\'esperen!';
-        $('ms-cg-res-score').innerHTML =
-            'Has aconseguit <strong>' + gs.points + ' ⭐</strong> d\'Alegria de Festa' +
-            '<br>(Meta: ' + GOAL + ' ⭐)';
-
-        resultScreen.className = 'ms-cg-screen ms-cg-res-' + (won ? 'win' : 'lose');
+    // ── Missatge de feedback ─────────────────────────────────────────────────
+    function showMsg(html, type) {
+        var el = $id('ms-cg-msg');
+        el.innerHTML  = html;
+        el.className  = 'ms-cg-msg ms-cg-msg-' + type;
+        el.style.display = '';
+    }
+    function clearMsg() {
+        var el = $id('ms-cg-msg');
+        el.style.display = 'none';
+        el.innerHTML = '';
     }
 
     // ── Listeners ────────────────────────────────────────────────────────────
-    $('ms-cg-close-btn').addEventListener('click',    closeModal);
-    $('ms-cg-start-btn').addEventListener('click',    startGame);
-    $('ms-cg-restart-btn').addEventListener('click',  startGame);
-    $('ms-cg-play-again').addEventListener('click',   startGame);
+    $id('ms-cg-close-btn').addEventListener('click',   closeModal);
+    $id('ms-cg-start-btn').addEventListener('click',   startGame);
+    $id('ms-cg-restart-btn').addEventListener('click', startGame);
+    $id('ms-cg-play-btn').addEventListener('click',    playSelected);
+    $id('ms-cg-play-again').addEventListener('click',  startGame);
 
-    // Tancar en clicar fora del modal
     overlay.addEventListener('click', function (e) {
         if (e.target === overlay) closeModal();
     });
-
-    // Tancar amb la tecla Escape
     document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' && overlay.style.display === 'flex') closeModal();
     });
 
-    // ── API pública (cridada des del botó de la targeta) ──────────────────────
+    // API pública
     window.msCGOpen = openModal;
 
 }());

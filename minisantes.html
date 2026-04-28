@@ -3,245 +3,236 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minisantes - Les Santes</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Minisantes – Les Santes 2025</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --crimson: #3f9fcb; --crimson-dark: #2d7ea8; --crimson-light: #63bfe3;
+            --gold: #3f9fcb; --gold-light: #7bcde9;
+            --bg: #e6e6e6; --bg2: #efefef; --bg3: #ffffff; --bg4: #f6f8fa;
+            --text: #0d1117; --text-muted: #4f5b64; --border: rgba(63,159,203,0.25);
+        }
+        body { background:var(--bg); color:var(--text); font-family:'Nunito','Segoe UI',system-ui,sans-serif; font-size:15px; line-height:1.6; }
+        a { color:inherit; text-decoration:none; }
+        nav { display:flex; align-items:center; justify-content:space-between; padding:0 48px; height:68px; background:#3f9fcb; backdrop-filter:blur(12px); border-bottom:1px solid rgba(63,159,203,0.2); position:sticky; top:0; z-index:100; }
+        .nav-logo { display:flex; align-items:center; gap:12px; }
+        .logo-icon { width:40px; height:40px; background:linear-gradient(135deg,var(--crimson) 50%,#1a3a6b 50%); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:900; color:#fff; }
+        .logo-name { font-weight:800; font-size:15px; color:#ffffff; }
+        .logo-sub { font-size:9px; color:#dff3fb; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; display:block; margin-top:1px; }
+        .nav-links { display:flex; gap:4px; list-style:none; }
+        .nav-links a { font-size:13px; font-weight:500; color:rgba(255,255,255,0.95); padding:7px 14px; border-radius:6px; transition:color 0.15s,background 0.15s; }
+        .nav-links a:hover { color:#ffffff; background:rgba(255,255,255,0.18); }
+        .nav-links a.active { color:#ffffff; background:rgba(255,255,255,0.24); }
+        .hero-mini {
+            background: radial-gradient(ellipse 80% 60% at 50% 0%, #1a0844 0%, var(--bg) 70%);
+            text-align:center; padding:64px 24px 52px; position:relative; overflow:hidden;
+        }
+        .hero-mini::before { content:''; position:absolute; inset:0; background:radial-gradient(circle at 20% 50%,rgba(142,68,173,0.08) 0%,transparent 50%),radial-gradient(circle at 80% 50%,rgba(123,205,233,0.05) 0%,transparent 50%); pointer-events:none; }
+        .hero-tag { display:inline-block; background:rgba(142,68,173,0.2); border:1px solid rgba(142,68,173,0.4); color:#c4b5fd; font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; padding:5px 16px; border-radius:20px; margin-bottom:20px; }
+        .hero-mini h1 { font-family:'Playfair Display',Georgia,serif; font-size:clamp(36px,5vw,64px); font-weight:800; margin-bottom:16px; letter-spacing:0.02em; background:linear-gradient(135deg,#fff 0%,#c4b5fd 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .hero-mini p { color:var(--text-muted); max-width:500px; margin:0 auto 32px; font-size:15px; }
+        .hero-actions { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+        .btn-purple { background:linear-gradient(135deg,#8E44AD,#B07FCA); color:#fff; padding:10px 24px; border-radius:8px; font-size:13px; font-weight:700; transition:opacity 0.15s; display:inline-block; }
+        .btn-purple:hover { opacity:0.85; }
+        .btn-outline { background:transparent; border:1px solid var(--border); color:var(--text); padding:10px 22px; border-radius:8px; font-size:13px; font-weight:600; display:inline-block; transition:border-color 0.15s; }
+        .btn-outline:hover { border-color:#dff3fb; color:#dff3fb; }
+        .section { max-width:1000px; margin:0 auto; padding:52px 48px; }
+        .section h2 { font-family:'Playfair Display',Georgia,serif; font-size:28px; font-weight:700; margin-bottom:8px; }
+        .section h2 span { color:var(--crimson-light); }
+        .section > p { color:var(--text-muted); font-size:14px; margin-bottom:32px; }
+        .activities-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:16px; margin-bottom:48px; }
+        .activity-card { border-radius:16px; overflow:hidden; position:relative; aspect-ratio:3/4; display:flex; flex-direction:column; justify-content:flex-end; cursor:pointer; transition:transform 0.2s; }
+        .activity-card:hover { transform:translateY(-4px); }
+        .activity-card .bg { position:absolute; inset:0; }
+        .ac-1 .bg { background:linear-gradient(160deg,#3f9fcb 0%,#63bfe3 100%); }
+        .ac-2 .bg { background:linear-gradient(160deg,#8E44AD 0%,#B07FCA 100%); }
+        .ac-3 .bg { background:linear-gradient(160deg,#3f9fcb 0%,#F0C869 100%); }
+        .ac-4 .bg { background:linear-gradient(160deg,#1A3A6B 0%,#2980B9 100%); }
+        .ac-5 .bg { background:linear-gradient(160deg,#16A085 0%,#1ABC9C 100%); }
+        .ac-6 .bg { background:linear-gradient(160deg,#E67E22 0%,#F39C12 100%); }
+        .activity-card .emoji { position:absolute; top:50%; left:50%; transform:translate(-50%,-65%); font-size:3rem; }
+        .activity-card .card-body { position:relative; z-index:1; padding:10px 14px 14px; background:rgba(0,0,0,0.35); backdrop-filter:blur(2px); }
+        .card-body h3 { font-size:13px; font-weight:700; color:#fff; margin-bottom:8px; line-height:1.3; }
+        .card-body .pill { display:inline-block; background:rgba(255,255,255,0.2); color:#fff; font-size:10px; font-weight:700; padding:4px 10px; border-radius:20px; border:1px solid rgba(255,255,255,0.3); text-transform:uppercase; letter-spacing:0.04em; }
+        .games-section { background:var(--bg2); }
+        .games-section .section { border-top:none; }
+        .games-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; }
+        .game-card { background:var(--bg3); border:1px solid var(--border); border-radius:14px; padding:20px; display:flex; gap:16px; align-items:flex-start; transition:border-color 0.15s; }
+        .game-card:hover { border-color:rgba(142,68,173,0.4); }
+        .game-icon { width:52px; height:52px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.8rem; flex-shrink:0; }
+        .game-card-body h3 { font-family:'Playfair Display',serif; font-size:15px; font-weight:700; margin-bottom:4px; }
+        .game-card-body p { font-size:12px; color:var(--text-muted); margin-bottom:12px; }
+        .game-card-body .btn-play { background:rgba(142,68,173,0.2); border:1px solid rgba(142,68,173,0.4); color:#c4b5fd; font-size:11px; font-weight:700; padding:5px 14px; border-radius:20px; cursor:pointer; transition:all 0.15s; display:inline-block; }
+        .game-card-body .btn-play:hover { background:rgba(142,68,173,0.4); }
+        .info-banner { background:linear-gradient(135deg,rgba(63,159,203,0.1) 0%,rgba(123,205,233,0.05) 100%); border:1px solid rgba(63,159,203,0.2); border-radius:16px; padding:32px; text-align:center; margin:0 48px 48px; max-width:904px; margin-left:auto; margin-right:auto; }
+        .info-banner h2 { font-family:'Playfair Display',serif; font-size:22px; font-weight:700; margin-bottom:8px; }
+        .info-banner p { color:var(--text-muted); font-size:14px; margin-bottom:20px; }
+        footer { background:#0a0808; border-top:1px solid rgba(63,159,203,0.2); padding:28px 48px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
+        footer p { font-size:12px; color:var(--text-muted); }
+        footer a { font-size:12px; color:var(--text-muted); transition:color 0.15s; }
+        footer a:hover { color:var(--text); }
+        @media (max-width:900px) { nav { padding:0 20px; } .nav-links { display:none; } .section { padding:36px 24px; } .info-banner { margin:0 24px 36px; } }
+        @media (max-width:600px) { .activities-grid { grid-template-columns:repeat(2,1fr); } .games-grid { grid-template-columns:1fr; } }
+    </style>
 </head>
 <body>
-
-    <header>
-        <div class="logos-header">
-            <div class="flag-placeholder"></div>
-            <h3>Les Santes</h3>
+<nav>
+    <a class="nav-logo" href="home.html">
+        <div class="logo-icon">LS</div>
+        <div>
+            <span class="logo-name">Les Santes</span>
+            <span class="logo-sub">Festa Major de Mataró</span>
         </div>
-        <nav>
-            <ul>
-                <li><a href="#">La Festa</a></li>
-                <li><a href="minisantes.html">Minisantes</a></li>
-                <li><a href="#">Galeria</a></li>
-                <li><a href="#">Les Santes 2025</a></li>
-            </ul>
-        </nav>
-        <div class="search-bar">
-            <input type="text" placeholder="Cercador">
-            <button>🔍</button>
-        </div>
-    </header>
+    </a>
+    <ul class="nav-links">
+        <li><a href="home.html">Inici</a></li>
+        <li><a href="agenda.html">Agenda</a></li>
+        <li><a href="actes.html">Els meus actes</a></li>
+        <li><a href="minisantes.html" class="active">Minisantes</a></li>
+    </ul>
+</nav>
 
-    <section class="hero">
-        <div class="badge">ESPAI INFANTIL</div>
-        <h1>MINISANTES</h1>
-        <p>Benvinguts al racó més divertit de les Santes per als infants!<br>Jocs, activitats i molt més per als més petits</p>
-    </section>
+<section class="hero-mini">
+    <div class="hero-tag">Espai Infantil · Les Santes 2025</div>
+    <h1>MINISANTES</h1>
+    <p>El racó màgic de Les Santes per als infants! Jocs, activitats, retallables i molt més per a la canalla de Mataró.</p>
+    <div class="hero-actions">
+        <a href="#activitats" class="btn-purple">Descobreix les activitats</a>
+        <a href="#jocs" class="btn-outline">Jocs online</a>
+    </div>
+</section>
 
-    <div class="container">
-        <div class="section-header">
-            <h2>✏️ Activitats per fer a casa</h2>
-        </div>
-
-        <div class="grid-4">
-            <div class="card card-bordered bg-red">
-                <div class="card-icon">🎨</div>
+<section class="section" id="activitats">
+    <h2>Activitats per fer <span>a casa</span></h2>
+    <p>Descarrega, pinta, retalla i munta! Activitats gratuïtes per a tots els nens i nenes.</p>
+    <div class="activities-grid">
+        <div class="activity-card ac-1">
+            <div class="bg"></div>
+            <span class="emoji">🎨</span>
+            <div class="card-body">
                 <h3>Pinta els Gegants</h3>
-                <p>Dibuixa i pinta a la Família Robafaves</p>
-                <button class="btn">📥 Descarregar</button>
+                <span class="pill">📥 Descarregar</span>
             </div>
-
-            <div class="card card-bordered bg-blue">
-                <div class="card-icon">✂️</div>
-                <h3>Retallables</h3>
-                <p>Retalla i munta les figures del seguici</p>
-                <button class="btn">📥 Descarregar</button>
+        </div>
+        <div class="activity-card ac-2">
+            <div class="bg"></div>
+            <span class="emoji">✂️</span>
+            <div class="card-body">
+                <h3>Retallables del Seguici</h3>
+                <span class="pill">📥 Descarregar</span>
             </div>
-
-            <div class="card card-bordered bg-yellow">
-                <div class="card-icon">📖</div>
+        </div>
+        <div class="activity-card ac-3">
+            <div class="bg"></div>
+            <span class="emoji">📖</span>
+            <div class="card-body">
                 <h3>Contes de Les Santes</h3>
-                <p>Històries màgiques de la festa</p>
-                <button class="btn">📥 Descarregar</button>
-            </div>
-
-            <div class="card card-bordered bg-pink">
-                <div class="card-icon">🎭</div>
-                <h3>Màscares</h3>
-                <p>Crea la teva màscara</p>
-                <button class="btn">📥 Descarregar</button>
+                <span class="pill">📥 Descarregar</span>
             </div>
         </div>
-
-        <div class="section-header">
-            <h2>🎮 Jocs online</h2>
-            <div class="badge-green">7 jocs disponibles</div>
+        <div class="activity-card ac-4">
+            <div class="bg"></div>
+            <span class="emoji">🎭</span>
+            <div class="card-body">
+                <h3>Màscares de la Festa</h3>
+                <span class="pill">📥 Descarregar</span>
+            </div>
         </div>
-
-        <div class="grid-3">
-            <div class="card bg-dark-red">
-                <div class="card-icon">🧠</div>
-                <h3>Memory dels gegants</h3>
-                <p><strong>Troba la parella de figures</strong></p>
-                <button class="btn">▶ Jugar ara</button>
+        <div class="activity-card ac-5">
+            <div class="bg"></div>
+            <span class="emoji">🖍️</span>
+            <div class="card-body">
+                <h3>Mandala dels Diables</h3>
+                <span class="pill">📥 Descarregar</span>
             </div>
-
-            <div class="card bg-light-green card-dark-text">
-                <div class="card-icon">🧩</div>
-                <h3>Puzzle del correfoc</h3>
-                <p><strong>Munta la imatge del Drac</strong></p>
-                <button class="btn">▶ Jugar ara</button>
-            </div>
-
-            <div class="card bg-purple">
-                <div class="card-icon">❓</div>
-                <h3>Quiz de Les Santes</h3>
-                <p><strong>Quant saps de la festa?</strong></p>
-                <button class="btn">▶ Jugar ara</button>
-            </div>
-
-            <div class="card bg-orange card-dark-text">
-                <div class="card-icon">🔍</div>
-                <h3>Troba el Robafaves</h3>
-                <p><strong>Joc de buscar i trobar</strong></p>
-                <button class="btn">▶ Jugar ara</button>
-            </div>
-
-            <div class="card bg-cyan card-dark-text">
-                <div class="card-icon">🌀</div>
-                <h3>Laberint del seguici</h3>
-                <p><strong>Ajuda als gegants a arribar a la plaça</strong></p>
-                <button class="btn">▶ Jugar ara</button>
-            </div>
-
-            <div class="card bg-lime card-dark-text">
-                <div class="card-icon">🖌️</div>
-                <h3>Colorea digital</h3>
-                <p><strong>Pinta les figures amb colors màgics</strong></p>
-                <button class="btn">▶ Jugar ara</button>
-            </div>
-
-            <div class="card ms-cg-game-entry">
-                <div class="card-icon">🃏</div>
-                <h3>Cartes de Les Santes</h3>
-                <p><strong>Joc de cartes roguelite!</strong><br>Recull l'Alegria de Festa en 4 rondes.</p>
-                <button class="btn" onclick="msCGOpen()">▶ Jugar ara</button>
+        </div>
+        <div class="activity-card ac-6">
+            <div class="bg"></div>
+            <span class="emoji">🏰</span>
+            <div class="card-body">
+                <h3>Construeix el Seguici</h3>
+                <span class="pill">📥 Descarregar</span>
             </div>
         </div>
     </div>
+</section>
 
-    <div class="fab">💬</div>
-
-    <!-- ===== MODAL: CARTES DE LES SANTES ===== -->
-    <div id="ms-cg-overlay" class="ms-cg-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="ms-cg-title">
-        <div class="ms-cg-modal">
-
-            <!-- Botó de tancar -->
-            <button class="ms-cg-close-btn" id="ms-cg-close-btn" aria-label="Tancar el joc">✕</button>
-
-            <!-- Capçalera festiva -->
-            <div class="ms-cg-modal-header">
-                <h2 id="ms-cg-title">🎪 Cartes de Les Santes</h2>
-                <p class="ms-cg-modal-subtitle">Recull l'Alegria de la Festa de Mataró!</p>
-            </div>
-
-            <!-- ── PANTALLA INICI ── -->
-            <div id="ms-cg-start-screen" class="ms-cg-screen">
-                <div class="ms-cg-start-art">🎪 🃏 🎊</div>
-                <div class="ms-cg-instr-box">
-                    <p>🎯 <strong>Objectiu:</strong> Reunir <strong>70 ⭐ d'Alegria</strong> en 4 rondes</p>
-                    <p>🃏 <strong>Com jugar:</strong> Cada ronda tries <strong>1 carta</strong> de 3</p>
-                    <p>🌟 <strong>Entre rondes:</strong> Escull una <strong>millora especial!</strong></p>
-                </div>
-                <div style="text-align:center">
-                    <button class="ms-cg-btn ms-cg-btn-primary" id="ms-cg-start-btn">🎉 Comença la Festa!</button>
+<div class="games-section">
+    <section class="section" id="jocs">
+        <h2>Jocs <span>online</span></h2>
+        <p>Set jocs interactius sobre Les Santes. Quant saps de la Festa Major de Mataró?</p>
+        <div class="games-grid">
+            <div class="game-card">
+                <div class="game-icon" style="background:rgba(142,68,173,0.15)">🧠</div>
+                <div class="game-card-body">
+                    <h3>Memory dels Gegants</h3>
+                    <p>Troba les parelles de figures del seguici de Les Santes</p>
+                    <span class="btn-play">▶ Jugar ara</span>
                 </div>
             </div>
-
-            <!-- ── PANTALLA JOC ── -->
-            <div id="ms-cg-game-screen" class="ms-cg-screen" style="display:none">
-
-                <!-- Barra d'estat (HUD) -->
-                <div class="ms-cg-hud">
-                    <div class="ms-cg-hud-item">
-                        <span class="ms-cg-hud-icon">🎪</span>
-                        <div>
-                            <div class="ms-cg-hud-label">Ronda</div>
-                            <div class="ms-cg-hud-val" id="ms-cg-round-disp">1 / 4</div>
-                        </div>
-                    </div>
-                    <div class="ms-cg-hud-item ms-cg-hud-pts">
-                        <span class="ms-cg-hud-icon">⭐</span>
-                        <div>
-                            <div class="ms-cg-hud-label">Alegria</div>
-                            <div class="ms-cg-hud-val" id="ms-cg-pts-disp">0</div>
-                        </div>
-                    </div>
-                    <div class="ms-cg-hud-item ms-cg-hud-bonus" id="ms-cg-bonus-item" style="display:none">
-                        <span class="ms-cg-hud-icon">💫</span>
-                        <div>
-                            <div class="ms-cg-hud-label">Millora activa</div>
-                            <div class="ms-cg-hud-val ms-cg-hud-bonus-name" id="ms-cg-bonus-label">—</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Barra de progrés cap a 70 ⭐ -->
-                <div class="ms-cg-prg-wrap">
-                    <div class="ms-cg-prg-track">
-                        <div class="ms-cg-prg-fill" id="ms-cg-prg-fill" style="width:0%"></div>
-                    </div>
-                    <div class="ms-cg-prg-labels">
-                        <span>0 ⭐</span>
-                        <span>Meta: 70 ⭐</span>
-                    </div>
-                </div>
-
-                <!-- Fase: Cartes -->
-                <div id="ms-cg-phase-cards">
-                    <p class="ms-cg-phase-title" id="ms-cg-phase-title">🃏 Ronda 1: Tria una carta!</p>
-                    <div class="ms-cg-cards-cont" id="ms-cg-cards-cont"></div>
-                </div>
-
-                <!-- Fase: Millora (oculta inicialment) -->
-                <div id="ms-cg-phase-upg" style="display:none">
-                    <p class="ms-cg-phase-title">🌟 Escull una millora per continuar!</p>
-                    <div class="ms-cg-upg-cont" id="ms-cg-upg-cont"></div>
-                </div>
-
-                <!-- Missatge de feedback -->
-                <div class="ms-cg-msg-box" id="ms-cg-msg" style="display:none" aria-live="polite"></div>
-
-            </div><!-- /game-screen -->
-
-            <!-- ── PANTALLA RESULTAT ── -->
-            <div id="ms-cg-result-screen" class="ms-cg-screen" style="display:none">
-                <div class="ms-cg-res-art" id="ms-cg-res-art">🎉🎪🎊</div>
-                <div class="ms-cg-res-text" id="ms-cg-res-text"></div>
-                <div class="ms-cg-res-score" id="ms-cg-res-score"></div>
-                <div style="text-align:center">
-                    <button class="ms-cg-btn ms-cg-btn-primary" id="ms-cg-play-again">🔄 Tornar a jugar!</button>
+            <div class="game-card">
+                <div class="game-icon" style="background:rgba(123,205,233,0.15)">🧩</div>
+                <div class="game-card-body">
+                    <h3>Puzzle del Correfoc</h3>
+                    <p>Munta la imatge del Drac de la Família Robafaves</p>
+                    <span class="btn-play">▶ Jugar ara</span>
                 </div>
             </div>
-
-            <!-- Peu del modal -->
-            <div class="ms-cg-modal-footer">
-                <button class="ms-cg-btn ms-cg-btn-secondary" id="ms-cg-restart-btn">🔄 Reiniciar partida</button>
+            <div class="game-card">
+                <div class="game-icon" style="background:rgba(63,159,203,0.15)">❓</div>
+                <div class="game-card-body">
+                    <h3>Quiz de Les Santes</h3>
+                    <p>Posa a prova el teu coneixement de la Festa Major</p>
+                    <span class="btn-play">▶ Jugar ara</span>
+                </div>
             </div>
-
-        </div><!-- /ms-cg-modal -->
-    </div><!-- /ms-cg-overlay -->
-
-    <footer>
-        <div class="footer-logos">
-            <span>Ajuntament de Mataró</span>
-            <span>CULTURA MATARÓ</span>
+            <div class="game-card">
+                <div class="game-icon" style="background:rgba(22,160,133,0.15)">🔍</div>
+                <div class="game-card-body">
+                    <h3>Troba el Robafaves</h3>
+                    <p>Busca el Robafaves amagat entre la multitud</p>
+                    <span class="btn-play">▶ Jugar ara</span>
+                </div>
+            </div>
+            <div class="game-card">
+                <div class="game-icon" style="background:rgba(41,128,185,0.15)">🎯</div>
+                <div class="game-card-body">
+                    <h3>La Ruta de Les Santes</h3>
+                    <p>Segueix el recorregut del seguici pel centre de Mataró</p>
+                    <span class="btn-play">▶ Jugar ara</span>
+                </div>
+            </div>
+            <div class="game-card">
+                <div class="game-icon" style="background:rgba(231,76,60,0.15)">🎵</div>
+                <div class="game-card-body">
+                    <h3>Sons de la Festa</h3>
+                    <p>Adivina l'instrument o acte pel so que fa</p>
+                    <span class="btn-play">▶ Jugar ara</span>
+                </div>
+            </div>
         </div>
-        <div class="footer-socials">
-            <span>📷 @lessantes</span>
-            <span>𝕏 @lessantesmataro</span>
-        </div>
-        <div class="footer-links">
-            <a href="#">Contacte</a>
-            <a href="#">Crèdits i nota legal</a>
-        </div>
-    </footer>
+    </section>
+</div>
 
-    <script src="script.js"></script>
+<div class="info-banner">
+    <h2>Actes infantils a la Festa</h2>
+    <p>Durant Les Santes hi ha molts actes pensats per a la canalla! Correfocs infantils, castellers i molt més.</p>
+    <a href="agenda.html" class="btn-purple">Veure l'agenda completa →</a>
+</div>
+
+<footer>
+    <p>© 2025 Ajuntament de Mataró · <a href="https://www.lessantes.cat/" target="_blank">www.lessantes.cat</a></p>
+    <div style="display:flex;gap:20px;">
+        <a href="home.html">Inici</a>
+        <a href="agenda.html">Agenda</a>
+        <a href="actes.html">Els meus actes</a>
+        <a href="https://www.instagram.com/lessantes/" target="_blank">@lessantes</a>
+    </div>
+</footer>
 </body>
 </html>
+
+
