@@ -159,21 +159,44 @@
 
     /* ── HERO ── */
     .hero {
-      background: radial-gradient(ellipse 80% 60% at 50% 0%, #d5edf7 0%, var(--bg) 72%);
       text-align: center;
-      padding: 80px 24px 64px;
+      padding: 24px;
       position: relative;
       overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-video-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
     }
 
     .hero::before {
       content: '';
       position: absolute;
       inset: 0;
-      background:
-        radial-gradient(circle at 20% 50%, rgba(63,159,203,0.10) 0%, transparent 50%),
-        radial-gradient(circle at 80% 50%, rgba(99,191,227,0.10) 0%, transparent 50%);
+      background: rgba(10, 30, 50, 0.45);
+      z-index: 1;
       pointer-events: none;
+    }
+
+    .hero > *:not(.hero-video-bg) {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero .hero-tag {
+      background: rgba(63,159,203,0.35);
+      border: 1px solid rgba(63,159,203,0.55);
+      color: #d5edf7;
     }
 
     .hero-tag {
@@ -196,13 +219,14 @@
       font-weight: 700;
       line-height: 1.15;
       max-width: 640px;
-      margin: 0 auto 44px;
+      margin: 0 auto;
+      color: #ffffff;
     }
 
     .hero h1 em {
       font-style: normal;
       font-weight: 300;
-      color: #2d7ea8;
+      color: #7bcde9;
     }
 
     .countdown {
@@ -910,9 +934,12 @@
 
 <!-- ── HERO ── -->
 <section class="hero">
-  <div class="hero-tag">Les Santes 2026 · Mataró · 25 – 27 de juliol</div>
-  <h1><em>Falten</em><br>Dies per a Les Santes 2026!</h1>
-  <div class="countdown">
+  <video class="hero-video-bg" autoplay muted loop playsinline>
+    <source src="videos/video_santes.mp4" type="video/mp4">
+  </video>
+  <div class="hero-tag">Les Santes 2026 · Mataró · 24 – 29 de juliol</div>
+  <h1 style="margin-bottom: 28px;"><em>Falten</em></h1>
+  <div class="countdown" style="margin-bottom: 28px;">
     <div class="countdown-box">
       <span class="num cd-dies">88</span>
       <span class="label">dies</span>
@@ -930,6 +957,7 @@
       <span class="label">segons</span>
     </div>
   </div>
+  <h1 style="margin-bottom: 0;">per a Les Santes 2026!</h1>
 </section>
 
 <!-- ── QUÈ SÓN LES SANTES ── -->
