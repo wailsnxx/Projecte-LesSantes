@@ -179,6 +179,21 @@
       z-index: 0;
     }
 
+    .hero-banner {
+      max-width: 1280px;
+      margin: 0 auto;
+      border-radius: 0 0 14px 14px;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(24, 79, 108, 0.2);
+    }
+
+    .hero-banner img {
+      width: 100%;
+      height: min(44vw, 420px);
+      object-fit: cover;
+      display: block;
+    }
+
     .hero::before {
       content: '';
       position: absolute;
@@ -817,7 +832,7 @@
       display: none;
       position: fixed;
       inset: 60px 0 0 0;
-      background: #111;
+      background: #f4fbff;
       z-index: 99;
       padding: 32px 24px;
       flex-direction: column;
@@ -833,6 +848,38 @@
       border-bottom: 1px solid var(--border);
     }
     .mobile-menu a:hover { color: var(--gold); }
+
+    .festive-gallery {
+      padding: 8px 32px 48px;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    .festive-gallery h3 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .festive-gallery p {
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-bottom: 18px;
+    }
+
+    .festive-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .festive-strip img {
+      width: 100%;
+      aspect-ratio: 16/10;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 2px solid rgba(63,159,203,0.25);
+    }
 
     /* ── TABLET ≤ 900px ── */
     @media (max-width: 900px) {
@@ -867,6 +914,7 @@
 
       .minisantes-section { padding: 36px 20px; }
       .games-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .festive-strip { grid-template-columns: repeat(2, 1fr); }
 
       .footer-top { grid-template-columns: 1fr; gap: 32px; padding: 36px 24px 28px; }
       .footer-bottom-inner { padding: 16px 24px; flex-direction: column; align-items: flex-start; gap: 12px; }
@@ -900,7 +948,7 @@
 
 <!-- ── NAVIGATION ── -->
 <nav>
-  <a class="nav-logo" href="#">
+  <a class="nav-logo" href="home.html">
     <div class="logo-icon">LS</div>
     <div class="nav-logo-text">
       <span class="nav-logo-name">Les Santes</span>
@@ -908,17 +956,17 @@
     </div>
   </a>
   <ul class="nav-links">
-    <li><a href="#" class="active">La Festa</a></li>
-    <li><a href="#">Minisantes</a></li>
-    <li><a href="#">Galeria</a></li>
-    <li><a href="#">Les Santes 2026</a></li>
+    <li><a href="#la-festa" class="active">La Festa</a></li>
+    <li><a href="minisantes.html">Minisantes</a></li>
+    <li><a href="#galeria">Galeria</a></li>
+    <li><a href="agenda.html">Les Santes 2026</a></li>
   </ul>
   <div class="nav-right">
-    <div class="nav-search">
+    <a class="nav-search" href="agenda.html">
       <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
       Cerca
-    </div>
-    <a href="#" class="nav-cta">Agenda →</a>
+    </a>
+    <a href="agenda.html" class="nav-cta">Agenda →</a>
     <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
       <span></span><span></span><span></span>
     </div>
@@ -926,14 +974,18 @@
 </nav>
 
 <div class="mobile-menu" id="mobile-menu">
-  <a href="#">La Festa</a>
-  <a href="#">Minisantes</a>
-  <a href="#">Galeria</a>
-  <a href="#">Les Santes 2025</a>
+  <a href="#la-festa">La Festa</a>
+  <a href="minisantes.html">Minisantes</a>
+  <a href="#galeria">Galeria</a>
+  <a href="agenda.html">Agenda 2026</a>
+</div>
+
+<div class="hero-banner">
+  <img src="https://cdn.appculturamataro.cat/medias/santes-new/2021/p_1280/0d4ec3368f2f7c1312f8a158e1dca2fd.jpeg" alt="Ambient de Les Santes a Mataró" />
 </div>
 
 <!-- ── HERO ── -->
-<section class="hero">
+<section class="hero" id="la-festa">
   <video class="hero-video-bg" autoplay muted loop playsinline>
     <source src="videos/video_santes.mp4" type="video/mp4">
   </video>
@@ -965,7 +1017,7 @@
   <span class="badge">La Festa Major de Mataró</span>
 </div>
 
-<section class="que-son">
+<section class="que-son" id="que-son">
   <div>
     <h2>Què són <span>Les Santes</span>?</h2>
     <p>Les Santes és la Festa Major de Mataró, una celebració única que té lloc cada any al voltant del 27 de juliol en honor a les patrones de Mataró: <strong>Santa Juliana i Santa Semproniana.</strong></p>
@@ -989,7 +1041,7 @@
 </section>
 
 <!-- ── AGENDA ── -->
-<section class="agenda-section">
+<section class="agenda-section" id="agenda-home">
   <div class="agenda-inner">
     <div class="agenda-header">
       <h2>Agenda Completa</h2>
@@ -1057,7 +1109,7 @@
 </section>
 
 <!-- ── ACTES DESTACATS ── -->
-<section style="padding: 48px 32px; max-width: 960px; margin: 0 auto;">
+<section id="galeria" style="padding: 48px 32px; max-width: 960px; margin: 0 auto;">
   <h2 style="font-family: 'Playfair Display', serif; font-size: 26px; margin-bottom: 8px;">Actes destacats de Les Santes 2025</h2>
   <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 28px;">Una selecció dels moments imprescindibles de la Festa Major</p>
 
@@ -1123,6 +1175,17 @@
       </div>
     </div>
 
+  </div>
+</section>
+
+<section class="festive-gallery">
+  <h3>Moments que fan vibrar Les Santes</h3>
+  <p>Imatges reals de la festa: foc, música, comparses i carrers plens de gent.</p>
+  <div class="festive-strip">
+    <img src="https://assets.appculturamataro.cat/medias/agenda/2024/c_crop,x_100,y_278,w_1900,h_1054|c_fit,w_768,h_426|c_auto/c1eb4fb09ceca60266c2534ca0161191.jpeg" alt="Jocs i ambient de Dissantes" />
+    <img src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_4,y_19,w_1963,h_1090|c_fit,w_768,h_426|c_auto/bea354601387219072c5daee94e91605.jpeg" alt="Gegantada de Les Santes" />
+    <img src="https://assets.appculturamataro.cat/medias/agenda/2023/c_crop,x_29,y_90,w_1539,h_854|c_fit,w_768,h_426|c_auto/fef48a3daef386a8d91bccb00e8369f2.jpeg" alt="L'Encesa i foc al carrer" />
+    <img src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_134,w_960,h_533|c_fit,w_768,h_426|c_auto/3ed3afd91d825859b5ff69ccd5a7ce70.jpeg" alt="Concert nocturn de les festes" />
   </div>
 </section>
 
@@ -1255,6 +1318,18 @@
   // Close menu on link click
   document.querySelectorAll('.mobile-menu a').forEach(a => {
     a.addEventListener('click', () => document.getElementById('mobile-menu').classList.remove('open'));
+  });
+
+  // Smooth scrolling for in-page navigation
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const targetId = link.getAttribute('href');
+      if (!targetId || targetId === '#') return;
+      const target = document.querySelector(targetId);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
   });
 
   // Day tab switching
