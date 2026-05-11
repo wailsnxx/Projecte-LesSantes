@@ -4,24 +4,30 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Les Santes 2026 – Mataró</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --gold: #c9a84c;
-      --gold-light: #e8c96b;
-      --bg: #1a1a1a;
-      --bg2: #222222;
-      --bg3: #2a2a2a;
-      --text: #f0ece0;
-      --text-muted: #9e9a8e;
-      --border: #333;
+      --crimson: #3f9fcb;
+      --crimson-dark: #2d7ea8;
+      --crimson-light: #63bfe3;
+      --gold: #3f9fcb;
+      --gold-light: #7bcde9;
+      --bg: #e6e6e6;
+      --bg2: #efefef;
+      --bg3: #ffffff;
+      --text: #0d1117;
+      --text-muted: #4f5b64;
+      --border: rgba(63,159,203,0.25);
     }
 
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-family: 'Nunito', 'Segoe UI', system-ui, sans-serif;
       font-size: 15px;
       line-height: 1.6;
     }
@@ -35,9 +41,9 @@
       justify-content: space-between;
       padding: 0 48px;
       height: 72px;
-      background: rgba(10,10,10,0.97);
+      background: #3f9fcb;
       backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(201,168,76,0.15);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
       position: sticky;
       top: 0;
       z-index: 100;
@@ -53,7 +59,7 @@
     .nav-logo .logo-icon {
       width: 42px;
       height: 42px;
-      background: linear-gradient(135deg, #c0392b 50%, #2980b9 50%);
+      background: linear-gradient(135deg, #2d7ea8 50%, #63bfe3 50%);
       border-radius: 8px;
       display: flex;
       align-items: center;
@@ -71,14 +77,14 @@
       display: block;
       font-weight: 800;
       font-size: 16px;
-      color: var(--text);
+      color: #ffffff;
       letter-spacing: 0.01em;
     }
 
     .nav-logo-sub {
       display: block;
       font-size: 9px;
-      color: var(--gold);
+      color: #dff3fb;
       font-weight: 600;
       letter-spacing: 0.14em;
       text-transform: uppercase;
@@ -94,7 +100,7 @@
     .nav-links a {
       font-size: 13px;
       font-weight: 500;
-      color: var(--text-muted);
+      color: rgba(255,255,255,0.95);
       padding: 8px 16px;
       border-radius: 6px;
       transition: color 0.15s, background 0.15s;
@@ -102,13 +108,13 @@
     }
 
     .nav-links a:hover {
-      color: var(--text);
-      background: rgba(255,255,255,0.06);
+      color: #ffffff;
+      background: rgba(255,255,255,0.18);
     }
 
     .nav-links a.active {
-      color: var(--gold);
-      background: rgba(201,168,76,0.1);
+      color: #ffffff;
+      background: rgba(255,255,255,0.24);
     }
 
     .nav-right {
@@ -121,25 +127,25 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.35);
       border-radius: 8px;
       padding: 8px 16px;
       font-size: 13px;
-      color: var(--text-muted);
+      color: #ffffff;
       cursor: pointer;
       transition: border-color 0.15s, background 0.15s;
     }
 
     .nav-search:hover {
-      border-color: rgba(201,168,76,0.4);
-      background: rgba(255,255,255,0.07);
-      color: var(--text);
+      border-color: rgba(255,255,255,0.55);
+      background: rgba(255,255,255,0.26);
+      color: #ffffff;
     }
 
     .nav-cta {
-      background: var(--gold);
-      color: #111;
+      background: #ffffff;
+      color: #2d7ea8;
       font-size: 12px;
       font-weight: 700;
       padding: 8px 18px;
@@ -153,28 +159,66 @@
 
     /* ── HERO ── */
     .hero {
-      background: radial-gradient(ellipse 80% 60% at 50% 0%, #2a1f0a 0%, var(--bg) 70%);
       text-align: center;
-      padding: 80px 24px 64px;
+      padding: 24px;
       position: relative;
       overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-video-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    .hero-banner {
+      max-width: 1280px;
+      margin: 0 auto;
+      border-radius: 0 0 14px 14px;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(24, 79, 108, 0.2);
+    }
+
+    .hero-banner img {
+      width: 100%;
+      height: min(44vw, 420px);
+      object-fit: cover;
+      display: block;
     }
 
     .hero::before {
       content: '';
       position: absolute;
       inset: 0;
-      background:
-        radial-gradient(circle at 20% 50%, rgba(201,168,76,0.07) 0%, transparent 50%),
-        radial-gradient(circle at 80% 50%, rgba(201,168,76,0.05) 0%, transparent 50%);
+      background: rgba(10, 30, 50, 0.45);
+      z-index: 1;
       pointer-events: none;
+    }
+
+    .hero > *:not(.hero-video-bg) {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero .hero-tag {
+      background: rgba(63,159,203,0.35);
+      border: 1px solid rgba(63,159,203,0.55);
+      color: #d5edf7;
     }
 
     .hero-tag {
       display: inline-block;
-      background: rgba(201,168,76,0.15);
-      border: 1px solid rgba(201,168,76,0.3);
-      color: var(--gold);
+      background: rgba(63,159,203,0.18);
+      border: 1px solid rgba(63,159,203,0.35);
+      color: #2d7ea8;
       font-size: 11px;
       font-weight: 700;
       letter-spacing: 0.12em;
@@ -185,17 +229,19 @@
     }
 
     .hero h1 {
+      font-family: 'Playfair Display', Georgia, serif;
       font-size: clamp(30px, 4.5vw, 52px);
       font-weight: 700;
       line-height: 1.15;
       max-width: 640px;
-      margin: 0 auto 44px;
+      margin: 0 auto;
+      color: #ffffff;
     }
 
     .hero h1 em {
       font-style: normal;
       font-weight: 300;
-      color: #ccc;
+      color: #7bcde9;
     }
 
     .countdown {
@@ -206,12 +252,12 @@
     }
 
     .countdown-box {
-      background: rgba(42,42,42,0.9);
-      border: 1px solid rgba(201,168,76,0.25);
+      background: transparent;
+      border: none;
       border-radius: 10px;
       padding: 20px 28px;
       min-width: 88px;
-      backdrop-filter: blur(4px);
+      backdrop-filter: none;
     }
 
     .countdown-box .num {
@@ -219,7 +265,7 @@
       font-size: 40px;
       font-weight: 700;
       line-height: 1;
-      color: var(--gold-light);
+      color: var(--crimson);
     }
 
     .countdown-box .label {
@@ -227,7 +273,7 @@
       font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 0.12em;
-      color: var(--text-muted);
+      color: #2d7ea8;
       margin-top: 6px;
     }
 
@@ -241,7 +287,7 @@
     .badge {
       display: inline-block;
       background: var(--gold);
-      color: #111;
+      color: #ffffff;
       font-size: 11px;
       font-weight: 700;
       padding: 5px 14px;
@@ -262,12 +308,13 @@
     }
 
     .que-son h2 {
+      font-family: 'Playfair Display', Georgia, serif;
       font-size: 28px;
       font-weight: 700;
       margin-bottom: 16px;
     }
 
-    .que-son h2 span { color: var(--gold); }
+    .que-son h2 span { color: var(--crimson-light); }
 
     .que-son p {
       font-size: 14px;
@@ -297,8 +344,8 @@
     .btn:hover { opacity: 0.85; }
 
     .btn-gold {
-      background: var(--gold);
-      color: #111;
+      background: var(--crimson);
+      color: #fff;
     }
 
     .btn-outline {
@@ -374,6 +421,7 @@
     }
 
     .agenda-header h2 {
+      font-family: 'Playfair Display', Georgia, serif;
       font-size: 26px;
       font-weight: 700;
     }
@@ -498,6 +546,7 @@
     }
 
     .minisantes-header h2 {
+      font-family: 'Playfair Display', Georgia, serif;
       font-size: 26px;
       font-weight: 900;
       letter-spacing: 0.02em;
@@ -552,10 +601,10 @@
       border-radius: 14px;
     }
 
-    .game-card:nth-child(1) .gc-bg { background: linear-gradient(160deg, #e84393 0%, #f06292 100%); }
-    .game-card:nth-child(2) .gc-bg { background: linear-gradient(160deg, #e53935 0%, #ef9a9a 100%); }
-    .game-card:nth-child(3) .gc-bg { background: linear-gradient(160deg, #1565c0 0%, #64b5f6 100%); }
-    .game-card:nth-child(4) .gc-bg { background: linear-gradient(160deg, #6a1b9a 0%, #ce93d8 100%); }
+    .game-card:nth-child(1) .gc-bg { background: linear-gradient(160deg, #3f9fcb 0%, #63bfe3 100%); }
+    .game-card:nth-child(2) .gc-bg { background: linear-gradient(160deg, #8E44AD 0%, #B07FCA 100%); }
+    .game-card:nth-child(3) .gc-bg { background: linear-gradient(160deg, #3f9fcb 0%, #F0C869 100%); }
+    .game-card:nth-child(4) .gc-bg { background: linear-gradient(160deg, #1A3A6B 0%, #2980B9 100%); }
 
     .game-card .gc-emoji {
       position: absolute;
@@ -600,8 +649,8 @@
 
     /* ── FOOTER ── */
     footer {
-      background: #0d0d0d;
-      border-top: 1px solid rgba(201,168,76,0.15);
+      background: #0a0808;
+      border-top: 1px solid rgba(63,159,203,0.25);
       padding: 0;
     }
 
@@ -625,7 +674,7 @@
     .footer-brand .logo-icon {
       width: 40px;
       height: 40px;
-      background: linear-gradient(135deg, #c0392b 50%, #2980b9 50%);
+      background: linear-gradient(135deg, #2d7ea8 50%, #63bfe3 50%);
       border-radius: 8px;
       display: flex;
       align-items: center;
@@ -783,7 +832,7 @@
       display: none;
       position: fixed;
       inset: 60px 0 0 0;
-      background: #111;
+      background: #f4fbff;
       z-index: 99;
       padding: 32px 24px;
       flex-direction: column;
@@ -799,6 +848,38 @@
       border-bottom: 1px solid var(--border);
     }
     .mobile-menu a:hover { color: var(--gold); }
+
+    .festive-gallery {
+      padding: 8px 32px 48px;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    .festive-gallery h3 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .festive-gallery p {
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-bottom: 18px;
+    }
+
+    .festive-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .festive-strip img {
+      width: 100%;
+      aspect-ratio: 16/10;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 2px solid rgba(63,159,203,0.25);
+    }
 
     /* ── TABLET ≤ 900px ── */
     @media (max-width: 900px) {
@@ -833,6 +914,7 @@
 
       .minisantes-section { padding: 36px 20px; }
       .games-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .festive-strip { grid-template-columns: repeat(2, 1fr); }
 
       .footer-top { grid-template-columns: 1fr; gap: 32px; padding: 36px 24px 28px; }
       .footer-bottom-inner { padding: 16px 24px; flex-direction: column; align-items: flex-start; gap: 12px; }
@@ -866,7 +948,7 @@
 
 <!-- ── NAVIGATION ── -->
 <nav>
-  <a class="nav-logo" href="#">
+  <a class="nav-logo" href="home.html">
     <div class="logo-icon">LS</div>
     <div class="nav-logo-text">
       <span class="nav-logo-name">Les Santes</span>
@@ -874,17 +956,17 @@
     </div>
   </a>
   <ul class="nav-links">
-    <li><a href="#" class="active">La Festa</a></li>
-    <li><a href="#">Minisantes</a></li>
-    <li><a href="#">Galeria</a></li>
-    <li><a href="#">Les Santes 2026</a></li>
+    <li><a href="#la-festa" class="active">La Festa</a></li>
+    <li><a href="minisantes.html">Minisantes</a></li>
+    <li><a href="#galeria">Galeria</a></li>
+    <li><a href="agenda.html">Les Santes 2026</a></li>
   </ul>
   <div class="nav-right">
-    <div class="nav-search">
+    <a class="nav-search" href="agenda.html">
       <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
       Cerca
-    </div>
-    <a href="#" class="nav-cta">Agenda →</a>
+    </a>
+    <a href="agenda.html" class="nav-cta">Agenda →</a>
     <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
       <span></span><span></span><span></span>
     </div>
@@ -892,34 +974,42 @@
 </nav>
 
 <div class="mobile-menu" id="mobile-menu">
-  <a href="#">La Festa</a>
-  <a href="#">Minisantes</a>
-  <a href="#">Galeria</a>
-  <a href="#">Les Santes 2025</a>
+  <a href="#la-festa">La Festa</a>
+  <a href="minisantes.html">Minisantes</a>
+  <a href="#galeria">Galeria</a>
+  <a href="agenda.html">Agenda 2026</a>
+</div>
+
+<div class="hero-banner">
+  <img src="https://cdn.appculturamataro.cat/medias/santes-new/2021/p_1280/0d4ec3368f2f7c1312f8a158e1dca2fd.jpeg" alt="Ambient de Les Santes a Mataró" />
 </div>
 
 <!-- ── HERO ── -->
-<section class="hero">
-  <div class="hero-tag">Les Santes 2025 · Mataró</div>
-  <h1><em>Encara / Només falten</em><br>per a Les Santes 2025!</h1>
-  <div class="countdown">
+<section class="hero" id="la-festa">
+  <video class="hero-video-bg" autoplay muted loop playsinline>
+    <source src="videos/video_santes.mp4" type="video/mp4">
+  </video>
+  <div class="hero-tag">Les Santes 2026 · Mataró · 24 – 29 de juliol</div>
+  <h1 style="margin-bottom: 28px;"><em>Falten</em></h1>
+  <div class="countdown" style="margin-bottom: 28px;">
     <div class="countdown-box">
-      <span class="num cd-dies">96</span>
+      <span class="num cd-dies">88</span>
       <span class="label">dies</span>
     </div>
     <div class="countdown-box">
-      <span class="num cd-hores">04</span>
+      <span class="num cd-hores">00</span>
       <span class="label">hores</span>
     </div>
     <div class="countdown-box">
-      <span class="num cd-minuts">06</span>
+      <span class="num cd-minuts">00</span>
       <span class="label">minuts</span>
     </div>
     <div class="countdown-box">
-      <span class="num cd-segons">49</span>
+      <span class="num cd-segons">00</span>
       <span class="label">segons</span>
     </div>
   </div>
+  <h1 style="margin-bottom: 0;">per a Les Santes 2026!</h1>
 </section>
 
 <!-- ── QUÈ SÓN LES SANTES ── -->
@@ -927,34 +1017,35 @@
   <span class="badge">La Festa Major de Mataró</span>
 </div>
 
-<section class="que-son">
+<section class="que-son" id="que-son">
   <div>
     <h2>Què són <span>Les Santes</span>?</h2>
-    <p>Les Santes és la Festa Major de Mataró, una celebració única que té lloc cada any del 24 al 29 de juliol en honor a les patrones de Mataró: <strong>Santa Juliana i Santa Semproniana.</strong></p>
-    <p>Foc, música, gegants i la inconfusible Família Robafaves omplen els carrers de Mataró durant cinc dies de festa. Des de la <strong>Nit Boja</strong> fins al <strong>Castell de Focs</strong>, Les Santes són considerades una de les millors festes majors Catalunya.</p>
+    <p>Les Santes és la Festa Major de Mataró, una celebració única que té lloc cada any al voltant del 27 de juliol en honor a les patrones de Mataró: <strong>Santa Juliana i Santa Semproniana.</strong></p>
+    <p>Foc, música, gegants i la inconfusible Família Robafaves omplen els carrers de Mataró durant dies de festa. Des de la <strong>Nit Boja</strong> fins al <strong>Castell de Focs</strong>, Les Santes són considerades una de les millors festes majors de Catalunya.</p>
+    <p>El cartell de Les Santes 2026 és obra de l'artista <strong>Joe Dart</strong>, nascut al barri de Cerdanyola de Mataró. El seguiment fotogràfic el farà <strong>Albert Canalejo</strong>.</p>
     <div class="btn-group">
-      <button class="btn btn-gold">Descobreix la Festa</button>
-      <button class="btn btn-outline">El Seguici &rarr;</button>
+      <a href="agenda.html" class="btn btn-gold">Descobreix la Festa</a>
+      <a href="#que-son" class="btn btn-outline">El Seguici &rarr;</a>
     </div>
   </div>
 
-  <div class="video-card">
-    <div class="video-thumb">
-      <div class="play-btn"></div>
-    </div>
+  <div class="video-card" style="overflow:hidden; border-radius:12px;">
+    <img src="https://cdn.appculturamataro.cat/medias/santes-new/2026/p_992/ae781af599b2079a846896d1a48ff603.jpeg"
+         alt="Cartell Les Santes 2026 — Joe Dart"
+         style="width:100%; aspect-ratio:3/4; object-fit:cover; display:block;" />
     <div class="video-meta">
-      <div class="vtitle">Vídeo resum</div>
-      <div class="vdur">Les Santes 2025 · Resum · 8:45</div>
+      <div class="vtitle">Cartell oficial 2026</div>
+      <div class="vdur">Joe Dart — Artista del cartell</div>
     </div>
   </div>
 </section>
 
 <!-- ── AGENDA ── -->
-<section class="agenda-section">
+<section class="agenda-section" id="agenda-home">
   <div class="agenda-inner">
     <div class="agenda-header">
       <h2>Agenda Completa</h2>
-      <span class="dia-badge">Dia 27</span>
+      <span class="dia-badge">Festa Major</span>
     </div>
 
     <div class="day-tabs">
@@ -963,52 +1054,138 @@
         <span class="num">24</span>
         <div class="name">Vigília</div>
       </div>
-      <div class="day-tab">
-        <div class="dow">Dj</div>
+      <div class="day-tab active">
+        <div class="dow">Dv</div>
         <span class="num">25</span>
-        <div class="name">Nit Boja</div>
+        <div class="name">La Crida</div>
       </div>
       <div class="day-tab">
-        <div class="dow">Dj</div>
+        <div class="dow">Ds</div>
         <span class="num">26</span>
         <div class="name">Diada</div>
       </div>
-      <div class="day-tab active">
-        <div class="dow">Dj</div>
+      <div class="day-tab">
+        <div class="dow">Dg</div>
         <span class="num">27</span>
-        <div class="name">Canviares</div>
+        <div class="name">Santes</div>
       </div>
       <div class="day-tab">
-        <div class="dow">Dj</div>
+        <div class="dow">Dl</div>
         <span class="num">28</span>
-        <div class="name">Tancament</div>
+        <div class="name">Epíleg</div>
       </div>
     </div>
 
-    <div class="actes-title">Actes del 27 de juliol – Nit Boja</div>
+    <div class="actes-title">Actes del 25 de juliol — La Crida i Nit Boja</div>
 
     <div class="acte-list">
       <div class="acte-item">
-        <span class="acte-time">07:00</span>
-        <span class="acte-name">Matinades</span>
+        <span class="acte-time">19:45</span>
+        <span class="acte-name">Inici del seguici — La Crida</span>
         <span class="acte-arrow">›</span>
       </div>
       <div class="acte-item">
-        <span class="acte-time">10:30</span>
-        <span class="acte-name">Missa de los Santos</span>
+        <span class="acte-time">20:00</span>
+        <span class="acte-name">Crida oficial des del balcó de l'Ajuntament</span>
         <span class="acte-arrow">›</span>
       </div>
       <div class="acte-item">
-        <span class="acte-time">18:00</span>
-        <span class="acte-name">Tarda Gaillada</span>
+        <span class="acte-time">23:45</span>
+        <span class="acte-name">Desvetllament Bellugós — Família Robafaves</span>
         <span class="acte-arrow">›</span>
       </div>
       <div class="acte-item">
-        <span class="acte-time">23:00</span>
-        <span class="acte-name">Castell de Focs</span>
+        <span class="acte-time">01:30</span>
+        <span class="acte-name">Escapada a Negra Nit — Correfoc</span>
+        <span class="acte-arrow">›</span>
+      </div>
+      <div class="acte-item">
+        <span class="acte-time">03:00</span>
+        <span class="acte-name">Pujada Tabalada i Ruixada — Parc Central</span>
         <span class="acte-arrow">›</span>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ── ACTES DESTACATS ── -->
+<section id="galeria" style="padding: 48px 32px; max-width: 960px; margin: 0 auto;">
+  <h2 style="font-family: 'Playfair Display', serif; font-size: 26px; margin-bottom: 8px;">Actes destacats de Les Santes 2025</h2>
+  <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 28px;">Una selecció dels moments imprescindibles de la Festa Major</p>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px;">
+
+    <div style="background: var(--bg3); border-radius: 14px; overflow: hidden; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''">
+      <img src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_0,w_1963,h_1090|c_fit,w_768,h_426|c_auto/bea354601387219072c5daee94e91605.jpeg"
+           alt="Gegantada" style="width:100%; aspect-ratio:16/9; object-fit:cover;" />
+      <div style="padding: 16px;">
+        <div style="font-size:10px; font-weight:700; color:var(--crimson-light); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:6px;">Divendres 24 de juliol / 18 h</div>
+        <div style="font-family:'Playfair Display',serif; font-size:16px; font-weight:700; margin-bottom:4px;">Gegantada</div>
+        <div style="font-size:12px; color:var(--text-muted);">📍 Des de Les Esmandies fins a Plaça Santa Anna</div>
+      </div>
+    </div>
+
+    <div style="background: var(--bg3); border-radius: 14px; overflow: hidden; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''">
+      <img src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_214,w_1824,h_1012|c_fit,w_768,h_426|c_auto/cc091c154c09b5510164e78d19e583f2.jpeg"
+           alt="Diada Castellera" style="width:100%; aspect-ratio:16/9; object-fit:cover;" />
+      <div style="padding: 16px;">
+        <div style="font-size:10px; font-weight:700; color:var(--crimson-light); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:6px;">Dissabte 19 de juliol / 18 h</div>
+        <div style="font-family:'Playfair Display',serif; font-size:16px; font-weight:700; margin-bottom:4px;">Diada Castellera de Les Santes</div>
+        <div style="font-size:12px; color:var(--text-muted);">📍 Plaça de Santa Anna</div>
+      </div>
+    </div>
+
+    <div style="background: var(--bg3); border-radius: 14px; overflow: hidden; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''">
+      <img src="https://assets.appculturamataro.cat/medias/agenda/2023/c_crop,x_29,y_90,w_1539,h_854|c_fit,w_768,h_426|c_auto/fef48a3daef386a8d91bccb00e8369f2.jpeg"
+           alt="L'Encesa" style="width:100%; aspect-ratio:16/9; object-fit:cover;" />
+      <div style="padding: 16px;">
+        <div style="font-size:10px; font-weight:700; color:var(--crimson-light); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:6px;">Diumenge 20 de juliol / 18:30 h</div>
+        <div style="font-family:'Playfair Display',serif; font-size:16px; font-weight:700; margin-bottom:4px;">L'Encesa — Ball de Diables</div>
+        <div style="font-size:12px; color:var(--text-muted);">📍 Des de l'Ajuntament</div>
+      </div>
+    </div>
+
+    <div style="background: var(--bg3); border-radius: 14px; overflow: hidden; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''">
+      <img src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_31,w_2048,h_1136|c_fit,w_768,h_426|c_auto/57b929a07ac86fc470c16f500eaab1e9.jpeg"
+           alt="Broadway Santes" style="width:100%; aspect-ratio:16/9; object-fit:cover;" />
+      <div style="padding: 16px;">
+        <div style="font-size:10px; font-weight:700; color:var(--crimson-light); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:6px;">Dimecres 23 de juliol / 19 h</div>
+        <div style="font-family:'Playfair Display',serif; font-size:16px; font-weight:700; margin-bottom:4px;">Broadway Santes</div>
+        <div style="font-size:12px; color:var(--text-muted);">📍 Teatre Monumental</div>
+      </div>
+    </div>
+
+    <div style="background: var(--bg3); border-radius: 14px; overflow: hidden; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''">
+      <img src="https://assets.appculturamataro.cat/medias/agenda/2022/c_crop,x_0,y_0,w_1140,h_632|c_fit,w_768,h_426|c_auto/432441039f3f3cb8a48b4ddca4c7c0ac.jpeg"
+           alt="Diada Castellera" style="width:100%; aspect-ratio:16/9; object-fit:cover;" />
+      <div style="padding: 16px;">
+        <div style="font-size:10px; font-weight:700; color:var(--crimson-light); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:6px;">Dissabte 19 de juliol / 22:30 h</div>
+        <div style="font-family:'Playfair Display',serif; font-size:16px; font-weight:700; margin-bottom:4px;">Concerts Dissantes</div>
+        <div style="font-size:12px; color:var(--text-muted);">📍 Espai Firal del Nou Parc Central</div>
+      </div>
+    </div>
+
+    <div style="background: var(--bg3); border-radius: 14px; overflow: hidden; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''">
+      <img src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_61,y_132,w_1900,h_1054|c_fit,w_768,h_426|c_auto/d670a50f88ba8761324868be0a082348.jpeg"
+           alt="Cor Madrigalista" style="width:100%; aspect-ratio:16/9; object-fit:cover;" />
+      <div style="padding: 16px;">
+        <div style="font-size:10px; font-weight:700; color:var(--crimson-light); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:6px;">Divendres 18 de juliol / 20 h</div>
+        <div style="font-family:'Playfair Display',serif; font-size:16px; font-weight:700; margin-bottom:4px;">Cor Madrigalista — 50 anys</div>
+        <div style="font-size:12px; color:var(--text-muted);">📍 Teatre Monumental</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="festive-gallery">
+  <h3>Moments que fan vibrar Les Santes</h3>
+  <p>Imatges reals de la festa: foc, música, comparses i carrers plens de gent.</p>
+  <div class="festive-strip">
+    <img src="https://assets.appculturamataro.cat/medias/agenda/2024/c_crop,x_100,y_278,w_1900,h_1054|c_fit,w_768,h_426|c_auto/c1eb4fb09ceca60266c2534ca0161191.jpeg" alt="Jocs i ambient de Dissantes" />
+    <img src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_4,y_19,w_1963,h_1090|c_fit,w_768,h_426|c_auto/bea354601387219072c5daee94e91605.jpeg" alt="Gegantada de Les Santes" />
+    <img src="https://assets.appculturamataro.cat/medias/agenda/2023/c_crop,x_29,y_90,w_1539,h_854|c_fit,w_768,h_426|c_auto/fef48a3daef386a8d91bccb00e8369f2.jpeg" alt="L'Encesa i foc al carrer" />
+    <img src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_134,w_960,h_533|c_fit,w_768,h_426|c_auto/3ed3afd91d825859b5ff69ccd5a7ce70.jpeg" alt="Concert nocturn de les festes" />
   </div>
 </section>
 
@@ -1016,7 +1193,7 @@
 <section class="minisantes-section">
   <div class="minisantes-header">
     <h2>MINISANTES</h2>
-    <button class="btn-mini">ACCEDIR A MINISANTES &rarr;</button>
+    <a href="minisantes.html" class="btn-mini">ACCEDIR A MINISANTES &rarr;</a>
   </div>
   <p class="minisantes-desc">Un espai per als més petits amb jocs, activitats i tot el que necessites per viure les festes!</p>
 
@@ -1033,7 +1210,7 @@
       <div class="gc-bg"></div>
       <span class="gc-emoji">✂️</span>
       <div class="gc-body">
-        <div class="gc-title">Encaballles</div>
+        <div class="gc-title">Retallables de la Festa</div>
         <span class="gc-btn">Accedeix</span>
       </div>
     </div>
@@ -1073,19 +1250,19 @@
     <div class="footer-col">
       <h4>La Festa</h4>
       <ul>
-        <li><a href="#">Què són Les Santes?</a></li>
-        <li><a href="#">El Seguici</a></li>
-        <li><a href="#">Agenda Completa</a></li>
-        <li><a href="#">Galeria</a></li>
+        <li><a href="home.html">Inici</a></li>
+        <li><a href="agenda.html">Agenda Completa</a></li>
+        <li><a href="actes.html">Els meus actes</a></li>
+        <li><a href="minisantes.html">Minisantes</a></li>
       </ul>
     </div>
 
     <div class="footer-col">
       <h4>Participa</h4>
       <ul>
-        <li><a href="#">Minisantes</a></li>
-        <li><a href="#">Activitats</a></li>
-        <li><a href="#">Contacte</a></li>
+        <li><a href="https://www.lessantes.cat/" target="_blank">Web oficial</a></li>
+        <li><a href="https://www.instagram.com/lessantes/" target="_blank">Instagram</a></li>
+        <li><a href="https://www.culturamataro.cat/" target="_blank">Cultura Mataró</a></li>
       </ul>
     </div>
   </div>
@@ -1093,11 +1270,11 @@
   <div class="footer-bottom">
     <div class="footer-bottom-inner">
       <div class="footer-social">
-        <a class="social-link" href="#">
+        <a class="social-link" href="https://www.instagram.com/lessantes/" target="_blank">
           <span class="social-icon">📷</span> @lessantes
         </a>
-        <a class="social-link" href="#">
-          <span class="social-icon">𝕏</span> @lessantesmtro
+        <a class="social-link" href="https://twitter.com/lessantesmataro" target="_blank">
+          <span class="social-icon">𝕏</span> @lessantesmataro
         </a>
       </div>
       <span class="footer-copy">© 2026 Ajuntament de Mataró</span>
@@ -1113,20 +1290,20 @@
 <div class="scroll-cta" onclick="window.scrollTo({top:0,behavior:'smooth'})">?</div>
 
 <script>
-  // Countdown starting from 96d 04h 06m 49s
-  let total = (96 * 86400) + (4 * 3600) + (6 * 60) + 49;
+  // Compte enrere fins a Les Santes 2026 (25 juliol 2026, 20:00h)
+  const TARGET = new Date('2026-07-25T20:00:00').getTime();
 
   function update() {
-    if (total <= 0) { total = 0; }
-    const d = Math.floor(total / 86400);
-    const h = Math.floor((total % 86400) / 3600);
-    const m = Math.floor((total % 3600) / 60);
-    const s = total % 60;
+    const now = Date.now();
+    let diff = Math.max(0, Math.floor((TARGET - now) / 1000));
+    const d = Math.floor(diff / 86400);
+    const h = Math.floor((diff % 86400) / 3600);
+    const m = Math.floor((diff % 3600) / 60);
+    const s = diff % 60;
     document.querySelector('.cd-dies').textContent = String(d).padStart(2,'0');
     document.querySelector('.cd-hores').textContent = String(h).padStart(2,'0');
     document.querySelector('.cd-minuts').textContent = String(m).padStart(2,'0');
     document.querySelector('.cd-segons').textContent = String(s).padStart(2,'0');
-    if (total > 0) total--;
   }
 
   update();
@@ -1143,6 +1320,18 @@
     a.addEventListener('click', () => document.getElementById('mobile-menu').classList.remove('open'));
   });
 
+  // Smooth scrolling for in-page navigation
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const targetId = link.getAttribute('href');
+      if (!targetId || targetId === '#') return;
+      const target = document.querySelector(targetId);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
   // Day tab switching
   document.querySelectorAll('.day-tab').forEach(tab => {
     tab.addEventListener('click', () => {
@@ -1153,3 +1342,4 @@
 </script>
 </body>
 </html>
+

@@ -1,18 +1,29 @@
-/* Variables de color basades en el disseny */
+/* ── Google Fonts: Les Santes ── */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Nunito:wght@300;400;500;600;700;800&display=swap');
+
+/* Variables de color basades en el disseny de Les Santes */
 :root {
-    --bg-dark: #121214;
-    --bg-card-red: #e57373;
-    --bg-card-blue: #81d4fa;
-    --bg-card-yellow: #ffd54f;
-    --bg-card-pink: #f48fb1;
-    --bg-card-green: #a5d6a7;
-    --bg-card-purple: #ce93d8;
-    --bg-card-orange: #ffb74d;
-    --bg-card-cyan: #b2ebf2;
-    --bg-card-lime: #fff59d;
-    --text-light: #ffffff;
-    --accent-yellow: #ffca28;
-    --font-main: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    /* Brand colors Les Santes */
+    --crimson: #3f9fcb;
+    --crimson-dark: #2d7ea8;
+    --crimson-light: #63bfe3;
+    --gold: #3f9fcb;
+    --gold-light: #7bcde9;
+    /* Backgrounds */
+    --bg-dark: #e6e6e6;
+    --bg-card-red: #3f9fcb;
+    --bg-card-blue: #2980B9;
+    --bg-card-yellow: #3f9fcb;
+    --bg-card-pink: #E91E8C;
+    --bg-card-green: #27AE60;
+    --bg-card-purple: #8E44AD;
+    --bg-card-orange: #E67E22;
+    --bg-card-cyan: #16A085;
+    --bg-card-lime: #F39C12;
+    --text-light: #0d1117;
+    --accent-yellow: #3f9fcb;
+    --font-main: 'Nunito', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --font-heading: 'Playfair Display', Georgia, 'Times New Roman', serif;
 }
 
 * {
@@ -26,6 +37,10 @@ body {
     color: var(--text-light);
     font-family: var(--font-main);
     line-height: 1.5;
+}
+
+h1, h2, h3 {
+    font-family: var(--font-heading);
 }
 
 /* --- HEADER --- */
@@ -313,16 +328,17 @@ footer {
 }
 
 /* ==========================================================================
-   VARIABLES I BASE (Reaprofitat de l'exercici anterior)
+   VARIABLES I BASE — Les Santes identity
    ========================================================================== */
 :root {
-    --bg-dark: #121214;
-    --bg-card-light: #1c1c21; /* Fons lleugerament més clar per targetes */
-    --text-light: #ffffff;
-    --text-muted: #a0a0a0;
-    --accent-yellow: #ffca28;
-    --accent-gold: #cca641; /* Un groc més apagat i elegant com a la foto */
-    --font-main: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --bg-dark: #e6e6e6;
+    --bg-card-light: #1c1818;
+    --text-light: #0d1117;
+    --text-muted: #4f5b64;
+    --accent-yellow: #3f9fcb;
+    --accent-gold: #3f9fcb;
+    --font-main: 'Nunito', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --font-heading: 'Playfair Display', Georgia, serif;
 }
 
 * {
@@ -336,6 +352,10 @@ body {
     color: var(--text-light);
     font-family: var(--font-main);
     line-height: 1.5;
+}
+
+h1, h2, h3, .agenda-header h1, .day-title, .day-title-small {
+    font-family: var(--font-heading);
 }
 
 .container {
@@ -1073,3 +1093,506 @@ body.favorits-page {
         right: 0;
     }
 }
+
+/* ==========================================================================
+   LA RUTA DE LES SANTES — Joc de cartes
+   Prefix: ms-cg- — evita col·lisions
+   ========================================================================== */
+
+/* --- Targeta entrada a la graella de jocs --- */
+.ms-cg-game-entry {
+    background: #111118;
+    border: 1px solid #2a2a3a;
+    color: #f0ede8;
+}
+.ms-cg-game-entry h3,
+.ms-cg-game-entry p,
+.ms-cg-game-entry p strong { color: #f0ede8; }
+.ms-cg-entry-sym {
+    font-size: 2.5rem;
+    color: #c9943a;
+    margin-bottom: 12px;
+    line-height: 1;
+}
+
+/* --- Overlay --- */
+.ms-cg-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 9000;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+}
+
+/* --- Modal --- */
+.ms-cg-modal {
+    background: #111118;
+    border: 1px solid #2a2a3a;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 700px;
+    max-height: 93vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.85);
+    color: #f0ede8;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    scrollbar-width: thin;
+    scrollbar-color: #2a2a3a transparent;
+}
+
+/* --- Botó tancar --- */
+.ms-cg-close-btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: transparent;
+    border: 1px solid #2a2a3a;
+    border-radius: 6px;
+    width: 32px;
+    height: 32px;
+    color: #666;
+    cursor: pointer;
+    font-size: 0.8rem;
+    z-index: 10;
+    transition: border-color 0.15s, color 0.15s;
+}
+.ms-cg-close-btn:hover { border-color: #666; color: #f0ede8; }
+
+/* ── PANTALLA INICI ── */
+.ms-cg-screen { padding: 32px 28px; }
+.ms-cg-start-screen { padding-bottom: 40px; }
+.ms-cg-start-eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #c9943a;
+    margin-bottom: 14px;
+}
+.ms-cg-start-title {
+    font-size: 2.6rem;
+    font-weight: 900;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    color: #f0ede8;
+    margin-bottom: 10px;
+}
+.ms-cg-start-tagline {
+    font-size: 0.88rem;
+    color: #555;
+    margin-bottom: 32px;
+}
+.ms-cg-rules {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 36px;
+    border-top: 1px solid #1e1e2a;
+    border-bottom: 1px solid #1e1e2a;
+    padding: 24px 0;
+}
+.ms-cg-rule { display: flex; align-items: flex-start; gap: 16px; }
+.ms-cg-rule-num {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #c9943a;
+    letter-spacing: 1px;
+    padding-top: 3px;
+    flex-shrink: 0;
+    width: 18px;
+}
+.ms-cg-rule-text { font-size: 0.88rem; color: #888; line-height: 1.55; }
+.ms-cg-rule-text strong { color: #f0ede8; font-weight: 700; }
+
+/* ── RUTA D'ETAPES ── */
+.ms-cg-track-wrap {
+    padding: 18px 28px 0;
+    background: #0d0d12;
+    border-bottom: 1px solid #1e1e2a;
+}
+.ms-cg-stage-track {
+    display: flex;
+    align-items: center;
+    padding-bottom: 16px;
+}
+.ms-cg-stage-dot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+.ms-cg-stage-num {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid #2a2a3a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #444;
+    background: #111118;
+    transition: all 0.3s;
+    font-variant-numeric: tabular-nums;
+}
+.ms-cg-stage-lbl {
+    font-size: 0.6rem;
+    color: #3a3a4a;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    max-width: 72px;
+    text-align: center;
+    line-height: 1.2;
+}
+.ms-cg-stage-dot.done .ms-cg-stage-num  { border-color: #c9943a; color: #c9943a; background: rgba(201,148,58,0.08); }
+.ms-cg-stage-dot.done .ms-cg-stage-lbl  { color: #7a6020; }
+.ms-cg-stage-dot.current .ms-cg-stage-num { border-color: #b03030; color: #f0ede8; background: #b03030; }
+.ms-cg-stage-dot.current .ms-cg-stage-lbl { color: #ccc; }
+.ms-cg-stage-line {
+    height: 2px;
+    flex: 1;
+    background: #1e1e2a;
+    margin-bottom: 22px;
+    transition: background 0.3s;
+}
+.ms-cg-stage-line.done { background: #c9943a; }
+
+/* ── CAPÇALERA ETAPA ── */
+.ms-cg-stage-hdr {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px 28px 16px;
+    border-bottom: 1px solid #1e1e2a;
+    gap: 16px;
+}
+.ms-cg-stage-name {
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: #f0ede8;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-bottom: 4px;
+}
+.ms-cg-stage-sub { font-size: 0.8rem; color: #555; }
+.ms-cg-stage-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; flex-shrink: 0; }
+.ms-cg-target-block { text-align: right; }
+.ms-cg-target-label {
+    display: block;
+    font-size: 0.62rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #444;
+    margin-bottom: 2px;
+}
+.ms-cg-target-val { font-size: 1.7rem; font-weight: 900; color: #c9943a; line-height: 1; }
+.ms-cg-star { font-size: 1.1rem; }
+.ms-cg-hearts { display: flex; gap: 5px; }
+.ms-cg-heart { font-size: 1.1rem; line-height: 1; transition: all 0.2s; }
+.ms-cg-heart.full  { color: #b03030; }
+.ms-cg-heart.empty { color: #1e1e2a; }
+
+/* ── BARRA DE SELECCIÓ ── */
+.ms-cg-sel-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 28px;
+    background: #0d0d12;
+    border-bottom: 1px solid #1e1e2a;
+    gap: 12px;
+}
+.ms-cg-sel-info { font-size: 0.82rem; color: #666; flex: 1; }
+.ms-cg-sel-info.has-synergy { color: #c9943a; font-weight: 700; }
+
+/* ── MÀ DE CARTES ── */
+.ms-cg-hand {
+    display: flex;
+    gap: 14px;
+    padding: 22px 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* ── CARTA ── */
+.ms-cg-card {
+    width: 155px;
+    min-height: 210px;
+    background: var(--card-bg, #0d0d12);
+    border: 1px solid #1e1e2a;
+    border-left: 4px solid var(--card-color, #333);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: transform 0.16s ease, box-shadow 0.16s ease;
+    user-select: none;
+    position: relative;
+}
+.ms-cg-card:hover:not(.ms-cg-card-dim) {
+    transform: translateY(-7px);
+    box-shadow: 0 14px 36px rgba(0,0,0,0.55), 0 0 0 1px var(--card-color);
+}
+.ms-cg-card.selected {
+    transform: translateY(-10px);
+    box-shadow: 0 18px 44px rgba(0,0,0,0.7), 0 0 0 2px var(--card-color);
+    border-left-color: var(--card-color);
+    border-color: var(--card-color);
+}
+.ms-cg-card.ms-cg-card-dim {
+    opacity: 0.25;
+    filter: grayscale(60%);
+    pointer-events: none;
+    transform: translateY(0);
+}
+.ms-cg-card-type {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 10px 7px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.ms-cg-card-type-sym { font-size: 0.65rem; color: var(--card-color); flex-shrink: 0; }
+.ms-cg-card-type-lbl {
+    font-size: 0.58rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #3a3a4a;
+}
+.ms-cg-card-bonus {
+    margin-left: auto;
+    font-size: 0.6rem;
+    color: #c9943a;
+    font-weight: 700;
+    background: rgba(201,148,58,0.1);
+    padding: 1px 5px;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+.ms-cg-card-body {
+    padding: 12px 10px 6px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.ms-cg-card-name {
+    font-size: 0.84rem;
+    font-weight: 800;
+    color: #f0ede8;
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+    line-height: 1.2;
+}
+.ms-cg-card-pts {
+    font-size: 2.6rem;
+    font-weight: 900;
+    color: var(--card-color);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+.ms-cg-card-pts-star { font-size: 1rem; }
+.ms-cg-card-desc {
+    padding: 7px 10px 10px;
+    font-size: 0.65rem;
+    color: #3a3a4a;
+    line-height: 1.4;
+    border-top: 1px solid rgba(255,255,255,0.035);
+}
+
+/* ── FASE MILLORA ── */
+.ms-cg-upg-header {
+    padding: 20px 28px 14px;
+    border-bottom: 1px solid #1e1e2a;
+}
+.ms-cg-upg-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #f0ede8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+.ms-cg-upg-hint { font-size: 0.78rem; color: #444; }
+.ms-cg-upg-cont {
+    display: flex;
+    gap: 16px;
+    padding: 20px 28px;
+    justify-content: center;
+}
+.ms-cg-upg-card {
+    flex: 1;
+    max-width: 290px;
+    background: #0d0d12;
+    border: 1px solid #1e1e2a;
+    border-top: 3px solid var(--upg-color, #c9943a);
+    border-radius: 8px;
+    padding: 20px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+}
+.ms-cg-upg-card:hover:not(.ms-cg-upg-dim) {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.5);
+    border-color: var(--upg-color, #c9943a);
+    background: #13131c;
+}
+.ms-cg-upg-card.ms-cg-upg-dim  { opacity: 0.25; pointer-events: none; filter: grayscale(40%); }
+.ms-cg-upg-card.ms-cg-upg-chosen { border-color: var(--upg-color, #c9943a) !important; }
+.ms-cg-upg-type {
+    font-size: 0.62rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--upg-color, #c9943a);
+    margin-bottom: 10px;
+}
+.ms-cg-upg-name {
+    font-size: 0.93rem;
+    font-weight: 800;
+    color: #f0ede8;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-bottom: 8px;
+    line-height: 1.2;
+}
+.ms-cg-upg-desc { font-size: 0.78rem; color: #555; line-height: 1.5; margin-bottom: 14px; }
+.ms-cg-upg-cta {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--upg-color, #c9943a);
+}
+
+/* ── MISSATGE FEEDBACK ── */
+.ms-cg-msg {
+    margin: 0 28px 20px;
+    padding: 13px 16px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.5;
+    animation: ms-cg-fadein 0.25s ease;
+}
+.ms-cg-msg-success { background: rgba(30,80,50,0.25); border: 1px solid #1a5030; color: #5ab87a; }
+.ms-cg-msg-fail    { background: rgba(100,20,20,0.25); border: 1px solid #5a1818; color: #d97070; }
+.ms-cg-msg-info    { background: rgba(20,50,100,0.25); border: 1px solid #1a3060; color: #6a9adf; }
+@keyframes ms-cg-fadein {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── PANTALLA RESULTAT ── */
+.ms-cg-res-inner { padding: 52px 28px 40px; text-align: center; }
+.ms-cg-res-mark {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    animation: ms-cg-pop 0.5s cubic-bezier(.17,.67,.38,1.4);
+}
+.ms-cg-res-win  .ms-cg-res-mark { color: #c9943a; }
+.ms-cg-res-lose .ms-cg-res-mark { color: #b03030; }
+@keyframes ms-cg-pop {
+    0%   { transform: scale(0.3); opacity: 0; }
+    80%  { transform: scale(1.1); }
+    100% { transform: scale(1);   opacity: 1; }
+}
+.ms-cg-res-title {
+    font-size: 1.8rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: #f0ede8;
+    margin-bottom: 14px;
+    line-height: 1.1;
+}
+.ms-cg-res-sub {
+    font-size: 0.93rem;
+    color: #777;
+    line-height: 1.65;
+    max-width: 420px;
+    margin: 0 auto 14px;
+}
+.ms-cg-res-stages { font-size: 0.8rem; color: #3a3a4a; margin-bottom: 36px; }
+
+/* ── BOTONS ── */
+.ms-cg-btn-primary {
+    background: #b03030;
+    color: #f0ede8;
+    border: none;
+    border-radius: 6px;
+    padding: 13px 32px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.12s;
+    display: inline-block;
+}
+.ms-cg-btn-primary:hover { background: #8b2020; transform: translateY(-1px); }
+.ms-cg-btn-primary:active { transform: translateY(0); }
+
+.ms-cg-btn-play {
+    background: #b03030;
+    color: #f0ede8;
+    border: none;
+    border-radius: 6px;
+    padding: 9px 22px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.15s;
+    flex-shrink: 0;
+}
+.ms-cg-btn-play:disabled { background: #1e1e2a; color: #333; cursor: not-allowed; }
+.ms-cg-btn-play:not(:disabled):hover { background: #8b2020; }
+
+.ms-cg-btn-secondary {
+    background: transparent;
+    color: #444;
+    border: 1px solid #1e1e2a;
+    border-radius: 6px;
+    padding: 9px 20px;
+    font-size: 0.74rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+}
+.ms-cg-btn-secondary:hover { border-color: #3a3a4a; color: #888; }
+
+/* ── PEU DEL MODAL ── */
+.ms-cg-modal-footer {
+    padding: 14px 28px;
+    border-top: 1px solid #1a1a22;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 480px) {
+    .ms-cg-screen           { padding: 20px 14px; }
+    .ms-cg-start-title      { font-size: 2rem; }
+    .ms-cg-hand             { padding: 16px 10px; gap: 10px; }
+    .ms-cg-card             { width: 134px; min-height: 185px; }
+    .ms-cg-card-pts         { font-size: 2.1rem; }
+    .ms-cg-stage-hdr        { flex-direction: column; padding: 14px; }
+    .ms-cg-stage-meta       { flex-direction: row; align-items: center; gap: 16px; }
+    .ms-cg-upg-cont         { flex-direction: column; align-items: center; padding: 16px 14px; }
+    .ms-cg-upg-card         { max-width: 100%; }
+    .ms-cg-sel-bar          { padding: 10px 14px; }
+    .ms-cg-track-wrap       { padding: 14px 14px 0; }
+    .ms-cg-modal-footer     { padding: 12px 14px; }
+    .ms-cg-msg              { margin: 0 14px 14px; }
+    .ms-cg-res-inner        { padding: 36px 14px 28px; }
+    .ms-cg-res-title        { font-size: 1.4rem; }
+}
+
