@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chatbot Les Santes – Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="chatbot.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue:   #3f9fcb;
+      --blue-d: #2d7ea8;
+      --blue-l: #63bfe3;
+      --bg:     #e6e6e6;
+      --bg2:    #f0f8fc;
+      --text:   #0d1117;
+      --muted:  #5a8fa8;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Nunito', system-ui, sans-serif;
+      font-size: 14px;
+      min-height: 100dvh;
+    }
+
+    /* ── Top bar ── */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      height: 64px;
+      background: var(--blue);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .top-brand { display: flex; align-items: center; gap: 12px; }
+    .top-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      border: 2px solid rgba(255,255,255,0.4);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+    .top-title { font-size: 16px; font-weight: 800; color: #fff; }
+    .top-sub   { font-size: 10px; color: rgba(255,255,255,0.7); }
+    .back-link {
+      color: #fff; text-decoration: none; font-size: 13px; font-weight: 700;
+      display: flex; align-items: center; gap: 6px; padding: 6px 14px;
+      border: 1px solid rgba(255,255,255,0.4); border-radius: 20px;
+      transition: background 0.15s;
+    }
+    .back-link:hover { background: rgba(255,255,255,0.15); }
+
+    /* ── Hero ── */
+    .hero { text-align: center; padding: 52px 24px 36px; }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 38px; color: var(--blue-d); margin-bottom: 10px;
+    }
+    .hero p { color: var(--muted); font-size: 15px; max-width: 480px; margin: 0 auto; }
+
+    /* ── Screens grid ── */
+    .screens-section { max-width: 860px; margin: 0 auto; padding: 0 24px 64px; }
+    .screens-label {
+      text-align: center; color: var(--muted); font-size: 11px;
+      font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 24px;
+    }
+    .screens-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    @media (max-width: 620px) { .screens-grid { grid-template-columns: 1fr; } }
+
+    .screen-wrap { display: flex; flex-direction: column; gap: 10px; }
+    .screen-num  { font-size: 11px; font-weight: 800; color: var(--blue); text-transform: uppercase; letter-spacing: 0.7px; }
+    .screen-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+    /* ── Mockup panels ── */
+    .mock-panel {
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(63,159,203,0.2);
+      box-shadow: 0 4px 20px rgba(63,159,203,0.12);
+      font-size: 11.5px;
+    }
+    .mock-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 11px 13px; background: var(--blue);
+    }
+    .mock-header-left { display: flex; align-items: center; gap: 8px; }
+    .mock-avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: rgba(255,255,255,0.25); border: 2px solid rgba(255,255,255,0.4);
+      display: flex; align-items: center; justify-content: center; flex-shrink:0; overflow:hidden;
+    }
+    .mock-title  { color: #fff; font-size: 11.5px; font-weight: 800; line-height:1.2; }
+    .mock-sub    { color: rgba(255,255,255,0.7); font-size: 9.5px; }
+    .mock-close  { color: rgba(255,255,255,0.8); font-size: 14px; cursor: default; padding: 3px 6px; }
+
+    .mock-tabs {
+      display: flex; gap: 5px; padding: 8px 11px;
+      background: var(--bg2); border-bottom: 1px solid rgba(63,159,203,0.12);
+    }
+    .mock-tab {
+      background: transparent; border: 1px solid rgba(63,159,203,0.3); color: var(--blue);
+      font-size: 10px; font-weight: 700; padding: 4px 11px; border-radius: 20px; white-space: nowrap;
+    }
+    .mock-tab.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+    .mock-body { padding: 11px; display: flex; flex-direction: column; gap: 7px; background: #f8fbfd; }
+
+    .mock-bot-row  { display: flex; align-items: flex-start; gap: 6px; }
+    .mock-user-row { display: flex; justify-content: flex-end; }
+    .mock-dot {
+      width: 22px; height: 22px; border-radius: 50%; background: var(--blue);
+      background-image: url('imgs/icono_casco_robafaves.jpg');
+      background-size: cover; background-position: center;
+      flex-shrink: 0; margin-top: 1px; overflow: hidden;
+    }
+    .mock-bubble {
+      background: #e8f4fb; color: #1a3a4a; border-radius: 12px 12px 12px 4px;
+      padding: 7px 11px; font-size: 11px; line-height: 1.45; max-width: 84%;
+      border: 1px solid rgba(63,159,203,0.12);
+    }
+    .mock-bubble-user {
+      background: var(--blue); color: #fff; font-weight: 700;
+      border-radius: 12px 12px 4px 12px; border: none;
+    }
+
+    .mock-section-lbl {
+      color: var(--muted); font-size: 9.5px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.5px; margin-top: 3px;
+    }
+    .mock-opts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+    .mock-opt {
+      background: #fff; border: 1px solid rgba(63,159,203,0.2);
+      border-radius: 9px; padding: 8px; display: flex; align-items: center; gap: 6px;
+    }
+    .mock-opt-icon  { font-size: 17px; }
+    .mock-opt-title { color: #1a3a4a; font-size: 10.5px; font-weight: 700; line-height: 1.3; }
+    .mock-opt-sub   { color: var(--muted); font-size: 9px; }
+
+    .mock-event-card {
+      background: #fff; border: 1px solid rgba(63,159,203,0.18);
+      border-radius: 9px; overflow: hidden;
+    }
+    .mock-card-img  { width: 100%; height: 56px; background: #d4ecf7; position:relative; }
+    .mock-card-moon {
+      position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:28px;
+    }
+    .mock-card-body  { padding: 8px 10px; }
+    .mock-card-pre   { color: var(--blue-d); font-size: 8.5px; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 2px; }
+    .mock-card-title { color: #0d1117; font-size: 11px; font-weight: 700; line-height: 1.3; margin-bottom: 4px; }
+    .mock-card-det   { color: var(--muted); font-size: 10px; display:flex; gap:3px; margin-top:2px; }
+
+    .mock-count-lbl { color: var(--muted); font-size: 10px; text-align: center; }
+
+    .mock-no-results {
+      background: #fff; border: 1px solid rgba(63,159,203,0.18);
+      border-radius: 9px; padding: 12px 10px; text-align: center;
+    }
+    .mock-no-title { color: #0d1117; font-size: 12px; font-weight: 700; margin-bottom:4px; }
+    .mock-no-text  { color: var(--muted); font-size: 10px; line-height:1.5; margin-bottom: 9px; }
+    .mock-sugs { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; }
+    .mock-sug {
+      border: 1px solid rgba(63,159,203,0.4); color: var(--blue-d);
+      font-size: 9.5px; font-weight: 700; padding: 4px 9px; border-radius: 20px;
+    }
+
+    .mock-input {
+      display: flex; align-items: center; gap: 7px;
+      padding: 9px 11px; background: #fff;
+      border-top: 1px solid rgba(63,159,203,0.1);
+    }
+    .mock-input-field {
+      flex:1; background: var(--bg2); border: 1px solid rgba(63,159,203,0.22);
+      border-radius: 20px; padding: 6px 12px; color: #9abfce; font-size: 10.5px;
+    }
+    .mock-send {
+      width: 28px; height: 28px; border-radius: 50%; background: var(--blue);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 11px; flex-shrink:0;
+    }
+
+    /* ── Live demo section ── */
+    .live-section {
+      background: var(--blue);
+      padding: 52px 24px;
+      text-align: center;
+    }
+    .live-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px; color: #fff; margin-bottom: 10px;
+    }
+    .live-section p { color: rgba(255,255,255,0.8); font-size: 14px; margin-bottom: 28px; }
+
+    #chatbotPanel.inline-mode {
+      position: static;
+      width: 340px;
+      height: 560px;
+      transform: none !important;
+      opacity: 1 !important;
+      pointer-events: all !important;
+      margin: 0 auto;
+      border-radius: 18px;
+      display: flex;
+    }
+    .live-hint { margin-top: 18px; color: rgba(255,255,255,0.6); font-size: 12px; }
+    .live-hint a { color: #fff; text-decoration: underline; }
+
+    /* ── Footer ── */
+    .page-footer {
+      background: var(--blue-d);
+      padding: 24px; text-align: center; color: rgba(255,255,255,0.6); font-size: 12px;
+    }
+    .page-footer a { color: #fff; text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<!-- ── Top bar ── -->
+<div class="top-bar">
+  <div class="top-brand">
+    <div class="top-avatar">🌙</div>
+    <div>
+      <div class="top-title">Chatbot Les Santes</div>
+      <div class="top-sub">Assistent de la Festa Major de Mataró</div>
+    </div>
+  </div>
+  <a href="home.html" class="back-link">← Tornar a la web</a>
+</div>
+
+<!-- ── Hero ── -->
+<div class="hero">
+  <h1>Les 4 pantalles del Chatbot</h1>
+  <p>Interfície conversacional per a la Festa Major de Mataró 2025 · Explora qualsevol acte, horari o ubicació</p>
+</div>
+
+<!-- ── 4 Static screen mockups ── -->
+<section class="screens-section">
+  <div class="screens-label">Mockups de les 4 pantalles</div>
+  <div class="screens-grid">
+
+    <!-- SCREEN 1 – Welcome -->
+    <div class="screen-wrap">
+      <div class="screen-num">Pantalla 1 — Inici</div>
+      <div class="screen-desc">Salutació i opcions ràpides per als temes més consultats de la Festa.</div>
+      <div class="mock-panel">
+        <div class="mock-header">
+          <div class="mock-header-left">
+            <div class="mock-avatar"><img src="imgs/icono_casco_robafaves.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div>
+            <div><div class="mock-title">Chatbot Les Santes</div><div class="mock-sub">Assistent de la Festa Major de Mataró</div></div>
+          </div>
+          <div class="mock-close">✕</div>
+        </div>
+        <div class="mock-tabs">
+          <div class="mock-tab active">✓ Actes</div>
+          <div class="mock-tab">Famílies</div>
+          <div class="mock-tab">Concerts</div>
+          <div class="mock-tab">Foc</div>
+        </div>
+        <div class="mock-body">
+          <div class="mock-bot-row"><div class="mock-dot"></div><div class="mock-bubble">Hola! Soc el Chatbot Les Santes 🧡</div></div>
+          <div class="mock-bot-row"><div class="mock-dot"></div><div class="mock-bubble">Puc ajudar-te a trobar actes, horaris i ubicacions de la Festa Major. Pregunta'm el que vulguis!</div></div>
+          <div class="mock-section-lbl">Varies Opcions</div>
+          <div class="mock-opts-grid">
+            <div class="mock-opt"><div class="mock-opt-icon">🌙</div><div><div class="mock-opt-title">On és el Desvetllament?</div><div class="mock-opt-sub">Horari i lloc</div></div></div>
+            <div class="mock-opt"><div class="mock-opt-icon">🔥</div><div><div class="mock-opt-title">Correfoc de focs</div><div class="mock-opt-sub">On i quan</div></div></div>
+            <div class="mock-opt"><div class="mock-opt-icon">👨‍👩‍👧</div><div><div class="mock-opt-title">Activitats nens</div><div class="mock-opt-sub">Programació infantil</div></div></div>
+            <div class="mock-opt"><div class="mock-opt-icon">📅</div><div><div class="mock-opt-title">Actes del 27</div><div class="mock-opt-sub">Dia de Les Santes</div></div></div>
+          </div>
+        </div>
+        <div class="mock-input">
+          <div class="mock-input-field">Pregunta sobre actes, horaris, llocs...</div>
+          <div class="mock-send">▶</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 2 – Desvetllament result -->
+    <div class="screen-wrap">
+      <div class="screen-num">Pantalla 2 — Resultat únic</div>
+      <div class="screen-desc">Quan es troba un acte concret: el Desvetllament amb imatge, hora i lloc.</div>
+      <div class="mock-panel">
+        <div class="mock-header">
+          <div class="mock-header-left">
+            <div class="mock-avatar"><img src="imgs/icono_casco_robafaves.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div>
+            <div><div class="mock-title">Chatbot Les Santes</div><div class="mock-sub">Assistent de la Festa Major de Mataró</div></div>
+          </div>
+          <div class="mock-close">✕</div>
+        </div>
+        <div class="mock-tabs">
+          <div class="mock-tab active">✓ Desvetllament</div>
+          <div class="mock-tab">Concerts</div>
+          <div class="mock-tab">Foc</div>
+        </div>
+        <div class="mock-body">
+          <div class="mock-user-row"><div class="mock-bubble mock-bubble-user">On és el Desvetllament!</div></div>
+          <div class="mock-bot-row"><div class="mock-dot"></div><div class="mock-bubble">El Desvetllament, un dels actes més emblemàtics:</div></div>
+          <div class="mock-event-card">
+            <div class="mock-card-img"><div class="mock-card-moon">🌙</div></div>
+            <div class="mock-card-body">
+              <div class="mock-card-pre">OFENDA NOCTURNA DELS GEGANTS</div>
+              <div class="mock-card-title">Desvetllament beluguejó de la Família Robafaves</div>
+              <div class="mock-card-det"><span>📅</span> Dimecres 25 de juliol / 13.10 h</div>
+              <div class="mock-card-det"><span>📍</span> Dia de l'Ajuntament</div>
+            </div>
+          </div>
+        </div>
+        <div class="mock-input">
+          <div class="mock-input-field">Pregunta sobre actes, horaris, llocs...</div>
+          <div class="mock-send">▶</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 3 – Concerts list -->
+    <div class="screen-wrap">
+      <div class="screen-num">Pantalla 3 — Llista de resultats</div>
+      <div class="screen-desc">Tab Concerts actiu: mostra els primers 3 de 28 concerts trobats.</div>
+      <div class="mock-panel">
+        <div class="mock-header">
+          <div class="mock-header-left">
+            <div class="mock-avatar"><img src="imgs/icono_casco_robafaves.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div>
+            <div><div class="mock-title">Chatbot Les Santes</div><div class="mock-sub">Assistent de la Festa Major de Mataró</div></div>
+          </div>
+          <div class="mock-close">✕</div>
+        </div>
+        <div class="mock-tabs">
+          <div class="mock-tab">Desvetllament</div>
+          <div class="mock-tab active">✓ Concerts</div>
+          <div class="mock-tab">Foc</div>
+        </div>
+        <div class="mock-body">
+          <div class="mock-bot-row"><div class="mock-dot"></div><div class="mock-bubble">He trobat 28 concerts i actes musicals</div></div>
+          <div class="mock-count-lbl">Mostrant 3 de 28</div>
+          <div class="mock-event-card">
+            <div class="mock-card-body">
+              <div class="mock-card-pre">CONCERT</div>
+              <div class="mock-card-title">Cor Madrigalista, 50 anys</div>
+              <div class="mock-card-det"><span>📅</span> Dimecres 18 de juliol / 20 h</div>
+              <div class="mock-card-det"><span>📍</span> Espai Monumental</div>
+            </div>
+          </div>
+          <div class="mock-event-card">
+            <div class="mock-card-body">
+              <div class="mock-card-pre">CONCERT DE GOSPEL</div>
+              <div class="mock-card-title">GospelSons</div>
+              <div class="mock-card-det"><span>📅</span> Dijous 24 de juliol / 20 h</div>
+              <div class="mock-card-det"><span>📍</span> Pausing de Caltau</div>
+            </div>
+          </div>
+          <div class="mock-event-card">
+            <div class="mock-card-body">
+              <div class="mock-card-pre">CONCERT</div>
+              <div class="mock-card-title">Los Jamones</div>
+              <div class="mock-card-det"><span>📅</span> Divendres 25 de juliol / 13 h</div>
+              <div class="mock-card-det"><span>📍</span> La Colometa</div>
+            </div>
+          </div>
+        </div>
+        <div class="mock-input">
+          <div class="mock-input-field">Pregunta sobre actes, horaris, llocs...</div>
+          <div class="mock-send">▶</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 4 – No results -->
+    <div class="screen-wrap">
+      <div class="screen-num">Pantalla 4 — Sense resultats</div>
+      <div class="screen-desc">Quan no es troba cap acte, suggereix categories populars per ajudar.</div>
+      <div class="mock-panel">
+        <div class="mock-header">
+          <div class="mock-header-left">
+            <div class="mock-avatar"><img src="imgs/icono_casco_robafaves.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div>
+            <div><div class="mock-title">Chatbot Les Santes</div><div class="mock-sub">Assistent de la Festa Major de Mataró</div></div>
+          </div>
+          <div class="mock-close">✕</div>
+        </div>
+        <div class="mock-tabs">
+          <div class="mock-tab">Desvetllament</div>
+          <div class="mock-tab">Concerts</div>
+          <div class="mock-tab active">✓ Foc</div>
+        </div>
+        <div class="mock-body">
+          <div class="mock-user-row"><div class="mock-bubble mock-bubble-user">Hi ha piscina?</div></div>
+          <div class="mock-no-results">
+            <div style="font-size:24px;margin-bottom:6px;">📋</div>
+            <div class="mock-no-title">No he trobat cap acte</div>
+            <div class="mock-no-text">No hi ha resultats per «piscina». Prova amb altres paraules o fes servir els suggeriments:</div>
+            <div class="mock-sugs">
+              <div class="mock-sug">Concerts</div>
+              <div class="mock-sug">Activitats familiars</div>
+              <div class="mock-sug">Actes de foc</div>
+              <div class="mock-sug">Actes del 27 de juliol</div>
+            </div>
+          </div>
+        </div>
+        <div class="mock-input">
+          <div class="mock-input-field">Pregunta sobre actes, horaris, llocs...</div>
+          <div class="mock-send">▶</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /screens-grid -->
+</section>
+
+<!-- ── Live interactive demo ── -->
+<div class="live-section">
+  <h2>Prova el Chatbot en directe</h2>
+  <p>Interactua amb l'assistent i consulta qualsevol acte de la Festa Major de Mataró.</p>
+
+  <!-- Live widget (inline, always visible) -->
+  <div id="chatbotPanel" class="inline-mode">
+    <div class="cb-header">
+      <div class="cb-header-left">
+        <div class="cb-avatar"><img src="imgs/icono_casco_robafaves.jpg" alt=""></div>
+        <div class="cb-header-text">
+          <span class="cb-title">Chatbot Les Santes</span>
+          <span class="cb-subtitle">Assistent de la Festa Major de Mataró</span>
+        </div>
+      </div>
+    </div>
+    <div class="cb-tabs">
+      <button class="cb-tab active" data-category="all">Actes</button>
+      <button class="cb-tab" data-category="families">Famílies</button>
+      <button class="cb-tab" data-category="concerts">Concerts</button>
+      <button class="cb-tab" data-category="foc">Foc</button>
+    </div>
+    <div class="cb-messages" id="cbMessages"></div>
+    <div class="cb-input-row">
+      <input id="cbInput" type="text" placeholder="Pregunta sobre actes, horaris, llocs..." autocomplete="off"/>
+      <button id="cbSend" class="cb-send-btn" aria-label="Enviar">▶</button>
+    </div>
+  </div>
+
+  <div class="live-hint">
+    El chatbot llegeix les dades de <strong>actes_santes_2025_pia.json</strong> ·
+    <a href="home.html">Tornar a la web principal</a>
+  </div>
+</div>
+
+<!-- ── Footer ── -->
+<div class="page-footer">
+  © 2026 Ajuntament de Mataró · <a href="https://www.lessantes.cat/" target="_blank">lessantes.cat</a>
+</div>
+
+<script>
+  /* inline mode: obre el panell directament sense FAB */
+  document.addEventListener('DOMContentLoaded', function() {
+    var p = document.getElementById('chatbotPanel');
+    if (!p) return;
+    p.classList.add('cb-visible');
+    requestAnimationFrame(function(){ p.classList.add('open'); });
+  });
+</script>
+<script src="chatbot.js"></script>
+</body>
+</html>
