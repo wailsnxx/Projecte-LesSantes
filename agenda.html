@@ -482,6 +482,12 @@ fetch('actes_santes_2025_pia.json')
             searchInput.value = qParam;
             applyFilters();
         }
+        // Scroll to day anchor after dynamic render
+        const hash = window.location.hash;
+        if (hash) {
+            const target = document.querySelector(hash);
+            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
     });
 
 // ── Card Setup (called after each render) ──
