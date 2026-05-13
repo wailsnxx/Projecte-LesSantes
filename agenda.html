@@ -153,7 +153,7 @@
     <div class="nav-right">
         <a class="nav-search" href="agenda.html">
             <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            Cerca
+            Cercador
         </a>
         <a href="agenda.html" class="nav-cta">Agenda →</a>
         <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
@@ -594,6 +594,32 @@
         <a href="https://www.instagram.com/lessantes/" target="_blank">@lessantes</a>
     </div>
 </footer>
+<!-- ── CHATBOT ── -->
+<button class="fab" aria-label="Obre el Chatbot Les Santes" title="Chatbot Les Santes"><img src="imgs/robafaves_icono.png" alt=""></button>
+<div id="chatbotPanel">
+  <div class="cb-header">
+    <div class="cb-header-left">
+      <div class="cb-avatar"><img src="imgs/icono_casco_robafaves.jpg" alt=""></div>
+      <div class="cb-header-text">
+        <span class="cb-title">Chatbot Les Santes</span>
+        <span class="cb-subtitle">Assistent de la Festa Major de Mataró</span>
+      </div>
+    </div>
+    <button id="closeChatbot" class="cb-close" aria-label="Tancar">✕</button>
+  </div>
+  <div class="cb-tabs">
+    <button class="cb-tab active" data-category="all">Actes</button>
+    <button class="cb-tab" data-category="families">Famílies</button>
+    <button class="cb-tab" data-category="concerts">Concerts</button>
+    <button class="cb-tab" data-category="foc">Foc</button>
+  </div>
+  <div class="cb-messages" id="cbMessages"></div>
+  <div class="cb-input-row">
+    <input id="cbInput" type="text" placeholder="Pregunta sobre actes, horaris, llocs..." autocomplete="off"/>
+    <button id="cbSend" class="cb-send-btn" aria-label="Enviar">▶</button>
+  </div>
+</div>
+<link rel="stylesheet" href="chatbot.css">
 <script>
     function toggleMenu() {
         const menu = document.getElementById('mobile-menu');
@@ -604,6 +630,7 @@
         a.addEventListener('click', () => document.getElementById('mobile-menu').classList.remove('open'));
     });
 </script>
+<script src="chatbot.js"></script>
 </body>
 </html>
 
