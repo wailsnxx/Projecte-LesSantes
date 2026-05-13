@@ -235,10 +235,10 @@
     <li><a href="galeria.html" class="active">Galeria</a></li>
   </ul>
   <div class="nav-right">
-    <a class="nav-search" href="agenda.html">
-      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      Cercador
-    </a>
+    <div style="position:relative;">
+      <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);pointer-events:none;" width="13" height="13" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input id="nav-search-input" type="text" placeholder="Cerca un acte..." autocomplete="off" class="nav-search" style="padding:7px 12px 7px 32px; cursor:text; width:190px;" />
+    </div>
     <a href="agenda.html" class="nav-cta">Agenda →</a>
     <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
   </div>
@@ -467,6 +467,14 @@
   function lbNav(dir) { buildLbList(); lbIdx = (lbIdx + dir + lbAll.length) % lbAll.length; const el = lbAll[lbIdx]; document.getElementById('lb-img').src = el.dataset.src; document.getElementById('lb-caption').textContent = el.dataset.caption || ''; }
   document.querySelectorAll('.lb-trigger').forEach(el => { el.addEventListener('click', () => openLb(el.dataset.src, el.dataset.caption, el)); });
   document.addEventListener('keydown', e => { const lb = document.getElementById('lightbox'); if (!lb.classList.contains('open')) return; if (e.key === 'Escape') closeLb(); if (e.key === 'ArrowLeft') lbNav(-1); if (e.key === 'ArrowRight') lbNav(1); });
+
+  const navInput = document.getElementById('nav-search-input');
+  navInput?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      const q = navInput.value.trim();
+      window.location.href = 'agenda.html' + (q ? '?q=' + encodeURIComponent(q) : '');
+    }
+  });
 </script>
 </body>
 </html>

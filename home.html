@@ -899,9 +899,11 @@
 
     /* ── TABLET ≤ 700px ── */
     @media (max-width: 700px) {
-      nav { padding: 0 20px; height: 64px; }
+      .site-nav { padding: 0 20px; height: 64px; }
       .nav-links { display: none; }
       .nav-search { display: none; }
+      #nav-search-wrap { display: none; }
+      .nav-cta { display: none; }
       .nav-hamburger { display: flex; }
 
       .hero { padding: 48px 20px 40px; }
@@ -995,6 +997,34 @@
 
     .act-card-clickable { cursor:pointer; transition: transform 0.2s, box-shadow 0.2s; }
     .act-card-clickable:hover { transform:translateY(-5px); box-shadow:0 12px 32px rgba(0,0,0,0.12); }
+
+    .acte-list-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 12px;
+      padding: 0 4px;
+      min-height: 32px;
+    }
+    .acte-list-footer .more-count {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .day-link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--blau);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 7px 16px;
+      border-radius: 20px;
+      text-decoration: none;
+      transition: opacity 0.15s, transform 0.15s;
+      white-space: nowrap;
+    }
+    .day-link-btn:hover { opacity: 0.85; transform: translateY(-1px); }
   </style>
 </head>
 <body>
@@ -1016,10 +1046,11 @@
     <li><a href="galeria.html">Galeria</a></li>
   </ul>
   <div class="nav-right">
-    <a class="nav-search" href="agenda.html">
-      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      Cercador
-    </a>
+    <div class="nav-search-wrap" id="nav-search-wrap" style="position:relative;">
+      <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);pointer-events:none;" width="13" height="13" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input id="nav-search-input" type="text" placeholder="Cerca un acte..." autocomplete="off"
+        style="background:rgba(255,255,255,0.14); border:1px solid rgba(255,255,255,0.28); border-radius:8px; padding:7px 12px 7px 32px; font-size:13px; color:#fff; outline:none; width:200px;" />
+    </div>
     <a href="agenda.html" class="nav-cta">Agenda →</a>
     <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
       <span></span><span></span><span></span>
@@ -1134,6 +1165,7 @@
         <span class="acte-name" style="color:var(--text-muted)">Carregant...</span>
       </div>
     </div>
+    <div class="acte-list-footer" id="acte-list-footer"></div>
   </div>
 </section>
 
@@ -1431,6 +1463,15 @@
     a.addEventListener('click', () => document.getElementById('mobile-menu').classList.remove('open'));
   });
 
+  // Nav search
+  const navInput = document.getElementById('nav-search-input');
+  navInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      const q = navInput.value.trim();
+      window.location.href = 'agenda.html' + (q ? '?q=' + encodeURIComponent(q) : '');
+    }
+  });
+
   // Smooth scrolling for in-page navigation
   document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', (e) => {
@@ -1464,12 +1505,19 @@
       `Actes del ${day} de juliol — ${DAY_LABELS[String(day)] || ''}`;
 
     const list = document.getElementById('acte-list');
+    const footer = document.getElementById('acte-list-footer');
+    const dayId = 'jul' + String(day).padStart(2, '0');
+
     if (filtered.length === 0) {
       list.innerHTML = '<div class="acte-item"><span class="acte-name" style="color:var(--text-muted)">Cap acte trobat per a aquest dia.</span></div>';
+      footer.innerHTML = '';
       return;
     }
 
-    list.innerHTML = filtered.map(e => {
+    const shown = filtered.slice(0, 5);
+    const remaining = filtered.length - 5;
+
+    list.innerHTML = shown.map(e => {
       const time = e.date_initial.split(' ')[1] || '';
       return `<div class="acte-item">
         <span class="acte-time">${time}</span>
@@ -1477,6 +1525,11 @@
         <span class="acte-arrow">›</span>
       </div>`;
     }).join('');
+
+    const moreHtml = remaining > 0
+      ? `<span class="more-count">+${remaining} actes més</span>`
+      : `<span></span>`;
+    footer.innerHTML = `${moreHtml}<a href="agenda.html#${dayId}" class="day-link-btn">Veure el dia ↓</a>`;
   }
 
   fetch('actes_santes_2025_pia.json')
