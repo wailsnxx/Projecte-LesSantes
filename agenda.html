@@ -187,10 +187,10 @@
         <li><a href="galeria.html">Galeria</a></li>
     </ul>
     <div class="nav-right">
-        <a class="nav-search" href="agenda.html">
-            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            Cercador
-        </a>
+        <div style="position:relative;">
+            <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);pointer-events:none;" width="13" height="13" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input id="nav-search-input" type="text" placeholder="Cerca un acte..." autocomplete="off" class="nav-search" style="padding:7px 12px 7px 32px; cursor:text; width:190px;" />
+        </div>
         <a href="actes.html" class="nav-cta">Els meus actes →</a>
         <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
             <span></span><span></span><span></span>
@@ -476,6 +476,12 @@ fetch('actes_santes_2025_pia.json')
     .then(data => {
         allEvents = data.events || [];
         renderAgenda(allEvents);
+        // Pre-fill search from URL param ?q=
+        const qParam = new URLSearchParams(window.location.search).get('q');
+        if (qParam && searchInput) {
+            searchInput.value = qParam;
+            applyFilters();
+        }
     });
 
 // ── Card Setup (called after each render) ──
@@ -612,6 +618,17 @@ function closeModal() {
     document.body.style.overflow = '';
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+const navSearchInput = document.getElementById('nav-search-input');
+navSearchInput?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+        const q = navSearchInput.value.trim();
+        if (searchInput) { searchInput.value = q; applyFilters(); searchInput.focus(); }
+    }
+});
+navSearchInput?.addEventListener('input', () => {
+    if (searchInput) { searchInput.value = navSearchInput.value; applyFilters(); }
+});
 </script>
 <script src="chatbot.js"></script>
 </body>
