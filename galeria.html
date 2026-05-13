@@ -38,7 +38,7 @@
     .mobile-menu a:hover { color: #409DC9; }
 
     /* HERO CINEMATIC */
-    .hero-galeria { position: relative; height: 90vh; min-height: 520px; overflow: hidden; display: flex; align-items: flex-end; }
+    .hero-galeria { position: relative; height: 90vh; min-height: 480px; max-height: 860px; overflow: hidden; display: flex; align-items: flex-end; }
     .hero-galeria-bg { position: absolute; inset: 0; background-image: url('https://assets.appculturamataro.cat/medias/agenda/2023/c_crop,x_29,y_90,w_1539,h_854|c_fit,w_1280,h_710|c_auto/fef48a3daef386a8d91bccb00e8369f2.jpeg'); background-size: cover; background-position: center 30%; transform: scale(1.03); transition: transform 8s ease; }
     .hero-galeria:hover .hero-galeria-bg { transform: scale(1); }
     .hero-galeria::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.08) 40%, rgba(0,0,0,0.72) 100%); }
@@ -177,12 +177,22 @@
 
     /* RESPONSIVE */
     @media (max-width: 860px) {
+      .site-nav { padding: 0 20px; }
+      .nav-links, .nav-search { display: none; }
+      .nav-hamburger { display: flex; }
+      .mobile-menu { inset: 68px 0 0 0; }
       .split-row { grid-template-columns: 1fr; height: auto; }
       .split-cell { aspect-ratio: 16/9; }
       .triple-grid { grid-template-columns: 1fr 1fr; }
       .videos-grid { grid-template-columns: 1fr 1fr; }
       .video-card:first-child { grid-column: span 2; }
       .masonry { columns: 2; }
+      .comparses-scroll { grid-template-columns: repeat(2, 1fr); }
+      .filter-section { padding: 24px 20px 0; }
+      .mosaic-header, .masonry, .exp-strip-inner, .pull-quote,
+      .triple-grid, .videos-section, .comparses-section, .cta-banner { padding-left: 20px; padding-right: 20px; }
+      .hero-galeria-content { padding: 0 20px 48px; }
+      .hero-scroll-hint { right: 20px; }
     }
     @media (max-width: 700px) {
       .site-nav { padding: 0 20px; }

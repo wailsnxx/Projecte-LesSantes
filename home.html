@@ -153,6 +153,8 @@
       position: relative;
       overflow: hidden;
       height: 100vh;
+      min-height: 480px;
+      max-height: 900px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -659,8 +661,8 @@
 
     /* ── FOOTER ── */
     footer {
-      background: #fff;
-      border-top: 1.5px solid rgba(0,0,0,0.09);
+      background: #409DC9;
+      border-top: 1px solid rgba(255,255,255,0.15);
       padding: 0;
     }
 
@@ -684,7 +686,7 @@
     .footer-brand .logo-icon {
       width: 40px;
       height: 40px;
-      background: linear-gradient(135deg, #2d7ea8 50%, #63bfe3 50%);
+      background: rgba(255,255,255,0.2);
       border-radius: 8px;
       display: flex;
       align-items: center;
@@ -698,12 +700,12 @@
     .footer-brand .logo-name {
       font-weight: 800;
       font-size: 16px;
-      color: #2A2A2A;
+      color: #fff;
     }
 
     .footer-brand .logo-sub {
       font-size: 9px;
-      color: #409DC9;
+      color: rgba(255,255,255,0.7);
       font-weight: 600;
       letter-spacing: 0.12em;
       text-transform: uppercase;
@@ -713,7 +715,7 @@
 
     .footer-brand p {
       font-size: 13px;
-      color: rgba(42,42,42,0.5);
+      color: rgba(255,255,255,0.65);
       line-height: 1.7;
       max-width: 280px;
     }
@@ -723,7 +725,7 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.12em;
-      color: rgba(42,42,42,0.4);
+      color: rgba(255,255,255,0.65);
       margin-bottom: 14px;
     }
 
@@ -736,14 +738,14 @@
 
     .footer-col ul a {
       font-size: 13px;
-      color: rgba(42,42,42,0.6);
+      color: rgba(255,255,255,0.75);
       transition: color 0.15s;
     }
 
-    .footer-col ul a:hover { color: #409DC9; }
+    .footer-col ul a:hover { color: #fff; }
 
     .footer-bottom {
-      border-top: 1px solid rgba(0,0,0,0.07);
+      border-top: 1px solid rgba(255,255,255,0.15);
     }
 
     .footer-bottom-inner {
@@ -767,18 +769,18 @@
       align-items: center;
       gap: 8px;
       font-size: 12px;
-      color: rgba(42,42,42,0.55);
-      background: #f4f4f4;
-      border: 1px solid rgba(0,0,0,0.1);
+      color: rgba(255,255,255,0.75);
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.22);
       border-radius: 8px;
       padding: 7px 14px;
-      transition: border-color 0.15s, color 0.15s;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
     }
 
     .social-link:hover {
-      border-color: #409DC9;
-      color: #409DC9;
-      background: rgba(64,157,201,0.07);
+      border-color: #fff;
+      color: #fff;
+      background: rgba(255,255,255,0.22);
     }
 
     .social-icon {
@@ -790,14 +792,14 @@
       display: flex;
       gap: 20px;
       font-size: 12px;
-      color: rgba(42,42,42,0.4);
+      color: rgba(255,255,255,0.55);
     }
 
-    .footer-legal a:hover { color: #409DC9; }
+    .footer-legal a:hover { color: #fff; }
 
     .footer-copy {
       font-size: 12px;
-      color: rgba(42,42,42,0.4);
+      color: rgba(255,255,255,0.55);
     }
 
     /* ── SCROLL CTA ── */
@@ -876,12 +878,23 @@
 
     /* ── TABLET ≤ 900px ── */
     @media (max-width: 900px) {
-      .que-son {
-        grid-template-columns: 1fr;
-        gap: 28px;
-      }
-      .video-card { max-width: 480px; }
-      .games-grid { grid-template-columns: repeat(4, 1fr); }
+      .site-nav { padding: 0 20px; height: 64px; }
+      .nav-links { display: none; }
+      .nav-search { display: none; }
+      .nav-hamburger { display: flex; }
+      .mobile-menu { inset: 64px 0 0 0; }
+      .que-son { grid-template-columns: 1fr; gap: 28px; padding: 24px 24px 36px; }
+      .badge-strip { padding: 0 24px; margin-top: 32px; }
+      .video-card { max-width: 100%; }
+      .games-grid { grid-template-columns: repeat(2, 1fr); }
+      .festive-strip { grid-template-columns: repeat(2, 1fr); }
+      .agenda-section { padding: 36px 0; }
+      .agenda-inner { padding: 0 24px; }
+      .minisantes-section { padding: 36px 24px; }
+      .festive-gallery { padding: 8px 24px 48px; }
+      #galeria { padding: 36px 24px !important; }
+      .footer-top { grid-template-columns: 1fr; gap: 28px; padding: 32px 24px 28px; }
+      .footer-bottom-inner { padding: 16px 24px; flex-direction: column; align-items: flex-start; gap: 12px; }
     }
 
     /* ── TABLET ≤ 700px ── */

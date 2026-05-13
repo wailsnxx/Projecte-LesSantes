@@ -71,7 +71,9 @@
         .filter-tag.active { background:#409DC9; border-color:#409DC9; color:#fff; box-shadow:0 4px 12px rgba(64,157,201,0.3); transform:translateY(-1px); }
 
         /* ── Layout ── */
-        .main-layout { max-width:960px; margin:0 auto; padding:40px 48px 60px; display:grid; grid-template-columns:200px 1fr; gap:36px; align-items:start; }
+        .main-layout { width:100%; padding:40px 40px 60px 200px; display:flex; flex-direction:row; gap:28px; align-items:start; }
+        .sidebar { width:200px; flex-shrink:0; }
+        .agenda-content { flex:1; min-width:0; }
 
         /* ── Sidebar ── */
         .sidebar { position:sticky; top:84px; background:#fff; border:1.5px solid rgba(64,157,201,0.15); border-radius:16px; padding:20px 14px; box-shadow:0 4px 20px rgba(0,0,0,0.06); }
@@ -152,18 +154,28 @@
 
         /* ── Responsive ── */
         @media (max-width:900px) {
-            .main-layout { grid-template-columns:1fr; padding:24px; gap:24px; }
-            .sidebar { position:static; }
-            .page-header { padding:32px 24px 28px; }
+            .main-layout { padding:24px 20px; gap:20px; }
+            .sidebar { width:160px; position:sticky; top:84px; }
+            .category-btn { font-size:11.5px; padding:7px 8px; gap:7px; }
+            .sidebar h3 { font-size:9px; }
+            .page-header { padding:32px 20px 24px; }
             .site-nav { padding:0 20px; height:64px; }
             .nav-links,.nav-search { display:none; }
             .nav-hamburger { display:flex; }
+            .mobile-menu { inset:64px 0 0 0; }
             .page-header-top { flex-direction:column; gap:12px; }
             .header-controls { flex-direction:column; gap:12px; align-items:stretch; }
             #agenda-search { min-width:100%; width:100%; }
             .search-wrap { width:100%; }
         }
-        @media (max-width:600px) {
+        @media (max-width:480px) {
+            .main-layout { flex-direction:column; padding:14px; gap:14px; }
+            .sidebar { width:100%; position:static; }
+            .sidebar .category-menu { flex-direction:row; flex-wrap:wrap; gap:6px; }
+            .category-btn { font-size:11px; padding:6px 10px; border:1.5px solid rgba(64,157,201,0.2); border-radius:20px; }
+            .category-btn:hover, .category-btn.active { background:rgba(64,157,201,0.12); color:#409DC9; }
+            .sidebar h3 { width:100%; }
+            .sidebar-sep { display:none; }
             .events-grid { grid-template-columns:1fr; }
             .modal-box { border-radius:16px 16px 0 0; max-height:88vh; }
             #event-modal { align-items:flex-end; padding:0; }
