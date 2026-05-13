@@ -6,28 +6,30 @@
   <title>Les Santes 2026 – Mataró</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;0,14..32,900;1,14..32,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --crimson: #3f9fcb;
-      --crimson-dark: #2d7ea8;
-      --crimson-light: #63bfe3;
-      --gold: #3f9fcb;
-      --gold-light: #7bcde9;
-      --bg: #e6e6e6;
-      --bg2: #efefef;
-      --bg3: #ffffff;
-      --text: #0d1117;
-      --text-muted: #4f5b64;
-      --border: rgba(63,159,203,0.25);
+      /* Override aliases for this page */
+      --crimson:       var(--blau);
+      --crimson-dark:  #2d7ea8;
+      --crimson-light: var(--cyan);
+      --gold:          var(--groc);
+      --gold-light:    #fffaaa;
+      --bg:            #f8f8f8;
+      --bg2:           #f0f0f0;
+      --bg3:           #ffffff;
+      --text:          var(--negre);
+      --text-muted:    var(--gris-mig);
+      --border:        rgba(64,157,201,0.2);
     }
 
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'Nunito', 'Segoe UI', system-ui, sans-serif;
+      font-family: var(--font-main);
       font-size: 15px;
       line-height: 1.6;
     }
@@ -35,31 +37,30 @@
     a { color: inherit; text-decoration: none; }
 
     /* ── NAV ── */
-    nav {
+    .site-nav {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 48px;
-      height: 72px;
-      background: #3f9fcb;
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(0,0,0,0.08);
+      height: 68px;
+      background: var(--blau);
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 200;
     }
 
     .nav-logo {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
       text-decoration: none;
     }
 
     .nav-logo .logo-icon {
-      width: 42px;
-      height: 42px;
-      background: linear-gradient(135deg, #2d7ea8 50%, #63bfe3 50%);
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,0.18);
+      border: 2px solid rgba(255,255,255,0.4);
       border-radius: 8px;
       display: flex;
       align-items: center;
@@ -68,94 +69,82 @@
       font-weight: 900;
       color: #fff;
       flex-shrink: 0;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+      overflow: hidden;
     }
 
     .nav-logo-text { line-height: 1; }
 
-    .nav-logo-name {
+    .logo-name {
       display: block;
       font-weight: 800;
       font-size: 16px;
-      color: #ffffff;
-      letter-spacing: 0.01em;
+      color: #fff;
+      letter-spacing: -0.01em;
     }
 
-    .nav-logo-sub {
+    .logo-sub {
       display: block;
       font-size: 9px;
-      color: #dff3fb;
-      font-weight: 600;
+      color: rgba(255,255,255,0.65);
+      font-weight: 500;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      margin-top: 2px;
+      margin-top: 3px;
     }
 
     .nav-links {
       display: flex;
-      gap: 4px;
+      gap: 2px;
       list-style: none;
     }
 
     .nav-links a {
       font-size: 13px;
       font-weight: 500;
-      color: rgba(255,255,255,0.95);
-      padding: 8px 16px;
-      border-radius: 6px;
-      transition: color 0.15s, background 0.15s;
-      letter-spacing: 0.02em;
+      color: rgba(255,255,255,0.88);
+      padding: 8px 14px;
+      border-radius: 8px;
+      transition: background 0.15s;
     }
 
-    .nav-links a:hover {
-      color: #ffffff;
-      background: rgba(255,255,255,0.18);
-    }
-
-    .nav-links a.active {
-      color: #ffffff;
-      background: rgba(255,255,255,0.24);
-    }
+    .nav-links a:hover { color: #fff; background: rgba(255,255,255,0.14); }
+    .nav-links a.active { color: #fff; background: rgba(255,255,255,0.2); }
 
     .nav-right {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .nav-search {
       display: flex;
       align-items: center;
       gap: 8px;
-      background: rgba(255,255,255,0.18);
-      border: 1px solid rgba(255,255,255,0.35);
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.28);
       border-radius: 8px;
-      padding: 8px 16px;
+      padding: 8px 14px;
       font-size: 13px;
-      color: #ffffff;
+      color: #fff;
       cursor: pointer;
-      transition: border-color 0.15s, background 0.15s;
+      transition: background 0.15s;
     }
 
-    .nav-search:hover {
-      border-color: rgba(255,255,255,0.55);
-      background: rgba(255,255,255,0.26);
-      color: #ffffff;
-    }
+    .nav-search:hover { background: rgba(255,255,255,0.24); }
 
     .nav-cta {
-      background: #ffffff;
-      color: #2d7ea8;
+      background: var(--groc);
+      color: var(--negre);
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 800;
       padding: 8px 18px;
       border-radius: 8px;
-      letter-spacing: 0.03em;
-      transition: opacity 0.15s;
+      letter-spacing: 0.02em;
+      transition: opacity 0.15s, transform 0.15s;
       white-space: nowrap;
     }
 
-    .nav-cta:hover { opacity: 0.85; }
+    .nav-cta:hover { opacity: 0.88; transform: translateY(-1px); }
 
     /* ── HERO ── */
     .hero {
@@ -229,9 +218,9 @@
     }
 
     .hero h1 {
-      font-family: 'Playfair Display', Georgia, serif;
+      font-family: 'Inter', -apple-system, sans-serif;
       font-size: clamp(30px, 4.5vw, 52px);
-      font-weight: 700;
+      font-weight: 800;
       line-height: 1.15;
       max-width: 640px;
       margin: 0 auto;
@@ -262,25 +251,27 @@
 
     .countdown-box .num {
       display: block;
-      font-size: 40px;
-      font-weight: 700;
+      font-size: 48px;
+      font-weight: 900;
       line-height: 1;
-      color: var(--crimson);
+      color: #fff;
+      letter-spacing: -0.03em;
     }
 
     .countdown-box .label {
       display: block;
       font-size: 10px;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: #2d7ea8;
+      letter-spacing: 0.14em;
+      color: rgba(255,255,255,0.6);
       margin-top: 6px;
+      font-weight: 600;
     }
 
     /* ── BADGE ── */
     .badge-strip {
-      padding: 0 32px 0;
-      max-width: 900px;
+      padding: 0 48px;
+      max-width: 960px;
       margin: 40px auto 0;
     }
 
@@ -298,9 +289,9 @@
 
     /* ── QUÈ SÓN ── */
     .que-son {
-      max-width: 900px;
+      max-width: 960px;
       margin: 0 auto;
-      padding: 32px 32px 48px;
+      padding: 32px 48px 48px;
       display: grid;
       grid-template-columns: 1fr 280px;
       gap: 40px;
@@ -308,9 +299,9 @@
     }
 
     .que-son h2 {
-      font-family: 'Playfair Display', Georgia, serif;
+      font-family: 'Inter', -apple-system, sans-serif;
       font-size: 28px;
-      font-weight: 700;
+      font-weight: 800;
       margin-bottom: 16px;
     }
 
@@ -344,8 +335,8 @@
     .btn:hover { opacity: 0.85; }
 
     .btn-gold {
-      background: var(--crimson);
-      color: #fff;
+      background: var(--groc);
+      color: var(--negre);
     }
 
     .btn-outline {
@@ -403,12 +394,13 @@
     /* ── AGENDA ── */
     .agenda-section {
       background: var(--bg2);
-      padding: 48px 32px;
+      padding: 48px 0;
     }
 
     .agenda-inner {
-      max-width: 900px;
+      max-width: 960px;
       margin: 0 auto;
+      padding: 0 48px;
     }
 
     .agenda-header {
@@ -421,18 +413,19 @@
     }
 
     .agenda-header h2 {
-      font-family: 'Playfair Display', Georgia, serif;
+      font-family: 'Inter', -apple-system, sans-serif;
       font-size: 26px;
-      font-weight: 700;
+      font-weight: 800;
     }
 
     .dia-badge {
-      background: var(--gold);
-      color: #111;
-      font-size: 13px;
-      font-weight: 700;
-      padding: 6px 16px;
+      background: var(--groc);
+      color: var(--negre);
+      font-size: 12px;
+      font-weight: 800;
+      padding: 5px 14px;
       border-radius: 20px;
+      letter-spacing: 0.04em;
     }
 
     .day-tabs {
@@ -457,9 +450,9 @@
     .day-tab:hover { border-color: var(--gold); }
 
     .day-tab.active {
-      background: var(--gold);
-      border-color: var(--gold);
-      color: #111;
+      background: var(--groc);
+      border-color: var(--groc);
+      color: var(--negre);
     }
 
     .day-tab .dow {
@@ -517,7 +510,7 @@
 
     .acte-time {
       font-weight: 700;
-      color: var(--gold);
+      color: var(--blau);
       min-width: 52px;
       font-size: 13px;
     }
@@ -531,8 +524,8 @@
 
     /* ── MINISANTES ── */
     .minisantes-section {
-      padding: 48px 32px;
-      max-width: 900px;
+      padding: 48px 48px;
+      max-width: 960px;
       margin: 0 auto;
     }
 
@@ -546,7 +539,7 @@
     }
 
     .minisantes-header h2 {
-      font-family: 'Playfair Display', Georgia, serif;
+      font-family: 'Inter', -apple-system, sans-serif;
       font-size: 26px;
       font-weight: 900;
       letter-spacing: 0.02em;
@@ -601,17 +594,33 @@
       border-radius: 14px;
     }
 
-    .game-card:nth-child(1) .gc-bg { background: linear-gradient(160deg, #3f9fcb 0%, #63bfe3 100%); }
-    .game-card:nth-child(2) .gc-bg { background: linear-gradient(160deg, #8E44AD 0%, #B07FCA 100%); }
-    .game-card:nth-child(3) .gc-bg { background: linear-gradient(160deg, #3f9fcb 0%, #F0C869 100%); }
-    .game-card:nth-child(4) .gc-bg { background: linear-gradient(160deg, #1A3A6B 0%, #2980B9 100%); }
+    .game-card:nth-child(1) .gc-bg { background: linear-gradient(150deg, var(--blau) 0%, #2d7ea8 100%); }
+    .game-card:nth-child(2) .gc-bg { background: linear-gradient(150deg, #a020b8 0%, var(--morat) 100%); }
+    .game-card:nth-child(3) .gc-bg { background: linear-gradient(150deg, #c05d00 0%, var(--taronja) 100%); }
+    .game-card:nth-child(4) .gc-bg { background: linear-gradient(150deg, #1e7a18 0%, var(--verd) 100%); }
 
-    .game-card .gc-emoji {
+    .game-card .gc-icon {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -65%);
-      font-size: 40px;
+      top: 0; left: 0; right: 0;
+      bottom: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .game-card .gc-icon-text {
+      font-family: 'Inter', -apple-system, sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      line-height: 1.4;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border: 1.5px solid rgba(255,255,255,0.3);
+      border-radius: 10px;
+      padding: 10px 14px;
     }
 
     .game-card .gc-body {
@@ -623,6 +632,7 @@
     }
 
     .gc-title {
+      font-family: 'Inter', -apple-system, sans-serif;
       font-size: 12px;
       font-weight: 700;
       color: #fff;
@@ -649,8 +659,8 @@
 
     /* ── FOOTER ── */
     footer {
-      background: #0a0808;
-      border-top: 1px solid rgba(63,159,203,0.25);
+      background: #fff;
+      border-top: 1.5px solid rgba(0,0,0,0.09);
       padding: 0;
     }
 
@@ -688,12 +698,12 @@
     .footer-brand .logo-name {
       font-weight: 800;
       font-size: 16px;
-      color: var(--text);
+      color: #2A2A2A;
     }
 
     .footer-brand .logo-sub {
       font-size: 9px;
-      color: var(--gold);
+      color: #409DC9;
       font-weight: 600;
       letter-spacing: 0.12em;
       text-transform: uppercase;
@@ -703,18 +713,18 @@
 
     .footer-brand p {
       font-size: 13px;
-      color: var(--text-muted);
+      color: rgba(42,42,42,0.5);
       line-height: 1.7;
       max-width: 280px;
     }
 
     .footer-col h4 {
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--gold);
-      margin-bottom: 16px;
+      letter-spacing: 0.12em;
+      color: rgba(42,42,42,0.4);
+      margin-bottom: 14px;
     }
 
     .footer-col ul {
@@ -726,14 +736,14 @@
 
     .footer-col ul a {
       font-size: 13px;
-      color: var(--text-muted);
+      color: rgba(42,42,42,0.6);
       transition: color 0.15s;
     }
 
-    .footer-col ul a:hover { color: var(--text); }
+    .footer-col ul a:hover { color: #409DC9; }
 
     .footer-bottom {
-      border-top: 1px solid var(--border);
+      border-top: 1px solid rgba(0,0,0,0.07);
     }
 
     .footer-bottom-inner {
@@ -757,17 +767,18 @@
       align-items: center;
       gap: 8px;
       font-size: 12px;
-      color: var(--text-muted);
-      background: var(--bg3);
-      border: 1px solid var(--border);
+      color: rgba(42,42,42,0.55);
+      background: #f4f4f4;
+      border: 1px solid rgba(0,0,0,0.1);
       border-radius: 8px;
       padding: 7px 14px;
       transition: border-color 0.15s, color 0.15s;
     }
 
     .social-link:hover {
-      border-color: var(--gold);
-      color: var(--text);
+      border-color: #409DC9;
+      color: #409DC9;
+      background: rgba(64,157,201,0.07);
     }
 
     .social-icon {
@@ -779,14 +790,14 @@
       display: flex;
       gap: 20px;
       font-size: 12px;
-      color: var(--text-muted);
+      color: rgba(42,42,42,0.4);
     }
 
-    .footer-legal a:hover { color: var(--text); }
+    .footer-legal a:hover { color: #409DC9; }
 
     .footer-copy {
       font-size: 12px;
-      color: #555;
+      color: rgba(42,42,42,0.4);
     }
 
     /* ── SCROLL CTA ── */
@@ -804,42 +815,42 @@
       display: block;
       width: 22px;
       height: 2px;
-      background: var(--text);
+      background: #fff;
       border-radius: 2px;
-      transition: opacity 0.2s;
     }
 
     /* ── MOBILE MENU ── */
     .mobile-menu {
       display: none;
       position: fixed;
-      inset: 60px 0 0 0;
-      background: #f4fbff;
-      z-index: 99;
-      padding: 32px 24px;
+      inset: 68px 0 0 0;
+      background: var(--negre);
+      z-index: 199;
+      padding: 28px 24px;
       flex-direction: column;
-      gap: 24px;
-      border-top: 1px solid var(--border);
+      gap: 4px;
     }
     .mobile-menu.open { display: flex; }
     .mobile-menu a {
-      font-size: 20px;
+      font-size: 17px;
       font-weight: 600;
-      color: var(--text);
-      padding: 8px 0;
-      border-bottom: 1px solid var(--border);
+      color: rgba(255,255,255,0.85);
+      padding: 12px 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      transition: color 0.15s;
     }
-    .mobile-menu a:hover { color: var(--gold); }
+    .mobile-menu a:hover { color: var(--groc); }
 
     .festive-gallery {
-      padding: 8px 32px 48px;
-      max-width: 1080px;
+      padding: 8px 48px 48px;
+      max-width: 960px;
       margin: 0 auto;
     }
 
     .festive-gallery h3 {
-      font-family: 'Playfair Display', Georgia, serif;
+      font-family: 'Inter', -apple-system, sans-serif;
       font-size: 24px;
+      font-weight: 800;
       margin-bottom: 8px;
     }
 
@@ -888,7 +899,8 @@
       .badge-strip { padding: 0 20px; margin-top: 32px; }
 
       .que-son { padding: 24px 20px 36px; }
-      .agenda-section { padding: 36px 20px; }
+      .agenda-section { padding: 36px 0; }
+      .agenda-inner { padding: 0 20px; }
 
       .day-tabs { gap: 8px; }
       .day-tab { min-width: 56px; padding: 10px 6px; }
@@ -897,6 +909,9 @@
       .minisantes-section { padding: 36px 20px; }
       .games-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
       .festive-strip { grid-template-columns: repeat(2, 1fr); }
+      .festive-gallery { padding: 8px 20px 48px; }
+
+      #galeria { padding: 36px 20px !important; }
 
       .footer-top { grid-template-columns: 1fr; gap: 32px; padding: 36px 24px 28px; }
       .footer-bottom-inner { padding: 16px 24px; flex-direction: column; align-items: flex-start; gap: 12px; }
@@ -924,24 +939,68 @@
 
       .footer-social { flex-wrap: wrap; }
     }
+
+    /* ── MODAL ACTE ── */
+    .act-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(4px);
+      z-index: 900;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .act-modal-backdrop.open { display: flex; }
+
+    .act-modal-box {
+      background: #fff;
+      border-radius: 20px;
+      max-width: 560px;
+      width: 100%;
+      overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.25);
+      animation: actModalIn 0.22s ease;
+    }
+    @keyframes actModalIn {
+      from { opacity:0; transform: scale(0.94) translateY(12px); }
+      to   { opacity:1; transform: scale(1) translateY(0); }
+    }
+    .act-modal-img { width:100%; aspect-ratio:16/8; object-fit:cover; }
+    .act-modal-body { padding: 24px 28px 28px; }
+    .act-modal-label { font-size:10px; font-weight:800; color:#409DC9; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px; }
+    .act-modal-title { font-size:22px; font-weight:800; color:#2A2A2A; margin-bottom:6px; line-height:1.2; }
+    .act-modal-meta { display:flex; gap:16px; flex-wrap:wrap; margin-bottom:16px; }
+    .act-modal-meta span { font-size:12px; color:#666; display:flex; align-items:center; gap:5px; }
+    .act-modal-desc { font-size:13px; color:#4A4A4A; line-height:1.7; margin-bottom:20px; }
+    .act-modal-footer { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+    .act-modal-cta { background:#F0CF3C; color:#2A2A2A; font-size:13px; font-weight:800; padding:10px 22px; border-radius:999px; transition:opacity 0.15s; }
+    .act-modal-cta:hover { opacity:0.85; }
+    .act-modal-close { font-size:12px; color:#999; cursor:pointer; background:none; border:none; padding:4px 8px; transition:color 0.15s; }
+    .act-modal-close:hover { color:#2A2A2A; }
+
+    .act-card-clickable { cursor:pointer; transition: transform 0.2s, box-shadow 0.2s; }
+    .act-card-clickable:hover { transform:translateY(-5px); box-shadow:0 12px 32px rgba(0,0,0,0.12); }
   </style>
 </head>
 <body>
 
 <!-- ── NAVIGATION ── -->
-<nav>
+<nav class="site-nav">
   <a class="nav-logo" href="home.html">
     <div class="logo-icon">LS</div>
     <div class="nav-logo-text">
-      <span class="nav-logo-name">Les Santes</span>
-      <span class="nav-logo-sub">Festa Major de Mataró</span>
+      <span class="logo-name">Les Santes</span>
+      <span class="logo-sub">Festa Major de Mataró</span>
     </div>
   </a>
   <ul class="nav-links">
-    <li><a href="#la-festa" class="active">La Festa</a></li>
+    <li><a href="home.html" class="active">La Festa</a></li>
+    <li><a href="agenda.html">Agenda</a></li>
     <li><a href="minisantes.html">Minisantes</a></li>
-    <li><a href="#galeria">Galeria</a></li>
-    <li><a href="agenda.html">Les Santes 2026</a></li>
+    <li><a href="actes.html">Els meus actes</a></li>
+    <li><a href="galeria.html">Galeria</a></li>
   </ul>
   <div class="nav-right">
     <a class="nav-search" href="agenda.html">
@@ -956,10 +1015,11 @@
 </nav>
 
 <div class="mobile-menu" id="mobile-menu">
-  <a href="#la-festa">La Festa</a>
+  <a href="home.html">La Festa</a>
+  <a href="agenda.html">Agenda</a>
   <a href="minisantes.html">Minisantes</a>
-  <a href="#galeria">Galeria</a>
-  <a href="agenda.html">Agenda 2026</a>
+  <a href="actes.html">Els meus actes</a>
+  <a href="galeria.html">Galeria</a>
 </div>
 
 <!-- ── HERO ── -->
@@ -1087,68 +1147,74 @@
 </section>
 
 <!-- ── ACTES DESTACATS ── -->
-<section id="galeria" style="padding: 48px 32px; max-width: 960px; margin: 0 auto;">
-  <h2 style="font-family: 'Playfair Display', serif; font-size: 26px; margin-bottom: 8px;">Actes destacats de Les Santes 2025</h2>
+<section id="galeria" style="padding: 48px 48px; max-width: 960px; margin: 0 auto;">
+  <h2 style="font-family: 'Inter', -apple-system, sans-serif; font-size: 26px; font-weight: 800; margin-bottom: 8px;">Actes destacats de Les Santes 2025</h2>
   <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 28px;">Una selecció dels moments imprescindibles de la Festa Major</p>
 
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px;">
 
-    <div style="background: var(--bg3); border-radius: 14px; overflow: hidden; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''">
+    <div class="act-card-clickable" style="background: var(--bg3); border-radius: 14px; overflow: hidden;"
+         onclick="openActModal({title:'Gegantada',label:'Tradicional · Divendres 24 de juliol / 18 h',date:'24 de juliol de 2025',time:'18:00 h',place:'Des de Les Esmandies fins a Plaça Santa Anna',desc:'La Gegantada és un dels moments més emblemàtics de Les Santes. Gegants de tots els pobles del Maresme desfilen pels carrers de Mataró en una processó festiva i plena de color. Un espectacle únic per a tota la família.',img:'https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_0,w_1963,h_1090|c_fit,w_768,h_426|c_auto/bea354601387219072c5daee94e91605.jpeg'})">
       <img src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_0,w_1963,h_1090|c_fit,w_768,h_426|c_auto/bea354601387219072c5daee94e91605.jpeg"
            alt="Gegantada" style="width:100%; aspect-ratio:16/9; object-fit:cover;" />
       <div style="padding: 16px;">
         <div style="font-size:10px; font-weight:700; color:var(--crimson-light); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:6px;">Divendres 24 de juliol / 18 h</div>
-        <div style="font-family:'Playfair Display',serif; font-size:16px; font-weight:700; margin-bottom:4px;">Gegantada</div>
+        <div style="font-family:'Inter',-apple-system,sans-serif; font-size:16px; font-weight:700; margin-bottom:4px;">Gegantada</div>
         <div style="font-size:12px; color:var(--text-muted);">📍 Des de Les Esmandies fins a Plaça Santa Anna</div>
       </div>
     </div>
 
-    <div style="background: var(--bg3); border-radius: 14px; overflow: hidden; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''">
+    <div class="act-card-clickable" style="background: var(--bg3); border-radius: 14px; overflow: hidden;"
+         onclick="openActModal({title:'Diada Castellera de Les Santes',label:'Tradicional · Dissabte 19 de juliol / 18 h',date:'19 de juliol de 2025',time:'18:00 h',place:'Plaça de Santa Anna',desc:'La Diada Castellera és una de les cites més emocionants de la Festa Major. Les millors colles castelleres del país s\'uneixen a la Plaça de Santa Anna per aixecar els castells més espectaculars davant un públic entregat.',img:'https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_214,w_1824,h_1012|c_fit,w_768,h_426|c_auto/cc091c154c09b5510164e78d19e583f2.jpeg'})">
       <img src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_214,w_1824,h_1012|c_fit,w_768,h_426|c_auto/cc091c154c09b5510164e78d19e583f2.jpeg"
            alt="Diada Castellera" style="width:100%; aspect-ratio:16/9; object-fit:cover;" />
       <div style="padding: 16px;">
         <div style="font-size:10px; font-weight:700; color:var(--crimson-light); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:6px;">Dissabte 19 de juliol / 18 h</div>
-        <div style="font-family:'Playfair Display',serif; font-size:16px; font-weight:700; margin-bottom:4px;">Diada Castellera de Les Santes</div>
+        <div style="font-family:'Inter',-apple-system,sans-serif; font-size:16px; font-weight:700; margin-bottom:4px;">Diada Castellera de Les Santes</div>
         <div style="font-size:12px; color:var(--text-muted);">📍 Plaça de Santa Anna</div>
       </div>
     </div>
 
-    <div style="background: var(--bg3); border-radius: 14px; overflow: hidden; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''">
+    <div class="act-card-clickable" style="background: var(--bg3); border-radius: 14px; overflow: hidden;"
+         onclick="openActModal({title:'L\'Encesa — Ball de Diables',label:'Tradicional · Diumenge 20 de juliol / 18:30 h',date:'20 de juliol de 2025',time:'18:30 h',place:'Des de l\'Ajuntament',desc:'L\'Encesa és el moment en què el foc pren el carrer. El Ball de Diables és un espectacle pirotècnic i de dansa tradicional que omple els carrers de llum, soroll i emoció. Un dels actes de foc més esperats de la Festa Major.',img:'https://assets.appculturamataro.cat/medias/agenda/2023/c_crop,x_29,y_90,w_1539,h_854|c_fit,w_768,h_426|c_auto/fef48a3daef386a8d91bccb00e8369f2.jpeg'})">
       <img src="https://assets.appculturamataro.cat/medias/agenda/2023/c_crop,x_29,y_90,w_1539,h_854|c_fit,w_768,h_426|c_auto/fef48a3daef386a8d91bccb00e8369f2.jpeg"
            alt="L'Encesa" style="width:100%; aspect-ratio:16/9; object-fit:cover;" />
       <div style="padding: 16px;">
         <div style="font-size:10px; font-weight:700; color:var(--crimson-light); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:6px;">Diumenge 20 de juliol / 18:30 h</div>
-        <div style="font-family:'Playfair Display',serif; font-size:16px; font-weight:700; margin-bottom:4px;">L'Encesa — Ball de Diables</div>
+        <div style="font-family:'Inter',-apple-system,sans-serif; font-size:16px; font-weight:700; margin-bottom:4px;">L'Encesa — Ball de Diables</div>
         <div style="font-size:12px; color:var(--text-muted);">📍 Des de l'Ajuntament</div>
       </div>
     </div>
 
-    <div style="background: var(--bg3); border-radius: 14px; overflow: hidden; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''">
+    <div class="act-card-clickable" style="background: var(--bg3); border-radius: 14px; overflow: hidden;"
+         onclick="openActModal({title:'Broadway Santes',label:'Espectacle · Dimecres 23 de juliol / 19 h',date:'23 de juliol de 2025',time:'19:00 h',place:'Teatre Monumental',desc:'Broadway Santes és un espectacle de dansa i música que reuneix joves talents sobre l\'escenari del Teatre Monumental. Una actuació plena d\'energia i creativitat que omple de vida l\'escena festiva de Mataró.',img:'https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_31,w_2048,h_1136|c_fit,w_768,h_426|c_auto/57b929a07ac86fc470c16f500eaab1e9.jpeg'})">
       <img src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_31,w_2048,h_1136|c_fit,w_768,h_426|c_auto/57b929a07ac86fc470c16f500eaab1e9.jpeg"
            alt="Broadway Santes" style="width:100%; aspect-ratio:16/9; object-fit:cover;" />
       <div style="padding: 16px;">
         <div style="font-size:10px; font-weight:700; color:var(--crimson-light); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:6px;">Dimecres 23 de juliol / 19 h</div>
-        <div style="font-family:'Playfair Display',serif; font-size:16px; font-weight:700; margin-bottom:4px;">Broadway Santes</div>
+        <div style="font-family:'Inter',-apple-system,sans-serif; font-size:16px; font-weight:700; margin-bottom:4px;">Broadway Santes</div>
         <div style="font-size:12px; color:var(--text-muted);">📍 Teatre Monumental</div>
       </div>
     </div>
 
-    <div style="background: var(--bg3); border-radius: 14px; overflow: hidden; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''">
+    <div class="act-card-clickable" style="background: var(--bg3); border-radius: 14px; overflow: hidden;"
+         onclick="openActModal({title:'Concerts Dissantes',label:'Música · Dissabte 19 de juliol / 22:30 h',date:'19 de juliol de 2025',time:'22:30 h',place:'Espai Firal del Nou Parc Central',desc:'Els Concerts Dissantes reuneixen les millors propostes musicals de la festa. Des de música tradicional catalana fins a propostes contemporànies, l\'Espai Firal es converteix en el gran escenari de la nit de dissabte.',img:'https://assets.appculturamataro.cat/medias/agenda/2022/c_crop,x_0,y_0,w_1140,h_632|c_fit,w_768,h_426|c_auto/432441039f3f3cb8a48b4ddca4c7c0ac.jpeg'})">
       <img src="https://assets.appculturamataro.cat/medias/agenda/2022/c_crop,x_0,y_0,w_1140,h_632|c_fit,w_768,h_426|c_auto/432441039f3f3cb8a48b4ddca4c7c0ac.jpeg"
            alt="Diada Castellera" style="width:100%; aspect-ratio:16/9; object-fit:cover;" />
       <div style="padding: 16px;">
         <div style="font-size:10px; font-weight:700; color:var(--crimson-light); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:6px;">Dissabte 19 de juliol / 22:30 h</div>
-        <div style="font-family:'Playfair Display',serif; font-size:16px; font-weight:700; margin-bottom:4px;">Concerts Dissantes</div>
+        <div style="font-family:'Inter',-apple-system,sans-serif; font-size:16px; font-weight:700; margin-bottom:4px;">Concerts Dissantes</div>
         <div style="font-size:12px; color:var(--text-muted);">📍 Espai Firal del Nou Parc Central</div>
       </div>
     </div>
 
-    <div style="background: var(--bg3); border-radius: 14px; overflow: hidden; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''">
+    <div class="act-card-clickable" style="background: var(--bg3); border-radius: 14px; overflow: hidden;"
+         onclick="openActModal({title:'Cor Madrigalista — 50 anys',label:'Música · Divendres 18 de juliol / 20 h',date:'18 de juliol de 2025',time:'20:00 h',place:'Teatre Monumental',desc:'El Cor Madrigalista de Mataró celebra el seu 50è aniversari amb un concert excepcional al Teatre Monumental. Cinc dècades de trajectòria musical en un acte que homenatja la tradició coral de la ciutat.',img:'https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_61,y_132,w_1900,h_1054|c_fit,w_768,h_426|c_auto/d670a50f88ba8761324868be0a082348.jpeg'})">
       <img src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_61,y_132,w_1900,h_1054|c_fit,w_768,h_426|c_auto/d670a50f88ba8761324868be0a082348.jpeg"
            alt="Cor Madrigalista" style="width:100%; aspect-ratio:16/9; object-fit:cover;" />
       <div style="padding: 16px;">
         <div style="font-size:10px; font-weight:700; color:var(--crimson-light); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:6px;">Divendres 18 de juliol / 20 h</div>
-        <div style="font-family:'Playfair Display',serif; font-size:16px; font-weight:700; margin-bottom:4px;">Cor Madrigalista — 50 anys</div>
+        <div style="font-family:'Inter',-apple-system,sans-serif; font-size:16px; font-weight:700; margin-bottom:4px;">Cor Madrigalista — 50 anys</div>
         <div style="font-size:12px; color:var(--text-muted);">📍 Teatre Monumental</div>
       </div>
     </div>
@@ -1176,40 +1242,61 @@
   <p class="minisantes-desc">Un espai per als més petits amb jocs, activitats i tot el que necessites per viure les festes!</p>
 
   <div class="games-grid">
-    <div class="game-card">
+    <a href="minisantes.html" class="game-card">
       <div class="gc-bg"></div>
-      <span class="gc-emoji">🎨</span>
+      <div class="gc-icon"><div class="gc-icon-text">Pinzell<br>&amp; Color</div></div>
       <div class="gc-body">
         <div class="gc-title">Pinta els gegants</div>
         <span class="gc-btn">Accedeix</span>
       </div>
-    </div>
-    <div class="game-card">
+    </a>
+    <a href="minisantes.html" class="game-card">
       <div class="gc-bg"></div>
-      <span class="gc-emoji">✂️</span>
+      <div class="gc-icon"><div class="gc-icon-text">Retalla<br>&amp; Munta</div></div>
       <div class="gc-body">
         <div class="gc-title">Retallables de la Festa</div>
         <span class="gc-btn">Accedeix</span>
       </div>
-    </div>
-    <div class="game-card">
+    </a>
+    <a href="minisantes.html" class="game-card">
       <div class="gc-bg"></div>
-      <span class="gc-emoji">🧠</span>
+      <div class="gc-icon"><div class="gc-icon-text">Troba<br>les parelles</div></div>
       <div class="gc-body">
         <div class="gc-title">Memory dels Gegants</div>
         <span class="gc-btn">Accedeix</span>
       </div>
-    </div>
-    <div class="game-card">
+    </a>
+    <a href="minisantes.html" class="game-card">
       <div class="gc-bg"></div>
-      <span class="gc-emoji">🧩</span>
+      <div class="gc-icon"><div class="gc-icon-text">Encaixa<br>les peces</div></div>
       <div class="gc-body">
         <div class="gc-title">Puzzle del Correfoc</div>
         <span class="gc-btn">Accedeix</span>
       </div>
-    </div>
+    </a>
   </div>
 </section>
+
+<!-- ── MODAL ACTE DESTACAT ── -->
+<div class="act-modal-backdrop" id="act-modal" onclick="closeActModal(event)">
+  <div class="act-modal-box" role="dialog" aria-modal="true">
+    <img id="act-modal-img" class="act-modal-img" src="" alt="" />
+    <div class="act-modal-body">
+      <div class="act-modal-label" id="act-modal-label"></div>
+      <div class="act-modal-title" id="act-modal-title"></div>
+      <div class="act-modal-meta">
+        <span id="act-modal-date">📅 <span></span></span>
+        <span id="act-modal-time">🕐 <span></span></span>
+        <span id="act-modal-place">📍 <span></span></span>
+      </div>
+      <p class="act-modal-desc" id="act-modal-desc"></p>
+      <div class="act-modal-footer">
+        <a href="agenda.html" class="act-modal-cta">Veure a l'agenda completa →</a>
+        <button class="act-modal-close" onclick="document.getElementById('act-modal').classList.remove('open')">Tancar ✕</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ── FOOTER ── -->
 <footer>
@@ -1320,6 +1407,33 @@
     const menu = document.getElementById('mobile-menu');
     menu.classList.toggle('open');
   }
+
+  // Act modal
+  function openActModal(data) {
+    const m = document.getElementById('act-modal');
+    document.getElementById('act-modal-img').src = data.img;
+    document.getElementById('act-modal-img').alt = data.title;
+    document.getElementById('act-modal-label').textContent = data.label;
+    document.getElementById('act-modal-title').textContent = data.title;
+    document.getElementById('act-modal-date').querySelector('span').textContent = data.date;
+    document.getElementById('act-modal-time').querySelector('span').textContent = data.time;
+    document.getElementById('act-modal-place').querySelector('span').textContent = data.place;
+    document.getElementById('act-modal-desc').textContent = data.desc;
+    m.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeActModal(e) {
+    if (e.target === document.getElementById('act-modal')) {
+      document.getElementById('act-modal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.getElementById('act-modal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  });
 
   // Close menu on link click
   document.querySelectorAll('.mobile-menu a').forEach(a => {

@@ -6,130 +6,124 @@
     <title>Els meus actes preferits – Les Santes 2025</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;0,14..32,900;1,14..32,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
-            --crimson: #3f9fcb; --crimson-dark: #2d7ea8; --crimson-light: #63bfe3;
-            --gold: #3f9fcb; --gold-light: #7bcde9;
-            --bg: #e6e6e6; --bg2: #efefef; --bg3: #ffffff; --bg4: #f6f8fa;
-            --text: #0d1117; --text-muted: #4f5b64; --border: rgba(63,159,203,0.25);
+            --crimson: var(--blau); --crimson-dark: #2d7ea8; --crimson-light: var(--cyan);
+            --gold: var(--groc); --gold-light: #fffaaa;
+            --bg: #fff; --bg2: #f5f5f5; --bg3: #eeeeee; --bg4: #e8e8e8;
+            --text: var(--negre); --text-muted: rgba(0,0,0,0.45); --border: rgba(0,0,0,0.1);
         }
         body {
-            background:
-                radial-gradient(circle at 8% 10%, rgba(255, 213, 114, 0.4) 0%, transparent 22%),
-                radial-gradient(circle at 82% 20%, rgba(125, 46, 168, 0.22) 0%, transparent 26%),
-                linear-gradient(180deg, #f5faff 0%, #edf8ff 48%, #f2ebff 100%);
-            color:var(--text);
-            font-family:'Nunito','Segoe UI',system-ui,sans-serif;
-            font-size:15px;
-            line-height:1.6;
+            background: #fff;
+            color: var(--negre);
+            font-family: var(--font-main);
+            font-size: 15px;
+            line-height: 1.6;
         }
-        a { color:inherit; text-decoration:none; }
-        .site-nav { display:flex; align-items:center; justify-content:space-between; padding:0 48px; height:72px; background:#3f9fcb; backdrop-filter:blur(12px); border-bottom:1px solid rgba(0,0,0,0.08); position:sticky; top:0; z-index:100; }
-        .nav-logo { display:flex; align-items:center; gap:14px; text-decoration:none; }
-        .logo-icon { width:42px; height:42px; background:linear-gradient(135deg,#2d7ea8 50%,#63bfe3 50%); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:900; color:#fff; flex-shrink:0; box-shadow:0 2px 8px rgba(0,0,0,0.4); }
+        a { color: inherit; text-decoration: none; }
+        .site-nav { display:flex; align-items:center; justify-content:space-between; padding:0 48px; height:68px; background:var(--blau); position:sticky; top:0; z-index:200; }
+        .nav-logo { display:flex; align-items:center; gap:12px; text-decoration:none; }
+        .logo-icon { width:40px; height:40px; background:rgba(255,255,255,0.18); border:2px solid rgba(255,255,255,0.4); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:900; color:#fff; flex-shrink:0; overflow:hidden; }
+        .logo-icon img { width:100%; height:100%; object-fit:cover; }
         .nav-logo-text { line-height:1; }
-        .logo-name { display:block; font-weight:800; font-size:16px; color:#ffffff; letter-spacing:0.01em; }
-        .logo-sub { display:block; font-size:9px; color:#dff3fb; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; margin-top:2px; }
-        .nav-links { display:flex; gap:4px; list-style:none; }
-        .nav-links a { font-size:13px; font-weight:500; color:rgba(255,255,255,0.95); padding:8px 16px; border-radius:6px; transition:color 0.15s,background 0.15s; letter-spacing:0.02em; }
-        .nav-links a:hover { color:#ffffff; background:rgba(255,255,255,0.18); }
-        .nav-links a.active { color:#ffffff; background:rgba(255,255,255,0.24); }
-        .nav-right { display:flex; align-items:center; gap:10px; }
-        .nav-search { display:flex; align-items:center; gap:8px; background:rgba(255,255,255,0.18); border:1px solid rgba(255,255,255,0.35); border-radius:8px; padding:8px 16px; font-size:13px; color:#ffffff; cursor:pointer; transition:border-color 0.15s,background 0.15s; }
-        .nav-search:hover { border-color:rgba(255,255,255,0.55); background:rgba(255,255,255,0.26); color:#ffffff; }
-        .nav-cta { background:#ffffff; color:#2d7ea8; font-size:12px; font-weight:700; padding:8px 18px; border-radius:8px; letter-spacing:0.03em; transition:opacity 0.15s; white-space:nowrap; }
-        .nav-cta:hover { opacity:0.85; }
+        .logo-name { display:block; font-weight:800; font-size:16px; color:#fff; letter-spacing:-0.01em; }
+        .logo-sub { display:block; font-size:9px; color:rgba(255,255,255,0.65); font-weight:500; letter-spacing:0.14em; text-transform:uppercase; margin-top:3px; }
+        .nav-links { display:flex; gap:2px; list-style:none; }
+        .nav-links a { font-size:13px; font-weight:500; color:rgba(255,255,255,0.88); padding:8px 14px; border-radius:8px; transition:background 0.15s; }
+        .nav-links a:hover { color:#fff; background:rgba(255,255,255,0.14); }
+        .nav-links a.active { color:#fff; background:rgba(255,255,255,0.2); }
+        .nav-right { display:flex; align-items:center; gap:8px; }
+        .nav-search { display:flex; align-items:center; gap:8px; background:rgba(255,255,255,0.14); border:1px solid rgba(255,255,255,0.28); border-radius:8px; padding:8px 14px; font-size:13px; color:#fff; cursor:pointer; transition:background 0.15s; }
+        .nav-search:hover { background:rgba(255,255,255,0.24); }
+        .nav-cta { background:var(--groc); color:var(--negre); font-size:12px; font-weight:800; padding:8px 18px; border-radius:8px; letter-spacing:0.02em; transition:opacity 0.15s,transform 0.15s; white-space:nowrap; }
+        .nav-cta:hover { opacity:0.88; transform:translateY(-1px); }
         .nav-hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:4px; }
-        .nav-hamburger span { display:block; width:22px; height:2px; background:#ffffff; border-radius:2px; transition:opacity 0.2s; }
-        .mobile-menu { display:none; position:fixed; inset:60px 0 0 0; background:#f4fbff; z-index:99; padding:32px 24px; flex-direction:column; gap:24px; border-top:1px solid var(--border); }
+        .nav-hamburger span { display:block; width:22px; height:2px; background:#fff; border-radius:2px; }
+        .mobile-menu { display:none; position:fixed; inset:68px 0 0 0; background:#fff; z-index:199; padding:28px 24px; flex-direction:column; gap:4px; border-top:2px solid var(--blau); }
         .mobile-menu.open { display:flex; }
-        .mobile-menu a { font-size:20px; font-weight:600; color:var(--text); padding:8px 0; border-bottom:1px solid var(--border); }
-        .mobile-menu a:hover { color:var(--gold); }
+        .mobile-menu a { font-size:17px; font-weight:600; color:var(--negre); padding:12px 8px; border-bottom:1px solid rgba(0,0,0,0.08); transition:color 0.15s; }
+        .mobile-menu a:hover { color:var(--blau); }
         .page-header {
-            background: linear-gradient(120deg, #d6f0ff 0%, #f0e5ff 52%, #fff2d4 100%);
-            padding:56px 48px 36px;
-            border-bottom:1px solid rgba(63,159,203,0.22);
+            background: linear-gradient(135deg, #f0f8ff 0%, #e8f4fb 100%);
+            padding:52px 48px 36px;
+            border-bottom:1px solid rgba(64,157,201,0.15);
             position: relative;
             overflow: hidden;
         }
-        .page-header::after {
-            content: '💙 🎉 ✨ 🥁';
+        .page-header::before {
+            content: '';
             position: absolute;
-            right: 30px;
-            top: 12px;
-            opacity: 0.38;
-            letter-spacing: 8px;
-            font-size: 20px;
+            bottom: -60px; left: -60px;
+            width: 260px; height: 260px;
+            background: radial-gradient(circle, rgba(64,157,201,0.12) 0%, transparent 70%);
+            pointer-events: none;
         }
-        .page-header-inner { max-width:1100px; margin:0 auto; }
-        .page-header h1 { font-family:'Playfair Display',Georgia,serif; font-size:clamp(30px,3.2vw,46px); font-weight:800; margin-bottom:8px; }
-        .page-header h1 span { color:var(--crimson-light); }
-        .page-header p { color:var(--text-muted); font-size:14px; }
+        .page-header-inner { max-width:960px; margin:0 auto; }
+        .page-header h1 { font-size:clamp(28px,3.2vw,46px); font-weight:900; margin-bottom:8px; letter-spacing:-0.02em; color:var(--negre); }
+        .page-header h1 span { color:var(--blau); }
+        .page-header p { color:rgba(0,0,0,0.5); font-size:14px; }
         .page-header .stats { display:flex; gap:24px; margin-top:20px; }
-        .stat { font-size:13px; color:var(--text-muted); }
-        .stat strong { color:#dff3fb; font-size:20px; display:block; font-weight:700; }
-        .main-layout { max-width:1100px; margin:0 auto; padding:36px 48px 50px; display:grid; grid-template-columns:220px 1fr; gap:34px; align-items:start; }
+        .stat { font-size:13px; color:rgba(0,0,0,0.5); }
+        .stat strong { color:var(--blau); font-size:22px; display:block; font-weight:800; }
+        .main-layout { max-width:960px; margin:0 auto; padding:36px 48px 50px; display:grid; grid-template-columns:200px 1fr; gap:34px; align-items:start; }
         .sidebar {
             position:sticky;
-            top:88px;
-            background:rgba(255,255,255,0.78);
-            border:1px solid rgba(63,159,203,0.2);
-            border-radius:16px;
-            padding:14px 10px;
-            box-shadow:0 12px 24px rgba(33, 94, 130, 0.1);
+            top:84px;
+            background:#fff;
+            border:1px solid rgba(0,0,0,0.1);
+            border-radius:14px;
+            padding:18px 14px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
         }
-        .sidebar h3 { font-family:'Playfair Display',Georgia,serif; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:#2a86b0; margin-bottom:12px; }
-        .category-menu { display:flex; flex-direction:column; gap:4px; }
-        .category-btn { display:flex; align-items:center; gap:10px; padding:8px 12px; border-radius:8px; font-size:13px; font-weight:500; color:var(--text-muted); transition:all 0.15s; }
-        .category-btn:hover,.category-btn.active { background:#f2fbff; color:var(--text); }
-        .category-btn.active { color:var(--crimson-light); }
-        .color-dot { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
-        .sidebar-sep { height:1px; background:var(--border); margin:14px 0; }
+        .sidebar h3 { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; color:rgba(0,0,0,0.35); margin-bottom:10px; padding:0 4px; }
+        .category-menu { display:flex; flex-direction:column; gap:2px; }
+        .category-btn { display:flex; align-items:center; gap:10px; padding:9px 12px; border-radius:8px; font-size:13px; font-weight:500; color:rgba(0,0,0,0.55); transition:all 0.15s; cursor:pointer; }
+        .category-btn:hover,.category-btn.active { background:rgba(64,157,201,0.08); color:var(--blau); }
+        .color-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+        .sidebar-sep { height:1px; background:rgba(0,0,0,0.08); margin:12px 4px; }
         .favorits-content { min-width:0; }
-        .favorits-empty { text-align:center; padding:80px 32px; color:var(--text-muted); }
+        .favorits-empty { text-align:center; padding:80px 32px; color:rgba(0,0,0,0.4); }
         .favorits-empty .empty-icon { font-size:4rem; margin-bottom:16px; display:block; }
-        .favorits-empty h2 { font-family:'Playfair Display',serif; font-size:22px; font-weight:700; color:var(--text); margin-bottom:8px; }
+        .favorits-empty h2 { font-size:22px; font-weight:700; color:var(--negre); margin-bottom:8px; }
         .agenda-day { margin-bottom:40px; }
-        .day-title { font-family:'Playfair Display',Georgia,serif; font-size:20px; font-weight:700; margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:10px; color:var(--text-muted); }
-        .day-title span { color:var(--crimson-light); font-size:16px; }
+        .day-title { font-size:20px; font-weight:800; letter-spacing:-0.02em; margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid rgba(0,0,0,0.1); display:flex; align-items:center; gap:10px; color:var(--negre); }
+        .day-title span { color:var(--blau); font-size:16px; }
         .events-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:16px; }
         .event-card {
-            background:linear-gradient(180deg, #ffffff 0%, #f8fcff 100%);
-            border:1px solid rgba(63,159,203,0.25);
-            border-radius:14px;
+            background:#fff;
+            border:1px solid rgba(0,0,0,0.1);
+            border-radius:12px;
             overflow:hidden;
-            transition:transform 0.2s,border-color 0.2s, box-shadow 0.2s;
-            position:relative;
-            box-shadow:0 10px 18px rgba(35, 97, 131, 0.09);
+            transition:transform 0.2s, box-shadow 0.2s;
+            cursor:pointer;
+            box-shadow:0 4px 16px rgba(0,0,0,0.07);
         }
-        .event-card:hover { transform:translateY(-5px) rotate(-0.4deg); border-color:rgba(63,159,203,0.5); box-shadow:0 15px 24px rgba(35, 97, 131, 0.17); }
+        .event-card:hover { transform:translateY(-4px) rotate(-0.3deg); box-shadow:0 14px 28px rgba(0,0,0,0.14); }
         .event-card-img { width:100%; aspect-ratio:16/9; object-fit:cover; display:block; }
-        .event-card-img-placeholder { width:100%; aspect-ratio:16/9; background:linear-gradient(135deg,var(--bg4) 0%,var(--bg3) 100%); display:flex; align-items:center; justify-content:center; font-size:2rem; }
+        .event-card-img-placeholder { width:100%; aspect-ratio:16/9; background:#f0f4f8; display:flex; align-items:center; justify-content:center; font-size:2rem; }
         .event-card-body { padding:12px 14px; }
         .event-meta { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
-        .event-time { font-size:12px; font-weight:800; color:#2f95c2; }
-        .heart-btn { background:rgba(255, 107, 107, 0.14); border:1px solid rgba(255, 107, 107, 0.35); color:#ff4c7d; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; cursor:pointer; transition:all 0.15s; }
-        .heart-btn:hover,.heart-btn.active { background:#ff4c7d; border-color:#ff4c7d; color:#fff; transform:scale(1.07); }
-        .event-tag { font-size:9px; font-weight:700; padding:2px 7px; border-radius:20px; text-transform:uppercase; letter-spacing:0.06em; }
-        .tag-tradicio { background:rgba(63,159,203,0.2); color:#1a6f95; }
-        .tag-musica { background:rgba(125,46,168,0.16); color:#7d2ea8; }
-        .tag-familiar { background:rgba(39,174,96,0.2); color:#6ee7b7; }
-        .tag-espectacle { background:rgba(142,68,173,0.2); color:#c4b5fd; }
-        .tag-exposicio { background:rgba(41,128,185,0.2); color:#93c5fd; }
-        .tag-foc { background:rgba(231,76,60,0.2); color:#fca5a5; }
-        .event-title { font-family:'Playfair Display',Georgia,serif; font-size:14px; font-weight:700; margin-bottom:4px; line-height:1.3; }
-        .event-location { font-size:11px; color:var(--text-muted); }
-        .cta-banner { background:linear-gradient(125deg, #eff9ff 0%, #f7edff 52%, #fff8e3 100%); border:1px solid rgba(63,159,203,0.3); border-radius:16px; padding:34px; text-align:center; margin-bottom:32px; box-shadow:0 12px 24px rgba(33, 94, 130, 0.1); }
-        .cta-banner h2 { font-family:'Playfair Display',serif; font-size:20px; font-weight:700; margin-bottom:8px; }
-        .cta-banner p { font-size:13px; color:var(--text-muted); margin-bottom:20px; }
-        .btn-crimson { background:linear-gradient(120deg, #2f95c2, #63bfe3); color:#fff; padding:10px 24px; border-radius:999px; font-size:13px; font-weight:700; display:inline-block; transition:transform 0.15s, box-shadow 0.15s; }
-        .btn-crimson:hover { transform:translateY(-1px); box-shadow:0 8px 16px rgba(47,149,194,0.34); }
-        footer { background:linear-gradient(120deg, #1f6d92 0%, #155470 100%); border-top:1px solid rgba(63,159,203,0.2); padding:28px 48px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-top:60px; }
-        footer p { font-size:12px; color:#d8f1ff; }
-        footer a { font-size:12px; color:#d8f1ff; transition:color 0.15s; }
-        footer a:hover { color:#ffffff; }
+        .event-time { font-size:12px; font-weight:700; color:var(--blau); }
+        .heart-btn { background:rgba(240,64,112,0.08); border:1px solid rgba(240,64,112,0.25); color:#f04070; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; cursor:pointer; transition:all 0.15s; flex-shrink:0; font-family:inherit; }
+        .heart-btn:hover,.heart-btn.active { background:#f04070; border-color:#f04070; color:#fff; transform:scale(1.1); }
+        .event-tag { font-size:9px; font-weight:700; padding:3px 8px; border-radius:20px; text-transform:uppercase; letter-spacing:0.06em; display:inline-block; }
+        .tag-tradicio   { background:rgba(103,232,249,0.18); color:#0e7490; }
+        .tag-musica     { background:rgba(234,128,244,0.18); color:#9333ea; }
+        .tag-familiar   { background:rgba(174,244,168,0.22); color:#15803d; }
+        .tag-espectacle { background:rgba(249,157,91,0.22);  color:#c2410c; }
+        .tag-exposicio  { background:rgba(103,232,249,0.18); color:#0e7490; }
+        .tag-foc        { background:rgba(224,92,92,0.18);   color:#b91c1c; }
+        .event-title { font-size:14px; font-weight:700; margin-bottom:4px; line-height:1.3; color:var(--negre); }
+        .event-location { font-size:11px; color:rgba(0,0,0,0.45); }
+        .cta-banner { background:#f0f8ff; border:1px solid rgba(64,157,201,0.2); border-radius:14px; padding:32px; text-align:center; margin-bottom:32px; }
+        .cta-banner h2 { font-size:20px; font-weight:800; margin-bottom:8px; color:var(--negre); letter-spacing:-0.02em; }
+        .cta-banner p { font-size:13px; color:rgba(0,0,0,0.5); margin-bottom:20px; }
+        .btn-crimson { background:var(--groc); color:var(--negre); padding:10px 24px; border-radius:999px; font-size:13px; font-weight:800; display:inline-block; transition:transform 0.15s, box-shadow 0.15s; }
+        .btn-crimson:hover { transform:translateY(-1px); box-shadow:0 8px 16px rgba(255,242,97,0.35); }
+        /* footer handled by style.css .footer-light */
         @media (max-width:900px) {
             .main-layout { grid-template-columns:1fr; padding:24px; }
             .sidebar { position:static; }
@@ -151,10 +145,11 @@
         </div>
     </a>
     <ul class="nav-links">
-        <li><a href="home.html#la-festa">La Festa</a></li>
-        <li><a href="minisantes.html">Minisantes</a></li>
-        <li><a href="home.html#galeria">Galeria</a></li>
+        <li><a href="home.html">La Festa</a></li>
         <li><a href="agenda.html">Agenda</a></li>
+        <li><a href="minisantes.html">Minisantes</a></li>
+        <li><a href="actes.html" class="active">Els meus actes</a></li>
+        <li><a href="galeria.html">Galeria</a></li>
     </ul>
     <div class="nav-right">
         <a class="nav-search" href="agenda.html">
@@ -169,11 +164,11 @@
 </nav>
 
 <div class="mobile-menu" id="mobile-menu">
-    <a href="home.html#la-festa">La Festa</a>
+    <a href="home.html">La Festa</a>
+    <a href="agenda.html">Agenda</a>
     <a href="minisantes.html">Minisantes</a>
-    <a href="home.html#galeria">Galeria</a>
-    <a href="agenda.html">Agenda 2026</a>
     <a href="actes.html">Els meus actes</a>
+    <a href="galeria.html">Galeria</a>
 </div>
 
 <div class="page-header">
@@ -181,9 +176,9 @@
         <h1>Els meus actes <span>preferits</span></h1>
         <p>La teva selecció personal dels actes imprescindibles de Les Santes 2025. No els perdis!</p>
         <div class="stats">
-            <div class="stat"><strong>8</strong> actes guardats</div>
-            <div class="stat"><strong>4</strong> dies de festa</div>
-            <div class="stat"><strong>5</strong> ubicacions</div>
+            <div class="stat"><strong id="stat-actes">0</strong> actes guardats</div>
+            <div class="stat"><strong id="stat-dies">0</strong> dies de festa</div>
+            <div class="stat"><strong id="stat-ubicacions">0</strong> ubicacions</div>
         </div>
     </div>
 </div>
@@ -192,12 +187,12 @@
     <aside class="sidebar">
         <h3>Categories</h3>
         <nav class="category-menu">
-            <a href="#" class="category-btn active"><span class="color-dot" style="background:#fff"></span> Tots els actes</a>
-            <a href="#" class="category-btn"><span class="color-dot" style="background:#f87171"></span> Tradicional</a>
-            <a href="#" class="category-btn"><span class="color-dot" style="background:var(--gold)"></span> Música</a>
-            <a href="#" class="category-btn"><span class="color-dot" style="background:#6ee7b7"></span> Familiar</a>
-            <a href="#" class="category-btn"><span class="color-dot" style="background:#fca5a5"></span> Foc</a>
-            <a href="#" class="category-btn"><span class="color-dot" style="background:#c4b5fd"></span> Espectacle</a>
+            <a href="#" class="category-btn active" data-cat="all"><span class="color-dot" style="background:#fff"></span> Tots els actes</a>
+            <a href="#" class="category-btn" data-cat="tradicio"><span class="color-dot" style="background:#f87171"></span> Tradicional</a>
+            <a href="#" class="category-btn" data-cat="musica"><span class="color-dot" style="background:var(--gold)"></span> Música</a>
+            <a href="#" class="category-btn" data-cat="familiar"><span class="color-dot" style="background:#6ee7b7"></span> Familiar</a>
+            <a href="#" class="category-btn" data-cat="foc"><span class="color-dot" style="background:#fca5a5"></span> Foc</a>
+            <a href="#" class="category-btn" data-cat="espectacle"><span class="color-dot" style="background:#c4b5fd"></span> Espectacle</a>
         </nav>
         <div class="sidebar-sep"></div>
         <h3>Navegar</h3>
@@ -208,6 +203,15 @@
     </aside>
 
     <section class="favorits-content">
+
+        <div class="favorits-empty" id="favorits-empty" style="display:none">
+            <span class="empty-icon">♡</span>
+            <h2>Cap acte desat encara</h2>
+            <p style="margin-bottom:20px">Ves a l'agenda, toca el cor <strong>♡</strong> de qualsevol acte i apareixerà aquí.</p>
+            <a href="agenda.html" class="btn-crimson">Anar a l'agenda →</a>
+        </div>
+
+        <div id="favorits-list">
 
         <div class="cta-banner">
             <h2>Descobreix l'agenda completa</h2>
@@ -311,15 +315,53 @@
             </div>
         </div>
 
+        </div><!-- /#favorits-list -->
+
     </section>
 </div>
 
-<footer>
-    <p>© 2025 Ajuntament de Mataró · <a href="https://www.lessantes.cat/" target="_blank">www.lessantes.cat</a></p>
-    <div style="display:flex;gap:20px;">
-        <a href="home.html">Inici</a>
-        <a href="agenda.html">Agenda</a>
-        <a href="minisantes.html">Minisantes</a>
+<footer class="footer-light">
+    <div class="footer-top">
+        <div class="footer-brand">
+            <div class="footer-logo">
+                <div class="logo-icon">LS</div>
+                <div>
+                    <span class="logo-name">Les Santes</span>
+                    <span class="logo-sub">Festa Major de Mataró</span>
+                </div>
+            </div>
+            <p>La celebració més gran de Mataró, cada any al juliol en honor a Santa Juliana i Santa Semproniana.</p>
+        </div>
+        <div class="footer-col">
+            <h4>La Festa</h4>
+            <ul>
+                <li><a href="home.html">Inici</a></li>
+                <li><a href="agenda.html">Agenda Completa</a></li>
+                <li><a href="actes.html">Els meus actes</a></li>
+                <li><a href="minisantes.html">Minisantes</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Participa</h4>
+            <ul>
+                <li><a href="https://www.lessantes.cat/" target="_blank">Web oficial</a></li>
+                <li><a href="https://www.instagram.com/lessantes/" target="_blank">Instagram</a></li>
+                <li><a href="https://www.culturamataro.cat/" target="_blank">Cultura Mataró</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <div class="footer-bottom-inner">
+            <div class="footer-social">
+                <a class="social-link" href="https://www.instagram.com/lessantes/" target="_blank"><span class="social-icon">📷</span> @lessantes</a>
+                <a class="social-link" href="https://twitter.com/lessantesmataro" target="_blank"><span class="social-icon">𝕏</span> @lessantesmataro</a>
+            </div>
+            <span class="footer-copy">© 2026 Ajuntament de Mataró</span>
+            <div class="footer-legal">
+                <a href="#">Contacte</a>
+                <a href="#">Crèdits i nota legal</a>
+            </div>
+        </div>
     </div>
 </footer>
 <!-- ── CHATBOT ── -->
@@ -349,18 +391,102 @@
 </div>
 <link rel="stylesheet" href="chatbot.css">
 <script>
-    function toggleMenu() {
-        const menu = document.getElementById('mobile-menu');
-        menu.classList.toggle('open');
-    }
+function toggleMenu() {
+    document.getElementById('mobile-menu').classList.toggle('open');
+}
+document.querySelectorAll('.mobile-menu a').forEach(a =>
+    a.addEventListener('click', () => document.getElementById('mobile-menu').classList.remove('open'))
+);
 
-    document.querySelectorAll('.mobile-menu a').forEach(a => {
-        a.addEventListener('click', () => document.getElementById('mobile-menu').classList.remove('open'));
-    });
+const LS_KEY = 'santes-favorites';
+function getCardId(card) {
+    return (card.querySelector('.event-title')?.textContent || '').trim().substring(0, 60);
+}
+function getFavs() { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); }
+function saveFavs(favs) { localStorage.setItem(LS_KEY, JSON.stringify(favs)); }
 
-    document.querySelectorAll('.heart-btn').forEach(btn => {
-        btn.addEventListener('click', () => btn.classList.toggle('active'));
+function updateStats() {
+    const visible = [...document.querySelectorAll('.event-card')].filter(c => c.style.display !== 'none');
+    const days = new Set(visible.map(c => c.closest('.agenda-day')?.querySelector('.day-title')?.textContent?.trim()));
+    const locs = new Set(visible.map(c => (c.querySelector('.event-location')?.textContent || '').replace('📍 ', '').trim()));
+    document.getElementById('stat-actes').textContent = visible.length;
+    document.getElementById('stat-dies').textContent = days.size;
+    document.getElementById('stat-ubicacions').textContent = locs.size;
+}
+
+function updateDaySections() {
+    document.querySelectorAll('.agenda-day').forEach(day => {
+        const anyVisible = [...day.querySelectorAll('.event-card')].some(c => c.style.display !== 'none');
+        day.style.display = anyVisible ? '' : 'none';
     });
+}
+
+function showEmptyState() {
+    const anyFav = [...document.querySelectorAll('.event-card')].some(c => c.style.display !== 'none');
+    document.getElementById('favorits-list').style.display = anyFav ? '' : 'none';
+    document.getElementById('favorits-empty').style.display = anyFav ? 'none' : '';
+}
+
+function getActiveCat() {
+    return document.querySelector('.category-btn.active')?.dataset.cat || 'all';
+}
+
+function applyFilter(cat) {
+    const favs = getFavs();
+    document.querySelectorAll('.event-card').forEach(card => {
+        const id = getCardId(card);
+        const isFav = favs.includes(id);
+        const tagEl = card.querySelector('.event-tag');
+        const cardCat = tagEl ? ([...tagEl.classList].find(c => c.startsWith('tag-')) || '').replace('tag-', '') : '';
+        const catOk = cat === 'all' || cardCat === cat;
+        card.style.display = (isFav && catOk) ? '' : 'none';
+    });
+    updateDaySections();
+    updateStats();
+    showEmptyState();
+}
+
+function loadPage() {
+    const favs = getFavs();
+    document.querySelectorAll('.event-card').forEach(card => {
+        const id = getCardId(card);
+        const isFav = favs.includes(id);
+        const btn = card.querySelector('.heart-btn');
+        if (btn) {
+            if (isFav) { btn.classList.add('active'); btn.innerHTML = '&#9829;'; }
+            else { btn.classList.remove('active'); btn.innerHTML = '&#9825;'; }
+        }
+        card.style.display = isFav ? '' : 'none';
+    });
+    updateDaySections();
+    updateStats();
+    showEmptyState();
+}
+
+// Heart buttons: remove from favorites
+document.querySelectorAll('.heart-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+        e.stopPropagation();
+        const card = btn.closest('.event-card');
+        const id = getCardId(card);
+        let favs = getFavs();
+        favs = favs.filter(f => f !== id);
+        saveFavs(favs);
+        applyFilter(getActiveCat());
+    });
+});
+
+// Sidebar category filter
+document.querySelectorAll('.category-btn[data-cat]').forEach(btn => {
+    btn.addEventListener('click', e => {
+        e.preventDefault();
+        document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        applyFilter(btn.dataset.cat);
+    });
+});
+
+loadPage();
 </script>
 <script src="chatbot.js"></script>
 </body>

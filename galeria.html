@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galeria – Les Santes 2026, Mataró</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', -apple-system, sans-serif; background: #fff; color: #2A2A2A; line-height: 1.55; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; }
+
+    /* NAV */
+    .site-nav { display: flex; align-items: center; justify-content: space-between; padding: 0 48px; height: 68px; background: #409DC9; position: sticky; top: 0; z-index: 200; box-shadow: 0 2px 16px rgba(64,157,201,0.3); }
+    .nav-logo { display: flex; align-items: center; gap: 12px; }
+    .logo-icon { width: 36px; height: 36px; border-radius: 8px; background: linear-gradient(135deg, #2d7ea8 50%, #63bfe3 50%); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900; color: #fff; flex-shrink: 0; }
+    .logo-name { display: block; font-weight: 800; font-size: 16px; color: #fff; }
+    .logo-sub { display: block; font-size: 9px; color: rgba(255,255,255,0.65); font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; margin-top: 2px; }
+    .nav-links { display: flex; gap: 2px; list-style: none; }
+    .nav-links a { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.88); padding: 8px 14px; border-radius: 8px; transition: background 0.15s; }
+    .nav-links a:hover { color: #fff; background: rgba(255,255,255,0.14); }
+    .nav-links a.active { color: #fff; background: rgba(255,255,255,0.2); }
+    .nav-right { display: flex; align-items: center; gap: 8px; }
+    .nav-search { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.28); border-radius: 8px; padding: 8px 14px; font-size: 13px; color: #fff; cursor: pointer; transition: background 0.15s; }
+    .nav-search:hover { background: rgba(255,255,255,0.24); }
+    .nav-cta { background: #F0CF3C; color: #2A2A2A; font-size: 12px; font-weight: 800; padding: 8px 18px; border-radius: 8px; letter-spacing: 0.02em; transition: opacity 0.15s; white-space: nowrap; }
+    .nav-cta:hover { opacity: 0.88; }
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    .nav-hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; }
+    .mobile-menu { display: none; position: fixed; inset: 68px 0 0 0; background: #fff; z-index: 199; padding: 28px 24px; flex-direction: column; gap: 2px; border-top: 3px solid #409DC9; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-size: 17px; font-weight: 600; color: #2A2A2A; padding: 14px 10px; border-bottom: 1px solid rgba(0,0,0,0.07); transition: color 0.15s; }
+    .mobile-menu a:hover { color: #409DC9; }
+
+    /* HERO CINEMATIC */
+    .hero-galeria { position: relative; height: 90vh; min-height: 520px; overflow: hidden; display: flex; align-items: flex-end; }
+    .hero-galeria-bg { position: absolute; inset: 0; background-image: url('https://assets.appculturamataro.cat/medias/agenda/2023/c_crop,x_29,y_90,w_1539,h_854|c_fit,w_1280,h_710|c_auto/fef48a3daef386a8d91bccb00e8369f2.jpeg'); background-size: cover; background-position: center 30%; transform: scale(1.03); transition: transform 8s ease; }
+    .hero-galeria:hover .hero-galeria-bg { transform: scale(1); }
+    .hero-galeria::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.08) 40%, rgba(0,0,0,0.72) 100%); }
+    .hero-galeria-content { position: relative; z-index: 2; max-width: 960px; margin: 0 auto; padding: 0 48px 60px; width: 100%; }
+    .hero-pill { display: inline-flex; align-items: center; gap: 8px; background: #F0CF3C; color: #2A2A2A; font-size: 11px; font-weight: 800; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 18px; }
+    .hero-galeria h1 { font-size: clamp(36px, 5.5vw, 68px); font-weight: 900; color: #fff; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 14px; }
+    .hero-galeria h1 em { font-style: normal; color: #F0CF3C; }
+    .hero-galeria p { font-size: 16px; color: rgba(255,255,255,0.75); max-width: 480px; margin-bottom: 28px; }
+    .hero-cta-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+    .btn-hero-primary { background: #F0CF3C; color: #2A2A2A; font-size: 13px; font-weight: 800; padding: 12px 28px; border-radius: 10px; transition: opacity 0.15s, transform 0.15s; }
+    .btn-hero-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-hero-ghost { background: rgba(255,255,255,0.15); color: #fff; border: 1.5px solid rgba(255,255,255,0.4); font-size: 13px; font-weight: 600; padding: 12px 24px; border-radius: 10px; transition: background 0.15s; }
+    .btn-hero-ghost:hover { background: rgba(255,255,255,0.25); }
+    .hero-scroll-hint { position: absolute; bottom: 24px; right: 48px; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 6px; color: rgba(255,255,255,0.5); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+    .hero-scroll-hint::before { content: ''; width: 1.5px; height: 32px; background: rgba(255,255,255,0.35); animation: scrollLine 1.6s ease-in-out infinite; }
+    @keyframes scrollLine { 0%,100% { opacity: 0.2; transform: scaleY(0.5); } 50% { opacity: 1; transform: scaleY(1); } }
+
+    /* FILTER */
+    .filter-section { max-width: 960px; margin: 0 auto; padding: 36px 48px 0; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .filter-label { font-size: 11px; font-weight: 700; color: rgba(42,42,42,0.35); text-transform: uppercase; letter-spacing: 0.1em; margin-right: 4px; }
+    .filter-chip { background: #fff; border: 1.5px solid #e8e8e8; color: rgba(42,42,42,0.6); padding: 7px 18px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.18s; white-space: nowrap; }
+    .filter-chip:hover { border-color: #409DC9; color: #409DC9; }
+    .filter-chip.active { background: #409DC9; border-color: #409DC9; color: #fff; }
+
+    /* MOSAIC HEADER */
+    .mosaic-header { max-width: 960px; margin: 32px auto 0; padding: 0 48px; display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+    .mosaic-header h2 { font-size: 22px; font-weight: 800; letter-spacing: -0.01em; }
+    .photo-count { font-size: 12px; color: rgba(42,42,42,0.38); font-weight: 500; }
+
+    /* MASONRY */
+    .masonry { max-width: 960px; margin: 18px auto 0; padding: 0 48px 16px; columns: 3; column-gap: 10px; }
+    .photo-item { break-inside: avoid; margin-bottom: 10px; border-radius: 14px; overflow: hidden; position: relative; cursor: pointer; display: block; }
+    .photo-item img { width: 100%; display: block; transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .photo-item:hover img { transform: scale(1.05); }
+    .photo-item .p-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 55%); opacity: 0; transition: opacity 0.25s; }
+    .photo-item:hover .p-overlay { opacity: 1; }
+    .photo-item .p-cat { position: absolute; top: 12px; left: 12px; background: rgba(255,255,255,0.92); color: #2A2A2A; font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0; transition: opacity 0.25s; }
+    .photo-item:hover .p-cat { opacity: 1; }
+    .photo-item .p-zoom { position: absolute; bottom: 12px; right: 12px; width: 34px; height: 34px; background: rgba(255,255,255,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0.8); transition: opacity 0.25s, transform 0.25s; }
+    .photo-item:hover .p-zoom { opacity: 1; transform: scale(1); }
+    .photo-item.hidden { display: none; }
+
+    /* EXPERIENCE STRIPS */
+    .exp-strip { margin: 60px 0; }
+    .exp-strip-inner { max-width: 960px; margin: 0 auto; padding: 0 48px; }
+    .exp-strip-tag { display: inline-block; background: #F0CF3C; color: #2A2A2A; font-size: 10px; font-weight: 800; padding: 5px 14px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+    .exp-strip h2 { font-size: 28px; font-weight: 900; letter-spacing: -0.02em; margin-bottom: 6px; }
+    .exp-strip p { font-size: 14px; color: rgba(42,42,42,0.55); max-width: 460px; margin-bottom: 20px; }
+    .split-row { display: grid; grid-template-columns: 1.45fr 1fr; gap: 10px; height: 340px; }
+    .split-cell { position: relative; border-radius: 16px; overflow: hidden; cursor: pointer; }
+    .split-cell img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+    .split-cell:hover img { transform: scale(1.04); }
+    .split-cell .sc-label { position: absolute; bottom: 16px; left: 18px; color: #fff; pointer-events: none; }
+    .split-cell .sc-label span { display: block; font-size: 10px; font-weight: 600; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 3px; }
+    .split-cell .sc-label strong { font-size: 15px; font-weight: 800; }
+    .split-cell::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 55%); pointer-events: none; }
+
+    /* PULL QUOTE */
+    .pull-quote { max-width: 960px; margin: 0 auto; padding: 0 48px; text-align: center; }
+    .pull-quote blockquote { font-size: clamp(20px, 2.8vw, 30px); font-weight: 800; color: #2A2A2A; letter-spacing: -0.02em; line-height: 1.3; }
+    .pull-quote blockquote::before { content: '"'; font-size: 5rem; color: #F0CF3C; line-height: 0; vertical-align: -0.5em; margin-right: 6px; font-weight: 900; }
+    .pull-quote cite { display: block; margin-top: 16px; font-size: 12px; font-weight: 600; color: rgba(42,42,42,0.4); letter-spacing: 0.08em; text-transform: uppercase; font-style: normal; }
+
+    /* TRIPLE GRID */
+    .triple-grid { max-width: 960px; margin: 40px auto 0; padding: 0 48px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .triple-cell { position: relative; border-radius: 16px; overflow: hidden; aspect-ratio: 2/3; cursor: pointer; }
+    .triple-cell img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+    .triple-cell:hover img { transform: scale(1.05); }
+    .triple-cell::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%); pointer-events: none; }
+    .triple-cell .tc-info { position: absolute; bottom: 16px; left: 16px; right: 16px; z-index: 1; pointer-events: none; }
+    .tc-tag { display: inline-block; background: #F0CF3C; color: #2A2A2A; font-size: 9px; font-weight: 800; padding: 3px 10px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 6px; }
+    .tc-name { font-size: 14px; font-weight: 800; color: #fff; line-height: 1.3; }
+    .triple-cell .p-zoom { position: absolute; bottom: 12px; right: 12px; width: 34px; height: 34px; background: rgba(255,255,255,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0.8); transition: opacity 0.25s, transform 0.25s; z-index: 2; }
+    .triple-cell:hover .p-zoom { opacity: 1; transform: scale(1); }
+
+    /* VIDEOS */
+    .videos-section { max-width: 960px; margin: 64px auto 0; padding: 0 48px; }
+    .videos-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 22px; flex-wrap: wrap; gap: 12px; }
+    .videos-header h2 { font-size: 22px; font-weight: 800; letter-spacing: -0.01em; }
+    .videos-header a { font-size: 12px; color: #409DC9; font-weight: 600; transition: opacity 0.15s; }
+    .videos-header a:hover { opacity: 0.7; }
+    .videos-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 12px; }
+    .video-card { background: #f5f5f5; border-radius: 16px; overflow: hidden; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; border: 1.5px solid #ebebeb; }
+    .video-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.1); }
+    .v-thumb { position: relative; overflow: hidden; aspect-ratio: 16/9; }
+    .video-card:first-child .v-thumb { aspect-ratio: 16/10; }
+    .v-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+    .video-card:hover .v-thumb img { transform: scale(1.05); }
+    .v-play-wrap { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.22); transition: background 0.2s; }
+    .video-card:hover .v-play-wrap { background: rgba(0,0,0,0.12); }
+    .v-play-btn { width: 52px; height: 52px; background: #F0CF3C; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 16px rgba(0,0,0,0.25); transition: transform 0.2s; }
+    .video-card:hover .v-play-btn { transform: scale(1.08); }
+    .v-play-btn::after { content: ''; width: 0; height: 0; border-top: 9px solid transparent; border-bottom: 9px solid transparent; border-left: 16px solid #2A2A2A; margin-left: 4px; }
+    .v-meta { padding: 14px 16px 16px; }
+    .v-cat { font-size: 10px; font-weight: 700; color: #409DC9; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 5px; }
+    .v-title { font-size: 13px; font-weight: 700; color: #2A2A2A; line-height: 1.35; margin-bottom: 4px; }
+    .v-dur { font-size: 11px; color: rgba(42,42,42,0.4); }
+
+    /* COMPARSES */
+    .comparses-section { max-width: 960px; margin: 64px auto 0; padding: 0 48px; }
+    .comparses-header { margin-bottom: 24px; }
+    .comparses-header h2 { font-size: 22px; font-weight: 800; letter-spacing: -0.01em; margin-bottom: 4px; }
+    .comparses-header p { font-size: 13px; color: rgba(42,42,42,0.45); }
+    .comparses-scroll { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .comparsa-card { border: 1.5px solid #ebebeb; border-radius: 16px; padding: 24px 12px 20px; text-align: center; background: #fff; transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s; }
+    .comparsa-card:hover { border-color: #409DC9; box-shadow: 0 6px 24px rgba(64,157,201,0.1); transform: translateY(-3px); }
+    .comparsa-card img { width: 84px; height: 104px; object-fit: contain; margin: 0 auto 14px; }
+    .comparsa-card .c-name { font-size: 12px; font-weight: 700; color: #2A2A2A; line-height: 1.3; }
+
+    /* CTA BANNER */
+    .cta-banner { max-width: 960px; margin: 64px auto 0; padding: 0 48px; }
+    .cta-banner-inner { background: #409DC9; border-radius: 20px; padding: 48px 52px; display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; position: relative; overflow: hidden; }
+    .cta-banner-inner::before { content: ''; position: absolute; top: -60px; right: -60px; width: 240px; height: 240px; background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%); pointer-events: none; }
+    .cta-banner-text { position: relative; z-index: 1; }
+    .cta-banner-text h3 { font-size: 24px; font-weight: 900; color: #fff; letter-spacing: -0.02em; margin-bottom: 8px; }
+    .cta-banner-text p { font-size: 14px; color: rgba(255,255,255,0.75); max-width: 380px; }
+    .cta-banner-actions { display: flex; gap: 10px; flex-wrap: wrap; position: relative; z-index: 1; }
+    .btn-banner-primary { background: #F0CF3C; color: #2A2A2A; font-size: 13px; font-weight: 800; padding: 12px 28px; border-radius: 10px; transition: opacity 0.15s, transform 0.15s; }
+    .btn-banner-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-banner-ghost { background: rgba(255,255,255,0.15); color: #fff; border: 1.5px solid rgba(255,255,255,0.4); font-size: 13px; font-weight: 600; padding: 12px 24px; border-radius: 10px; transition: background 0.15s; }
+    .btn-banner-ghost:hover { background: rgba(255,255,255,0.25); }
+
+    /* LIGHTBOX */
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.93); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+    .lightbox.open { display: flex; }
+    .lb-wrap { position: relative; max-width: 940px; width: 100%; animation: lbIn 0.22s ease; }
+    @keyframes lbIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+    .lb-img { width: 100%; border-radius: 14px; max-height: 80vh; object-fit: contain; }
+    .lb-caption { margin-top: 14px; text-align: center; color: rgba(255,255,255,0.55); font-size: 13px; }
+    .lb-close { position: absolute; top: -46px; right: 0; background: none; border: none; color: rgba(255,255,255,0.55); font-size: 32px; cursor: pointer; line-height: 1; transition: color 0.15s; }
+    .lb-close:hover { color: #fff; }
+    .lb-nav { position: fixed; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.18); border-radius: 50%; width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 20px; cursor: pointer; transition: background 0.15s; }
+    .lb-nav:hover { background: rgba(255,255,255,0.2); }
+    .lb-prev { left: 20px; }
+    .lb-next { right: 20px; }
+
+    /* RESPONSIVE */
+    @media (max-width: 860px) {
+      .split-row { grid-template-columns: 1fr; height: auto; }
+      .split-cell { aspect-ratio: 16/9; }
+      .triple-grid { grid-template-columns: 1fr 1fr; }
+      .videos-grid { grid-template-columns: 1fr 1fr; }
+      .video-card:first-child { grid-column: span 2; }
+      .masonry { columns: 2; }
+    }
+    @media (max-width: 700px) {
+      .site-nav { padding: 0 20px; }
+      .nav-links, .nav-search { display: none; }
+      .nav-hamburger { display: flex; }
+      .hero-galeria-content { padding: 0 20px 48px; }
+      .hero-scroll-hint { right: 20px; }
+      .filter-section { padding: 24px 20px 0; }
+      .mosaic-header { padding: 0 20px; }
+      .masonry { padding: 0 20px 16px; columns: 2; }
+      .exp-strip-inner { padding: 0 20px; }
+      .pull-quote { padding: 0 20px; }
+      .triple-grid { padding: 0 20px; grid-template-columns: 1fr 1fr; }
+      .videos-section { padding: 0 20px; margin-top: 48px; }
+      .videos-grid { grid-template-columns: 1fr; }
+      .video-card:first-child { grid-column: auto; }
+      .comparses-section { padding: 0 20px; margin-top: 48px; }
+      .comparses-scroll { grid-template-columns: repeat(2, 1fr); }
+      .cta-banner { padding: 0 20px; }
+      .cta-banner-inner { padding: 32px 28px; }
+    }
+    @media (max-width: 480px) {
+      .masonry { columns: 1; }
+      .triple-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="nav-logo" href="home.html">
+    <div class="logo-icon">LS</div>
+    <div><span class="logo-name">Les Santes</span><span class="logo-sub">Festa Major de Mataró</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="home.html">La Festa</a></li>
+    <li><a href="agenda.html">Agenda</a></li>
+    <li><a href="minisantes.html">Minisantes</a></li>
+    <li><a href="actes.html">Els meus actes</a></li>
+    <li><a href="galeria.html" class="active">Galeria</a></li>
+  </ul>
+  <div class="nav-right">
+    <a class="nav-search" href="agenda.html">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      Cercador
+    </a>
+    <a href="agenda.html" class="nav-cta">Agenda →</a>
+    <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="home.html">La Festa</a>
+  <a href="agenda.html">Agenda</a>
+  <a href="minisantes.html">Minisantes</a>
+  <a href="actes.html">Els meus actes</a>
+  <a href="galeria.html">Galeria</a>
+</div>
+
+<section class="hero-galeria">
+  <div class="hero-galeria-bg"></div>
+  <div class="hero-galeria-content">
+    <div class="hero-pill">✦ Galeria Les Santes 2026</div>
+    <h1>Quan la nit<br>s'encén a <em>Mataró.</em></h1>
+    <p>Foc, música, gegants i carrers plens de vida. Descobreix per què Les Santes és una experiència que no s'oblida.</p>
+    <div class="hero-cta-row">
+      <a href="agenda.html" class="btn-hero-primary">Veure l'agenda →</a>
+      <a href="#fotos" class="btn-hero-ghost">Explorar fotos ↓</a>
+    </div>
+  </div>
+  <div class="hero-scroll-hint">Scroll</div>
+</section>
+
+<div class="filter-section" id="fotos">
+  <span class="filter-label">Filtra per</span>
+  <button class="filter-chip active" data-cat="all">Tots</button>
+  <button class="filter-chip" data-cat="foc">Foc i diables</button>
+  <button class="filter-chip" data-cat="gegants">Gegants</button>
+  <button class="filter-chip" data-cat="castellers">Castellers</button>
+  <button class="filter-chip" data-cat="musica">Música</button>
+  <button class="filter-chip" data-cat="carrer">Ambient</button>
+</div>
+
+<div class="mosaic-header">
+  <h2>Totes les fotos</h2>
+  <span class="photo-count" id="photo-count">12 imatges</span>
+</div>
+
+<div class="masonry" id="masonry-grid">
+  <div class="photo-item lb-trigger" data-cat="foc" data-src="https://assets.appculturamataro.cat/medias/agenda/2023/c_crop,x_29,y_90,w_1539,h_854|c_fit,w_1280,h_710|c_auto/fef48a3daef386a8d91bccb00e8369f2.jpeg" data-caption="L'Encesa — Ball de Diables, Les Santes 2023"><img src="https://assets.appculturamataro.cat/medias/agenda/2023/c_crop,x_29,y_90,w_1539,h_854|c_fit,w_768,h_426|c_auto/fef48a3daef386a8d91bccb00e8369f2.jpeg" alt="L'Encesa" loading="lazy"/><div class="p-overlay"></div><div class="p-cat">Foc i diables</div><div class="p-zoom"><svg width="13" height="13" fill="none" stroke="#2A2A2A" stroke-width="2.2" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+  <div class="photo-item lb-trigger" data-cat="gegants" data-src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_0,w_1963,h_1090|c_fit,w_1280,h_710|c_auto/bea354601387219072c5daee94e91605.jpeg" data-caption="Gegantada de Les Santes 2025"><img src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_0,w_1963,h_1090|c_fit,w_768,h_426|c_auto/bea354601387219072c5daee94e91605.jpeg" alt="Gegantada" loading="lazy"/><div class="p-overlay"></div><div class="p-cat">Gegants</div><div class="p-zoom"><svg width="13" height="13" fill="none" stroke="#2A2A2A" stroke-width="2.2" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+  <div class="photo-item lb-trigger" data-cat="castellers" data-src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_214,w_1824,h_1012|c_fit,w_1280,h_710|c_auto/cc091c154c09b5510164e78d19e583f2.jpeg" data-caption="Diada Castellera, Les Santes 2025"><img src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_214,w_1824,h_1012|c_fit,w_768,h_426|c_auto/cc091c154c09b5510164e78d19e583f2.jpeg" alt="Castellers" loading="lazy"/><div class="p-overlay"></div><div class="p-cat">Castellers</div><div class="p-zoom"><svg width="13" height="13" fill="none" stroke="#2A2A2A" stroke-width="2.2" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+  <div class="photo-item lb-trigger" data-cat="musica" data-src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_31,w_2048,h_1136|c_fit,w_1280,h_710|c_auto/57b929a07ac86fc470c16f500eaab1e9.jpeg" data-caption="Broadway Santes — Teatre Monumental, 2025"><img src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_31,w_2048,h_1136|c_fit,w_768,h_426|c_auto/57b929a07ac86fc470c16f500eaab1e9.jpeg" alt="Broadway Santes" loading="lazy"/><div class="p-overlay"></div><div class="p-cat">Música</div><div class="p-zoom"><svg width="13" height="13" fill="none" stroke="#2A2A2A" stroke-width="2.2" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+  <div class="photo-item lb-trigger" data-cat="musica" data-src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_61,y_132,w_1900,h_1054|c_fit,w_1280,h_710|c_auto/d670a50f88ba8761324868be0a082348.jpeg" data-caption="Cor Madrigalista 50 anys — Teatre Monumental, 2025"><img src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_61,y_132,w_1900,h_1054|c_fit,w_768,h_426|c_auto/d670a50f88ba8761324868be0a082348.jpeg" alt="Cor Madrigalista" loading="lazy"/><div class="p-overlay"></div><div class="p-cat">Música</div><div class="p-zoom"><svg width="13" height="13" fill="none" stroke="#2A2A2A" stroke-width="2.2" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+  <div class="photo-item lb-trigger" data-cat="carrer" data-src="https://assets.appculturamataro.cat/medias/agenda/2024/c_crop,x_100,y_278,w_1900,h_1054|c_fit,w_1280,h_710|c_auto/c1eb4fb09ceca60266c2534ca0161191.jpeg" data-caption="Ambient de Dissantes 2024"><img src="https://assets.appculturamataro.cat/medias/agenda/2024/c_crop,x_100,y_278,w_1900,h_1054|c_fit,w_768,h_426|c_auto/c1eb4fb09ceca60266c2534ca0161191.jpeg" alt="Ambient" loading="lazy"/><div class="p-overlay"></div><div class="p-cat">Ambient</div><div class="p-zoom"><svg width="13" height="13" fill="none" stroke="#2A2A2A" stroke-width="2.2" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+  <div class="photo-item lb-trigger" data-cat="musica" data-src="https://assets.appculturamataro.cat/medias/agenda/2022/c_crop,x_0,y_0,w_1140,h_632|c_fit,w_1280,h_710|c_auto/432441039f3f3cb8a48b4ddca4c7c0ac.jpeg" data-caption="Concerts Dissantes 2022"><img src="https://assets.appculturamataro.cat/medias/agenda/2022/c_crop,x_0,y_0,w_1140,h_632|c_fit,w_768,h_426|c_auto/432441039f3f3cb8a48b4ddca4c7c0ac.jpeg" alt="Concerts" loading="lazy"/><div class="p-overlay"></div><div class="p-cat">Música</div><div class="p-zoom"><svg width="13" height="13" fill="none" stroke="#2A2A2A" stroke-width="2.2" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+  <div class="photo-item lb-trigger" data-cat="gegants" data-src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_4,y_19,w_1963,h_1090|c_fit,w_1280,h_710|c_auto/bea354601387219072c5daee94e91605.jpeg" data-caption="Gegantada del Maresme, Les Santes 2025"><img src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_4,y_19,w_1963,h_1090|c_fit,w_768,h_426|c_auto/bea354601387219072c5daee94e91605.jpeg" alt="Gegants" loading="lazy"/><div class="p-overlay"></div><div class="p-cat">Gegants</div><div class="p-zoom"><svg width="13" height="13" fill="none" stroke="#2A2A2A" stroke-width="2.2" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+  <div class="photo-item lb-trigger" data-cat="carrer" data-src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_134,w_960,h_533|c_fit,w_1280,h_710|c_auto/3ed3afd91d825859b5ff69ccd5a7ce70.jpeg" data-caption="Nit de Les Santes 2025"><img src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_134,w_960,h_533|c_fit,w_768,h_426|c_auto/3ed3afd91d825859b5ff69ccd5a7ce70.jpeg" alt="Nit" loading="lazy"/><div class="p-overlay"></div><div class="p-cat">Ambient</div><div class="p-zoom"><svg width="13" height="13" fill="none" stroke="#2A2A2A" stroke-width="2.2" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+  <div class="photo-item lb-trigger" data-cat="foc" data-src="https://assets.appculturamataro.cat/medias/agenda/2023/c_crop,x_29,y_90,w_1539,h_854|c_fit,w_1280,h_710|c_auto/fef48a3daef386a8d91bccb00e8369f2.jpeg" data-caption="Correfoc — Foc als carrers, 2023"><img src="https://assets.appculturamataro.cat/medias/agenda/2023/c_crop,x_29,y_90,w_1539,h_854|c_fit,w_768,h_426|c_auto/fef48a3daef386a8d91bccb00e8369f2.jpeg" alt="Correfoc" loading="lazy"/><div class="p-overlay"></div><div class="p-cat">Foc i diables</div><div class="p-zoom"><svg width="13" height="13" fill="none" stroke="#2A2A2A" stroke-width="2.2" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+  <div class="photo-item lb-trigger" data-cat="castellers" data-src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_214,w_1824,h_1012|c_fit,w_1280,h_710|c_auto/cc091c154c09b5510164e78d19e583f2.jpeg" data-caption="Castellers de Mataró — Plaça de Santa Anna, 2025"><img src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_214,w_1824,h_1012|c_fit,w_768,h_426|c_auto/cc091c154c09b5510164e78d19e583f2.jpeg" alt="Castellers" loading="lazy"/><div class="p-overlay"></div><div class="p-cat">Castellers</div><div class="p-zoom"><svg width="13" height="13" fill="none" stroke="#2A2A2A" stroke-width="2.2" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+  <div class="photo-item lb-trigger" data-cat="musica" data-src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_31,w_2048,h_1136|c_fit,w_1280,h_710|c_auto/57b929a07ac86fc470c16f500eaab1e9.jpeg" data-caption="Música i dansa a Les Santes 2025"><img src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_31,w_2048,h_1136|c_fit,w_768,h_426|c_auto/57b929a07ac86fc470c16f500eaab1e9.jpeg" alt="Música" loading="lazy"/><div class="p-overlay"></div><div class="p-cat">Música</div><div class="p-zoom"><svg width="13" height="13" fill="none" stroke="#2A2A2A" stroke-width="2.2" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+</div>
+
+<div class="exp-strip">
+  <div class="exp-strip-inner">
+    <span class="exp-strip-tag">✦ Foc i diables</span>
+    <h2>Una nit que et crema per dins</h2>
+    <p>El Ball de Diables i el Correfoc transformen els carrers de Mataró en un espectacle de foc i ritme que no deixa ningú indiferent.</p>
+    <div class="split-row">
+      <div class="split-cell lb-trigger" data-src="https://assets.appculturamataro.cat/medias/agenda/2023/c_crop,x_29,y_90,w_1539,h_854|c_fit,w_1280,h_710|c_auto/fef48a3daef386a8d91bccb00e8369f2.jpeg" data-caption="L'Encesa — Ball de Diables">
+        <img src="https://assets.appculturamataro.cat/medias/agenda/2023/c_crop,x_29,y_90,w_1539,h_854|c_fit,w_768,h_426|c_auto/fef48a3daef386a8d91bccb00e8369f2.jpeg" alt="Ball de Diables" loading="lazy"/>
+        <div class="sc-label"><span>Dissantes nit</span><strong>L'Encesa</strong></div>
+      </div>
+      <div class="split-cell lb-trigger" data-src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_134,w_960,h_533|c_fit,w_1280,h_710|c_auto/3ed3afd91d825859b5ff69ccd5a7ce70.jpeg" data-caption="Nit de Les Santes 2025">
+        <img src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_134,w_960,h_533|c_fit,w_768,h_426|c_auto/3ed3afd91d825859b5ff69ccd5a7ce70.jpeg" alt="Nit" loading="lazy"/>
+        <div class="sc-label"><span>Nit de festa</span><strong>Ambient nocturn</strong></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="pull-quote">
+  <blockquote>Les Santes és la festa que fa que la gent torni cada estiu a Mataró, i els que hi son que no se'n vulguin anar.</blockquote>
+  <cite>— Tradició popular matarona</cite>
+</div>
+
+<div class="exp-strip" style="margin-top:56px">
+  <div class="exp-strip-inner">
+    <span class="exp-strip-tag">✦ Gegants i castellers</span>
+    <h2>La força i la gràcia de la tradició</h2>
+    <p>Gegants que porten segles ballant i castellers que alzen torres humanes fins al cel. Les Santes guarda els millors de Catalunya.</p>
+  </div>
+  <div class="triple-grid">
+    <div class="triple-cell lb-trigger" data-src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_0,w_1963,h_1090|c_fit,w_1280,h_710|c_auto/bea354601387219072c5daee94e91605.jpeg" data-caption="Gegantada de Les Santes 2025"><img src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_0,w_1963,h_1090|c_fit,w_768,h_426|c_auto/bea354601387219072c5daee94e91605.jpeg" alt="Gegantada" loading="lazy"/><div class="tc-info"><div class="tc-tag">Gegants</div><div class="tc-name">Gegantada dels Maresme</div></div><div class="p-zoom"><svg width="13" height="13" fill="none" stroke="#2A2A2A" stroke-width="2.2" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+    <div class="triple-cell lb-trigger" data-src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_214,w_1824,h_1012|c_fit,w_1280,h_710|c_auto/cc091c154c09b5510164e78d19e583f2.jpeg" data-caption="Diada Castellera 2025"><img src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_214,w_1824,h_1012|c_fit,w_768,h_426|c_auto/cc091c154c09b5510164e78d19e583f2.jpeg" alt="Castellers" loading="lazy"/><div class="tc-info"><div class="tc-tag">Castellers</div><div class="tc-name">Diada Castellera</div></div><div class="p-zoom"><svg width="13" height="13" fill="none" stroke="#2A2A2A" stroke-width="2.2" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+    <div class="triple-cell lb-trigger" data-src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_4,y_19,w_1963,h_1090|c_fit,w_1280,h_710|c_auto/bea354601387219072c5daee94e91605.jpeg" data-caption="Gegants del Maresme 2025"><img src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_4,y_19,w_1963,h_1090|c_fit,w_768,h_426|c_auto/bea354601387219072c5daee94e91605.jpeg" alt="Gegants" loading="lazy"/><div class="tc-info"><div class="tc-tag">Gegants</div><div class="tc-name">Tots els gegants a la plaça</div></div><div class="p-zoom"><svg width="13" height="13" fill="none" stroke="#2A2A2A" stroke-width="2.2" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+  </div>
+</div>
+
+<div class="videos-section">
+  <div class="videos-header">
+    <h2>Vídeos de la festa</h2>
+    <a href="https://www.youtube.com/@AjuntamentMataro" target="_blank" rel="noopener">Tots els vídeos a YouTube →</a>
+  </div>
+  <div class="videos-grid">
+    <div class="video-card" onclick="window.open('https://www.youtube.com/results?search_query=les+santes+mataro+encesa+diables','_blank')">
+      <div class="v-thumb"><img src="https://assets.appculturamataro.cat/medias/agenda/2023/c_crop,x_29,y_90,w_1539,h_854|c_fit,w_768,h_426|c_auto/fef48a3daef386a8d91bccb00e8369f2.jpeg" alt="L'Encesa" loading="lazy"/><div class="v-play-wrap"><div class="v-play-btn"></div></div></div>
+      <div class="v-meta"><div class="v-cat">Foc i diables</div><div class="v-title">L'Encesa — Ball de Diables i Correfoc a Mataró</div><div class="v-dur">Vídeo oficial · Les Santes 2025</div></div>
+    </div>
+    <div class="video-card" onclick="window.open('https://www.youtube.com/results?search_query=gegantada+les+santes+mataro','_blank')">
+      <div class="v-thumb"><img src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_4,y_19,w_1963,h_1090|c_fit,w_768,h_426|c_auto/bea354601387219072c5daee94e91605.jpeg" alt="Gegantada" loading="lazy"/><div class="v-play-wrap"><div class="v-play-btn"></div></div></div>
+      <div class="v-meta"><div class="v-cat">Gegants</div><div class="v-title">Gegantada — Tots els Gegants del Maresme</div><div class="v-dur">Vídeo oficial · Les Santes 2025</div></div>
+    </div>
+    <div class="video-card" onclick="window.open('https://www.youtube.com/results?search_query=diada+castellera+mataro+santes','_blank')">
+      <div class="v-thumb"><img src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_214,w_1824,h_1012|c_fit,w_768,h_426|c_auto/cc091c154c09b5510164e78d19e583f2.jpeg" alt="Castellers" loading="lazy"/><div class="v-play-wrap"><div class="v-play-btn"></div></div></div>
+      <div class="v-meta"><div class="v-cat">Castellers</div><div class="v-title">Diada Castellera — Plaça de Santa Anna</div><div class="v-dur">Vídeo oficial · Les Santes 2025</div></div>
+    </div>
+  </div>
+</div>
+
+
+<div class="cta-banner" style="margin-bottom:64px">
+  <div class="cta-banner-inner">
+    <div class="cta-banner-text">
+      <h3>Vols viure-ho en persona?</h3>
+      <p>Consulta l'agenda completa i no et perdis cap dels actes de Les Santes 2026 a Mataró.</p>
+    </div>
+    <div class="cta-banner-actions">
+      <a href="agenda.html" class="btn-banner-primary">Veure l'agenda →</a>
+      <a href="home.html" class="btn-banner-ghost">Sobre la festa</a>
+    </div>
+  </div>
+</div>
+
+<footer class="footer-light">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <div class="logo-icon">LS</div>
+        <div><span class="logo-name">Les Santes</span><span class="logo-sub">Festa Major de Mataró</span></div>
+      </div>
+      <p>La celebració més gran de Mataró, cada any al juliol en honor a Santa Juliana i Santa Semproniana.</p>
+    </div>
+    <div class="footer-col">
+      <h4>La Festa</h4>
+      <ul>
+        <li><a href="home.html">Inici</a></li>
+        <li><a href="agenda.html">Agenda Completa</a></li>
+        <li><a href="actes.html">Els meus actes</a></li>
+        <li><a href="minisantes.html">Minisantes</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Participa</h4>
+      <ul>
+        <li><a href="https://www.lessantes.cat/" target="_blank">Web oficial</a></li>
+        <li><a href="https://www.instagram.com/lessantes/" target="_blank">Instagram</a></li>
+        <li><a href="https://www.culturamataro.cat/" target="_blank">Cultura Mataró</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner">
+      <div class="footer-social">
+        <a class="social-link" href="https://www.instagram.com/lessantes/" target="_blank"><span class="social-icon">📷</span> @lessantes</a>
+        <a class="social-link" href="https://twitter.com/lessantesmataro" target="_blank"><span class="social-icon">𝕏</span> @lessantesmataro</a>
+      </div>
+      <span class="footer-copy">© 2026 Ajuntament de Mataró</span>
+      <div class="footer-legal"><a href="#">Contacte</a><a href="#">Crèdits i nota legal</a></div>
+    </div>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox" onclick="closeLbBackdrop(event)">
+  <div class="lb-wrap">
+    <button class="lb-close" onclick="closeLb()">×</button>
+    <img class="lb-img" id="lb-img" src="" alt=""/>
+    <div class="lb-caption" id="lb-caption"></div>
+  </div>
+  <button class="lb-nav lb-prev" onclick="lbNav(-1)">&#8592;</button>
+  <button class="lb-nav lb-next" onclick="lbNav(1)">&#8594;</button>
+</div>
+
+<button class="fab" aria-label="Obre el Chatbot Les Santes" title="Chatbot Les Santes"><img src="imgs/robafaves_icono.png" alt=""></button>
+<div id="chatbotPanel">
+  <div class="cb-header">
+    <div class="cb-header-left">
+      <div class="cb-avatar"><img src="imgs/icono_casco_robafaves.jpg" alt=""></div>
+      <div class="cb-header-text"><span class="cb-title">Chatbot Les Santes</span><span class="cb-subtitle">Assistent de la Festa Major de Mataró</span></div>
+    </div>
+    <button id="closeChatbot" class="cb-close" aria-label="Tancar">✕</button>
+  </div>
+  <div class="cb-tabs">
+    <button class="cb-tab active" data-category="all">Actes</button>
+    <button class="cb-tab" data-category="families">Famílies</button>
+    <button class="cb-tab" data-category="musica">Música</button>
+    <button class="cb-tab" data-category="tradicio">Tradició</button>
+  </div>
+  <div id="cbMessages" class="cb-messages"></div>
+  <div class="cb-input-row">
+    <input id="cbInput" type="text" placeholder="Pregunta sobre actes, horaris, llocs..." autocomplete="off"/>
+    <button id="cbSend" class="cb-send-btn" aria-label="Enviar">▶</button>
+  </div>
+</div>
+<link rel="stylesheet" href="chatbot.css">
+<script src="chatbot.js"></script>
+
+<script>
+  function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('open'); }
+
+  const items = document.querySelectorAll('.photo-item[data-cat]');
+  const countEl = document.getElementById('photo-count');
+  document.querySelectorAll('.filter-chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const cat = btn.dataset.cat;
+      let visible = 0;
+      items.forEach(item => {
+        const show = cat === 'all' || item.dataset.cat === cat;
+        item.classList.toggle('hidden', !show);
+        if (show) visible++;
+      });
+      countEl.textContent = visible + ' imatge' + (visible !== 1 ? 's' : '');
+    });
+  });
+
+  let lbAll = [], lbIdx = 0;
+  function buildLbList() { lbAll = Array.from(document.querySelectorAll('.lb-trigger:not(.hidden)')); }
+  function openLb(src, caption, el) { buildLbList(); lbIdx = lbAll.indexOf(el); document.getElementById('lb-img').src = src; document.getElementById('lb-caption').textContent = caption || ''; document.getElementById('lightbox').classList.add('open'); document.body.style.overflow = 'hidden'; }
+  function closeLb() { document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow = ''; }
+  function closeLbBackdrop(e) { if (e.target === document.getElementById('lightbox')) closeLb(); }
+  function lbNav(dir) { buildLbList(); lbIdx = (lbIdx + dir + lbAll.length) % lbAll.length; const el = lbAll[lbIdx]; document.getElementById('lb-img').src = el.dataset.src; document.getElementById('lb-caption').textContent = el.dataset.caption || ''; }
+  document.querySelectorAll('.lb-trigger').forEach(el => { el.addEventListener('click', () => openLb(el.dataset.src, el.dataset.caption, el)); });
+  document.addEventListener('keydown', e => { const lb = document.getElementById('lightbox'); if (!lb.classList.contains('open')) return; if (e.key === 'Escape') closeLb(); if (e.key === 'ArrowLeft') lbNav(-1); if (e.key === 'ArrowRight') lbNav(1); });
+</script>
+</body>
+</html>
