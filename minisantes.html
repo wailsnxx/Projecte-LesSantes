@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -421,7 +422,7 @@
 
         .card-lane {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns: repeat(4, minmax(0, 1fr));
             gap: 10px;
         }
 
@@ -464,22 +465,49 @@
             z-index: 1;
         }
 
-        .s-card.gegant { background: linear-gradient(160deg, #3f9fcb 0%, #63bfe3 100%); }
-        .s-card.nans { background: linear-gradient(160deg, #5caed1 0%, #7bcde9 100%); }
-        .s-card.aliga { background: linear-gradient(160deg, #2d7ea8 0%, #63bfe3 100%); }
-        .s-card.diable { background: linear-gradient(160deg, #5b9fbe 0%, #8dd0e9 100%); }
-        .s-card.focs { background: linear-gradient(160deg, #6aaecf 0%, #9bd8ef 100%); }
-        .s-card.tambor { background: linear-gradient(160deg, #3f9fcb 0%, #8dd0e9 100%); }
+        /* Card type color coding (border accent when no image loaded) */
+        .s-card.t-personatge { border-color: rgba(232,74,74,0.6); }
+        .s-card.t-tradicio   { border-color: rgba(240,168,50,0.6); }
+        .s-card.t-festa      { border-color: rgba(46,204,113,0.6); }
+        .s-card.t-musica     { border-color: rgba(63,159,203,0.6); }
 
-        .s-emoji {
+        /* Type-specific point badge color */
+        .s-card.t-personatge .s-points { background: linear-gradient(120deg, #8a1a1a, #c0392b); }
+        .s-card.t-tradicio   .s-points { background: linear-gradient(120deg, #7a5000, #c47a10); }
+        .s-card.t-festa      .s-points { background: linear-gradient(120deg, #0f5c38, #1a8c55); }
+        .s-card.t-musica     .s-points { background: linear-gradient(120deg, #1f5f80, #2d7ea8); }
+
+        /* Card body text color overrides for image cards */
+        .s-card .s-card-body {
+            background: rgba(10,20,30,0.72);
+            border-top: 1px solid rgba(255,255,255,0.15);
+            backdrop-filter: blur(4px);
+        }
+        .s-card .s-type  { color: rgba(200,230,255,0.75); }
+        .s-card .s-name  { color: #fff; }
+        .s-card .s-desc  { color: rgba(200,230,255,0.65); }
+
+        .s-img {
             position: absolute;
-            top: 48%;
-            left: 50%;
-            transform: translate(-50%, -70%);
-            font-size: 54px;
-            z-index: 2;
-            filter: drop-shadow(0 8px 10px rgba(52, 58, 101, 0.24));
-            animation: bob 2.7s ease-in-out infinite;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            z-index: 0;
+            border-radius: 18px;
+        }
+
+        /* Gradient overlay so card body text stays readable */
+        .s-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 55%;
+            background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 100%);
+            z-index: 1;
+            border-radius: 0 0 18px 18px;
+            pointer-events: none;
         }
 
         .s-card-body {
@@ -778,15 +806,505 @@
             .nav-hamburger { display: flex; }
             .hero-quickstats { grid-template-columns: 1fr 1fr; }
             .card-lane { grid-template-columns: 1fr 1fr; }
-            .score-row { grid-template-columns: 1fr; }
+            .score-row { grid-template-columns: 1fr 1fr; }
         }
 
         @media (max-width: 560px) {
             .hero-title { font-size: 64px; }
-            .card-lane { grid-template-columns: 1fr; }
+            .card-lane { grid-template-columns: 1fr 1fr; }
             .arena-actions { grid-template-columns: 1fr; }
             .download-grid { grid-template-columns: 1fr; }
             .info-inner h2 { font-size: 34px; }
+        }
+
+        /* ================================================================
+           GAME CONTAINER & MULTI-SCREEN SYSTEM
+        ================================================================ */
+        .game-section { max-width: 1100px; margin: 24px auto 0; padding: 0 22px; }
+
+        .game-container {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 24px 64px rgba(5, 20, 40, 0.45), 0 0 0 3px rgba(63,159,203,0.3);
+            position: relative;
+            background: #0a2030;
+        }
+        .game-container:fullscreen,
+        .game-container:-webkit-full-screen {
+            border-radius: 0;
+            width: 100vw !important;
+            height: 100vh !important;
+            max-width: none !important;
+            overflow-y: auto;
+        }
+        .game-container:fullscreen .screen.active,
+        .game-container:-webkit-full-screen .screen.active {
+            min-height: 100vh;
+        }
+        .game-container:fullscreen .screen-lobby,
+        .game-container:-webkit-full-screen .screen-lobby {
+            min-height: 100vh;
+            justify-content: center;
+        }
+        .game-container:fullscreen .screen-tutorial,
+        .game-container:fullscreen .screen-options,
+        .game-container:fullscreen .screen-game,
+        .game-container:-webkit-full-screen .screen-tutorial,
+        .game-container:-webkit-full-screen .screen-options,
+        .game-container:-webkit-full-screen .screen-game {
+            min-height: 100vh;
+        }
+
+        /* -- Screen base -- */
+        .screen { display: none; }
+        .screen.active { display: flex; flex-direction: column; }
+
+        /* ================================================================
+           LOBBY SCREEN
+        ================================================================ */
+        .screen-lobby {
+            min-height: 580px;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(165deg, #071d30 0%, #0e3456 30%, #1a4e72 65%, #091e34 100%);
+            padding: 48px 24px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* CSS star particles */
+        .lobby-star {
+            position: absolute;
+            width: 4px; height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle-s 2.4s ease-in-out infinite;
+            pointer-events: none;
+        }
+        @keyframes twinkle-s {
+            0%, 100% { opacity: 0.15; transform: scale(0.7); }
+            50% { opacity: 0.9; transform: scale(1.3); }
+        }
+
+        /* Glowing orb decorations */
+        .screen-lobby::before {
+            content: '';
+            position: absolute;
+            width: 340px; height: 340px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(63,159,203,0.18) 0%, transparent 70%);
+            top: -80px; left: -80px;
+            pointer-events: none;
+        }
+        .screen-lobby::after {
+            content: '';
+            position: absolute;
+            width: 280px; height: 280px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,191,58,0.12) 0%, transparent 70%);
+            bottom: -60px; right: -60px;
+            pointer-events: none;
+        }
+
+        .lobby-inner { position: relative; z-index: 2; }
+
+        .lobby-badge {
+            display: inline-block;
+            background: rgba(63,159,203,0.2);
+            border: 1.5px solid rgba(63,159,203,0.4);
+            border-radius: 999px;
+            color: #7bcde9;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            padding: 7px 20px;
+            margin-bottom: 22px;
+        }
+
+        .lobby-title {
+            font-family: 'Baloo 2', 'Fredoka', sans-serif;
+            font-size: clamp(46px, 7.5vw, 92px);
+            line-height: 0.88;
+            color: #fff;
+            text-shadow: 0 0 40px rgba(63,159,203,0.5), 0 4px 0 rgba(0,0,0,0.35);
+            margin-bottom: 10px;
+            letter-spacing: -0.01em;
+        }
+        .lobby-title span { color: #ffbf3a; text-shadow: 0 0 30px rgba(255,191,58,0.55), 0 4px 0 rgba(0,0,0,0.3); }
+
+        .lobby-sub {
+            color: #a8d8f0;
+            font-size: 16px;
+            margin-bottom: 36px;
+            font-weight: 500;
+            max-width: 420px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .lobby-buttons { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+
+        .lobby-btn {
+            width: 290px;
+            padding: 17px 28px;
+            border: 0;
+            border-radius: 14px;
+            font-family: 'Baloo 2', 'Fredoka', sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: transform 0.14s, box-shadow 0.14s, filter 0.14s;
+            position: relative;
+            overflow: hidden;
+        }
+        .lobby-btn::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 48%;
+            background: rgba(255,255,255,0.14);
+            pointer-events: none;
+        }
+        .lobby-btn:hover  { transform: translateY(-3px); filter: brightness(1.1); }
+        .lobby-btn:active { transform: translateY(0);    filter: brightness(0.94); }
+
+        .lobby-btn-play {
+            background: linear-gradient(160deg, #e85d20 0%, #ff8c42 100%);
+            color: #fff;
+            box-shadow: 0 8px 22px rgba(232,93,32,0.5), inset 0 -3px 0 rgba(0,0,0,0.2);
+        }
+        .lobby-btn-play:hover { box-shadow: 0 14px 30px rgba(232,93,32,0.55), inset 0 -3px 0 rgba(0,0,0,0.2); }
+
+        .lobby-btn-tutorial {
+            background: linear-gradient(160deg, #2d7ea8 0%, #3f9fcb 100%);
+            color: #fff;
+            box-shadow: 0 8px 22px rgba(45,126,168,0.45), inset 0 -3px 0 rgba(0,0,0,0.18);
+        }
+        .lobby-btn-tutorial:hover { box-shadow: 0 14px 30px rgba(45,126,168,0.5), inset 0 -3px 0 rgba(0,0,0,0.18); }
+
+        .lobby-btn-options {
+            background: linear-gradient(160deg, #243d50 0%, #2e5266 100%);
+            color: #a8d8f0;
+            box-shadow: 0 8px 22px rgba(15,40,60,0.45), inset 0 -3px 0 rgba(0,0,0,0.22);
+        }
+        .lobby-btn-options:hover { box-shadow: 0 14px 30px rgba(15,40,60,0.55), inset 0 -3px 0 rgba(0,0,0,0.22); }
+
+        .lobby-footer { color: rgba(168,216,240,0.4); font-size: 11px; margin-top: 30px; letter-spacing: 0.1em; text-transform: uppercase; }
+
+        /* ================================================================
+           FULLSCREEN BUTTON (reused in all screens)
+        ================================================================ */
+        .fullscreen-btn {
+            position: absolute;
+            top: 12px; right: 12px;
+            z-index: 20;
+            background: rgba(255,255,255,0.1);
+            border: 1.5px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            color: rgba(255,255,255,0.75);
+            width: 38px; height: 38px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+            padding: 0;
+        }
+        .fullscreen-btn:hover { background: rgba(255,255,255,0.2); color: #fff; }
+
+        /* ================================================================
+           SCREEN BACK BUTTON
+        ================================================================ */
+        .screen-back-btn {
+            align-self: flex-start;
+            background: rgba(255,255,255,0.1);
+            border: 1.5px solid rgba(255,255,255,0.18);
+            border-radius: 10px;
+            color: rgba(255,255,255,0.8);
+            font-family: 'Fredoka', inherit;
+            font-size: 13px;
+            font-weight: 700;
+            padding: 9px 16px;
+            cursor: pointer;
+            transition: background 0.14s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin: 16px 0 6px 16px;
+        }
+        .screen-back-btn:hover { background: rgba(255,255,255,0.18); color: #fff; }
+
+        /* ================================================================
+           TUTORIAL SCREEN
+        ================================================================ */
+        .screen-tutorial {
+            background: linear-gradient(165deg, #071d30 0%, #0e3456 50%, #091e34 100%);
+            min-height: 580px;
+            padding: 0 0 36px;
+            color: #fff;
+            position: relative;
+        }
+
+        .screen-title {
+            font-family: 'Baloo 2', 'Fredoka', sans-serif;
+            font-size: 38px;
+            font-weight: 800;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(63,159,203,0.4);
+            margin: 4px 0 24px;
+            text-align: center;
+        }
+
+        .tutorial-steps {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            max-width: 760px;
+            margin: 0 auto 24px;
+            padding: 0 20px;
+        }
+
+        .tut-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 14px;
+            padding: 14px;
+        }
+        .tut-num {
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2d7ea8, #63bfe3);
+            color: #fff;
+            font-family: 'Baloo 2', sans-serif;
+            font-size: 17px;
+            font-weight: 800;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .tut-text strong { display: block; color: #fff; font-size: 14px; margin-bottom: 3px; }
+        .tut-text span   { color: #a8d8f0; font-size: 13px; line-height: 1.4; }
+
+        .type-legend {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin: 0 auto 24px;
+            max-width: 640px;
+            padding: 0 20px;
+        }
+        .type-pill {
+            border-radius: 999px;
+            padding: 8px 18px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: #fff;
+        }
+        .type-pill.personatge { background: linear-gradient(120deg, #c0392b, #e74c3c); }
+        .type-pill.tradicio   { background: linear-gradient(120deg, #a06800, #d48a00); }
+        .type-pill.festa      { background: linear-gradient(120deg, #1a8c55, #27ae60); }
+        .type-pill.musica     { background: linear-gradient(120deg, #2d7ea8, #3f9fcb); }
+
+        .tut-actions { display: flex; justify-content: center; padding: 0 20px; gap: 12px; }
+
+        /* ================================================================
+           OPTIONS SCREEN
+        ================================================================ */
+        .screen-options {
+            background: linear-gradient(165deg, #071d30 0%, #0e3456 50%, #091e34 100%);
+            min-height: 580px;
+            padding: 0 0 36px;
+            color: #fff;
+            position: relative;
+        }
+
+        .options-inner { width: 100%; max-width: 500px; margin: 0 auto; padding: 0 20px; }
+
+        .option-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 14px;
+            padding: 18px 20px;
+            margin-bottom: 12px;
+        }
+        .option-label strong { display: block; font-size: 15px; color: #fff; margin-bottom: 3px; }
+        .option-label span   { font-size: 12px; color: #a8d8f0; }
+
+        .toggle-switch {
+            width: 52px; height: 28px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 999px;
+            position: relative;
+            cursor: pointer;
+            border: 1.5px solid rgba(255,255,255,0.2);
+            transition: background 0.2s;
+            flex-shrink: 0;
+        }
+        .toggle-switch.on { background: linear-gradient(120deg, #2d7ea8, #63bfe3); border-color: #63bfe3; }
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px; left: 2px;
+            width: 20px; height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            transition: transform 0.2s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+        }
+        .toggle-switch.on::after { transform: translateX(24px); }
+
+        /* ================================================================
+           GAME SCREEN
+        ================================================================ */
+        .screen-game {
+            background: linear-gradient(180deg, #f0f8ff 0%, #e4f4ff 100%);
+            min-height: 580px;
+            padding: 12px;
+            position: relative;
+        }
+
+        .game-topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            gap: 8px;
+        }
+        .game-topbar-left { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .game-header-title {
+            font-family: 'Baloo 2', 'Fredoka', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            color: #123142;
+            line-height: 1;
+        }
+
+        .back-lobby-btn {
+            background: rgba(45,126,168,0.12);
+            border: 1px solid rgba(45,126,168,0.25);
+            border-radius: 10px;
+            color: #2d7ea8;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 7px 12px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .back-lobby-btn:hover { background: rgba(45,126,168,0.22); }
+
+        /* Stage progress dots */
+        .stage-progress { display: flex; gap: 5px; align-items: center; }
+        .stage-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: rgba(63,159,203,0.25);
+            border: 1.5px solid rgba(63,159,203,0.45);
+            transition: background 0.3s;
+        }
+        .stage-dot.done   { background: #3f9fcb; border-color: #3f9fcb; }
+        .stage-dot.active { background: #ffbf3a; border-color: #ffbf3a; box-shadow: 0 0 6px rgba(255,191,58,0.55); }
+
+        /* Fullscreen btn inline (in game topbar) */
+        .fullscreen-btn-inline {
+            background: rgba(45,126,168,0.12);
+            border: 1px solid rgba(45,126,168,0.25);
+            border-radius: 10px;
+            color: #2d7ea8;
+            width: 34px; height: 34px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: background 0.15s;
+            padding: 0;
+            flex-shrink: 0;
+        }
+        .fullscreen-btn-inline:hover { background: rgba(45,126,168,0.22); }
+
+        /* ================================================================
+           RESULT OVERLAY (inside game screen)
+        ================================================================ */
+        .result-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(5, 18, 35, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            z-index: 50;
+            border-radius: 0;
+            backdrop-filter: blur(6px);
+        }
+        .result-card {
+            background: linear-gradient(160deg, #0e3456 0%, #1a4e72 100%);
+            border: 2px solid rgba(255,255,255,0.18);
+            border-radius: 22px;
+            padding: 40px 36px;
+            max-width: 420px;
+            width: 92%;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+        }
+        .result-icon {
+            width: 76px; height: 76px;
+            border-radius: 50%;
+            margin: 0 auto 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Baloo 2', sans-serif;
+            font-size: 38px;
+            font-weight: 800;
+        }
+        .result-icon.win  { background: linear-gradient(135deg, #c47a10, #ffbf3a); color: #fff; }
+        .result-icon.lose { background: linear-gradient(135deg, #a02020, #e84a4a); color: #fff; }
+
+        .result-title-big {
+            font-family: 'Baloo 2', 'Fredoka', sans-serif;
+            font-size: 36px;
+            color: #fff;
+            line-height: 1;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .result-text-big { color: #a8d8f0; font-size: 15px; margin-bottom: 26px; line-height: 1.5; }
+        .result-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+        /* ================================================================
+           FLASH-STYLE BUTTON (used in results, tutorial)
+        ================================================================ */
+        .flash-btn {
+            padding: 13px 26px;
+            border-radius: 12px;
+            font-family: 'Baloo 2', 'Fredoka', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border: 0;
+            cursor: pointer;
+            transition: transform 0.14s, filter 0.14s;
+            color: #fff;
+        }
+        .flash-btn:hover  { transform: translateY(-2px); filter: brightness(1.1); }
+        .flash-btn:active { transform: translateY(0);    filter: brightness(0.94); }
+        .flash-btn.primary   { background: linear-gradient(135deg, #e85d20, #ff8c42); box-shadow: 0 6px 16px rgba(232,93,32,0.4); }
+        .flash-btn.secondary { background: linear-gradient(135deg, #2d7ea8, #3f9fcb); box-shadow: 0 6px 16px rgba(45,126,168,0.4); }
+
+        @media (max-width: 640px) {
+            .tutorial-steps { grid-template-columns: 1fr; }
+            .lobby-btn { width: 250px; font-size: 19px; padding: 14px 20px; }
+            .lobby-title { font-size: 52px; }
+            .screen-title { font-size: 30px; }
         }
     </style>
 </head>
@@ -841,7 +1359,7 @@
         <h1 class="hero-title">MINISANTES</h1>
         <p class="hero-sub">Un tauler festiu inspirat en cartes dinamques, amb Gegants, Nans, l'Aliga i Diables simpaticos per jugar i aprendre en familia.</p>
         <div class="hero-quickstats">
-            <div class="quick-pill"><strong>6</strong><span>Cartes actives</span></div>
+            <div class="quick-pill"><strong>8</strong><span>Cartes actives</span></div>
             <div class="quick-pill"><strong>95</strong><span>Punts objectiu</span></div>
             <div class="quick-pill"><strong>3</strong><span>Vides de festa</span></div>
             <div class="quick-pill"><strong>4</strong><span>Etapes</span></div>
@@ -849,143 +1367,329 @@
     </div>
 </section>
 
-<section class="game-shell" id="jocs">
-    <div class="game-box" aria-label="Joc complet en un recuadre">
-        <header class="arena-head">
-            <h2>La Ruta de Les Santes</h2>
-            <p>Objectiu: selecciona 2 cartes, suma punts i supera cada etapa. Si no arribes a l'objectiu, perds una vida.</p>
+<section class="game-section" id="jocs">
+    <div class="game-container" id="game-container">
+
+        <!-- ====================================================
+             SCREEN 1 · LOBBY
+        ==================================================== -->
+        <div class="screen screen-lobby active" id="screen-lobby">
+            <!-- Fullscreen button -->
+            <button class="fullscreen-btn" id="fullscreen-btn-lobby" title="Pantalla completa" aria-label="Pantalla completa">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+            </button>
+            <!-- CSS star particles -->
+            <span class="lobby-star" style="left:7%;  top:12%; animation-delay:0s;   width:3px; height:3px;"></span>
+            <span class="lobby-star" style="left:19%; top:38%; animation-delay:0.4s; width:4px; height:4px;"></span>
+            <span class="lobby-star" style="left:72%; top:20%; animation-delay:0.8s; width:3px; height:3px;"></span>
+            <span class="lobby-star" style="left:86%; top:52%; animation-delay:1.2s; width:5px; height:5px;"></span>
+            <span class="lobby-star" style="left:34%; top:75%; animation-delay:0.2s; width:4px; height:4px;"></span>
+            <span class="lobby-star" style="left:61%; top:8%;  animation-delay:1.6s; width:3px; height:3px;"></span>
+            <span class="lobby-star" style="left:48%; top:88%; animation-delay:0.7s; width:5px; height:5px;"></span>
+            <span class="lobby-star" style="left:93%; top:30%; animation-delay:1.9s; width:3px; height:3px;"></span>
+            <span class="lobby-star" style="left:4%;  top:65%; animation-delay:1.0s; width:6px; height:6px;"></span>
+            <span class="lobby-star" style="left:56%; top:50%; animation-delay:1.4s; width:2px; height:2px;"></span>
+            <span class="lobby-star" style="left:78%; top:80%; animation-delay:0.5s; width:4px; height:4px;"></span>
+            <span class="lobby-star" style="left:25%; top:55%; animation-delay:1.1s; width:3px; height:3px;"></span>
+
+            <div class="lobby-inner">
+                <div class="lobby-badge">Les Santes · Mataró 2025</div>
+                <h1 class="lobby-title">LA RUTA<br><span>DE LES SANTES</span></h1>
+                <p class="lobby-sub">Selecciona cartes, acumula punts i guia la colla festiva fins al final!</p>
+                <div class="lobby-buttons">
+                    <button class="lobby-btn lobby-btn-play"     id="btn-jugar">   JUGAR   </button>
+                    <button class="lobby-btn lobby-btn-tutorial" id="btn-tutorial">TUTORIAL</button>
+                    <button class="lobby-btn lobby-btn-options"  id="btn-options"> OPCIONS </button>
+                </div>
+                <p class="lobby-footer">v1.0 · Joc de cartes festiu · Minisantes</p>
+            </div>
+        </div>
+
+        <!-- ====================================================
+             SCREEN 2 · TUTORIAL
+        ==================================================== -->
+        <div class="screen screen-tutorial" id="screen-tutorial">
+            <button class="fullscreen-btn" id="fullscreen-btn-tut">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+            </button>
+            <button class="screen-back-btn" id="btn-back-tut">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+                Tornar al menú
+            </button>
+            <h2 class="screen-title">COM ES JUGA</h2>
+
+            <div class="tutorial-steps">
+                <div class="tut-step">
+                    <div class="tut-num">1</div>
+                    <div class="tut-text">
+                        <strong>Tria 2 cartes</strong>
+                        <span>Fes clic a dues cartes del tauler per seleccionar-les.</span>
+                    </div>
+                </div>
+                <div class="tut-step">
+                    <div class="tut-num">2</div>
+                    <div class="tut-text">
+                        <strong>Juga la mà</strong>
+                        <span>Prem "JUGAR CARTES" per sumar els punts de les dues cartes.</span>
+                    </div>
+                </div>
+                <div class="tut-step">
+                    <div class="tut-num">3</div>
+                    <div class="tut-text">
+                        <strong>Bonus Sinergia</strong>
+                        <span>Si les dues cartes son del mateix tipus, guanyes +10 punts extra.</span>
+                    </div>
+                </div>
+                <div class="tut-step">
+                    <div class="tut-num">4</div>
+                    <div class="tut-text">
+                        <strong>Supera l'objectiu</strong>
+                        <span>Cada etapa te un nombre de punts a arribar. Aconsegueix-ho!</span>
+                    </div>
+                </div>
+                <div class="tut-step">
+                    <div class="tut-num">5</div>
+                    <div class="tut-text">
+                        <strong>Vides de la colla</strong>
+                        <span>Si no arribes a l'objectiu, perds una vida. En tens 3 per partida.</span>
+                    </div>
+                </div>
+                <div class="tut-step">
+                    <div class="tut-num">6</div>
+                    <div class="tut-text">
+                        <strong>Guanya la festa!</strong>
+                        <span>Supera les 4 etapes per completar la Ruta de Les Santes.</span>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="text-align:center; color:#a8d8f0; font-size:14px; margin-bottom:12px; text-transform:uppercase; letter-spacing:0.08em;">Tipus de cartes i colors</h3>
+            <div class="type-legend">
+                <span class="type-pill personatge">Personatge · vermell</span>
+                <span class="type-pill tradicio">Tradicio · daurat</span>
+                <span class="type-pill festa">Festa · verd</span>
+                <span class="type-pill musica">Musica · blau</span>
+            </div>
+            <div class="tut-actions">
+                <button class="flash-btn primary" id="btn-tut-play">Jugar ara!</button>
+                <button class="flash-btn secondary" id="btn-tut-back2">Tornar</button>
+            </div>
+        </div>
+
+        <!-- ====================================================
+             SCREEN 3 · OPTIONS
+        ==================================================== -->
+        <div class="screen screen-options" id="screen-options">
+            <button class="fullscreen-btn" id="fullscreen-btn-opt">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+            </button>
+            <button class="screen-back-btn" id="btn-back-opt">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+                Tornar al menú
+            </button>
+            <h2 class="screen-title">OPCIONS</h2>
+
+            <div class="options-inner">
+                <div class="option-row">
+                    <div class="option-label">
+                        <strong>So del joc</strong>
+                        <span>Activar o desactivar la musica de fons</span>
+                    </div>
+                    <div class="toggle-switch" id="toggle-sound" role="switch" aria-checked="false"></div>
+                </div>
+                <div class="option-row">
+                    <div class="option-label">
+                        <strong>Efectes visuals</strong>
+                        <span>Animar cartes i transicions</span>
+                    </div>
+                    <div class="toggle-switch on" id="toggle-fx" role="switch" aria-checked="true"></div>
+                </div>
+                <div class="option-row">
+                    <div class="option-label">
+                        <strong>Pantalla completa</strong>
+                        <span>Expandir el joc a tota la pantalla</span>
+                    </div>
+                    <button class="flash-btn secondary" id="btn-fullscreen-opt" style="font-size:13px; padding:10px 18px;">Activar</button>
+                </div>
+                <div style="margin-top:20px; padding:16px; background:rgba(255,255,255,0.05); border-radius:12px; text-align:center; color:rgba(168,216,240,0.5); font-size:12px; border:1px solid rgba(255,255,255,0.08);">
+                    La Ruta de Les Santes v1.0 · Projecte Minisantes 2025
+                </div>
+            </div>
+        </div>
+
+        <!-- ====================================================
+             SCREEN 4 · GAME
+        ==================================================== -->
+        <div class="screen screen-game" id="screen-game">
+            <!-- Top bar -->
+            <div class="game-topbar">
+                <div class="game-topbar-left">
+                    <button class="back-lobby-btn" id="btn-back-game">← Menú</button>
+                    <span class="game-header-title">La Ruta de Les Santes</span>
+                    <div class="stage-progress" id="stage-progress">
+                        <span class="stage-dot active" data-stage="0"></span>
+                        <span class="stage-dot"        data-stage="1"></span>
+                        <span class="stage-dot"        data-stage="2"></span>
+                        <span class="stage-dot"        data-stage="3"></span>
+                    </div>
+                </div>
+                <button class="fullscreen-btn-inline" id="fullscreen-btn-game" title="Pantalla completa">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                </button>
+            </div>
+
+            <!-- Score row -->
+            <div class="score-row" aria-label="Marcador">
+                <div class="meter">
+                    <div class="meter-label">Punts actuals</div>
+                    <div class="meter-num" id="score-current">0</div>
+                </div>
+                <div class="meter">
+                    <div class="meter-label">Objectiu etapa</div>
+                    <div class="meter-num" id="stage-target">95</div>
+                </div>
+                <div class="meter">
+                    <div class="meter-label">Vides de la colla</div>
+                    <div class="hearts" id="hearts-container">
+                        <span class="heart">❤</span>
+                        <span class="heart">❤</span>
+                        <span class="heart">❤</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status chips -->
             <div class="status-row">
                 <span class="status-chip" id="stage-chip">Etapa 1 · El Prego</span>
                 <span class="status-chip" id="synergy-chip">Bonus sinergia +10</span>
                 <span class="status-chip" id="feedback-chip">Tria 2 cartes per jugar</span>
             </div>
-        </header>
 
-        <div class="score-row" aria-label="Marcador">
-            <div class="meter">
-                <div class="meter-label">Punts actuals</div>
-                <div class="meter-num" id="score-current">0</div>
+            <!-- Card lane -->
+            <div class="card-lane" style="margin-top:10px;" aria-label="Cartes disponibles">
+
+                <article class="s-card t-personatge" data-type="Personatge" data-points="22">
+                    <img class="s-img" src="imgs/Robafaves.png.png" alt="Robafaves" loading="lazy">
+                    <div class="s-card-body">
+                        <div class="s-card-top">
+                            <span class="s-type">Personatge</span>
+                            <span class="s-points">22 ★</span>
+                        </div>
+                        <h3 class="s-name">Robafaves</h3>
+                        <p class="s-desc">Figura iconic de la cercavila.</p>
+                    </div>
+                </article>
+
+                <article class="s-card t-personatge" data-type="Personatge" data-points="19">
+                    <img class="s-img" src="imgs/La_Gegantera.png.png" alt="La Gegantera" loading="lazy">
+                    <div class="s-card-body">
+                        <div class="s-card-top">
+                            <span class="s-type">Personatge</span>
+                            <span class="s-points">19 ★</span>
+                        </div>
+                        <h3 class="s-name">La Gegantera</h3>
+                        <p class="s-desc">Reina majestuosa de la festa major.</p>
+                    </div>
+                </article>
+
+                <article class="s-card t-personatge" data-type="Personatge" data-points="18">
+                    <img class="s-img" src="imgs/El_Manelo_i_La_Toneta.png" alt="El Manelo i La Toneta" loading="lazy">
+                    <div class="s-card-body">
+                        <div class="s-card-top">
+                            <span class="s-type">Personatge</span>
+                            <span class="s-points">18 ★</span>
+                        </div>
+                        <h3 class="s-name">El Manelo i La Toneta</h3>
+                        <p class="s-desc">La parella gegant de Mataro.</p>
+                    </div>
+                </article>
+
+                <article class="s-card t-personatge" data-type="Personatge" data-points="16">
+                    <img class="s-img" src="imgs/La_momerota_i_momeroteta.png" alt="La Momerota i Momeroteta" loading="lazy">
+                    <div class="s-card-body">
+                        <div class="s-card-top">
+                            <span class="s-type">Personatge</span>
+                            <span class="s-points">16 ★</span>
+                        </div>
+                        <h3 class="s-name">La Momerota i Momeroteta</h3>
+                        <p class="s-desc">Duo fantastic i divertit.</p>
+                    </div>
+                </article>
+
+                <article class="s-card t-tradicio" data-type="Tradicio" data-points="20">
+                    <img class="s-img" src="imgs/L'Aliga.png" alt="L'Aliga" loading="lazy">
+                    <div class="s-card-body">
+                        <div class="s-card-top">
+                            <span class="s-type">Tradicio</span>
+                            <span class="s-points">20 ★</span>
+                        </div>
+                        <h3 class="s-name">L'Aliga</h3>
+                        <p class="s-desc">Dansa solemne i plena de classe.</p>
+                    </div>
+                </article>
+
+                <article class="s-card t-tradicio" data-type="Tradicio" data-points="17">
+                    <img class="s-img" src="imgs/la_draga.png.png" alt="La Draga" loading="lazy">
+                    <div class="s-card-body">
+                        <div class="s-card-top">
+                            <span class="s-type">Tradicio</span>
+                            <span class="s-points">17 ★</span>
+                        </div>
+                        <h3 class="s-name">La Draga</h3>
+                        <p class="s-desc">Bestia mitica de les festes.</p>
+                    </div>
+                </article>
+
+                <article class="s-card t-festa" data-type="Festa" data-points="15">
+                    <img class="s-img" src="imgs/els_Diables.png" alt="Els Diables" loading="lazy">
+                    <div class="s-card-body">
+                        <div class="s-card-top">
+                            <span class="s-type">Festa</span>
+                            <span class="s-points">15 ★</span>
+                        </div>
+                        <h3 class="s-name">Els Diables</h3>
+                        <p class="s-desc">Correfoc de foc i alegria!</p>
+                    </div>
+                </article>
+
+                <article class="s-card t-festa" data-type="Festa" data-points="21">
+                    <img class="s-img" src="imgs/les_Patrones.png" alt="Les Patrones" loading="lazy">
+                    <div class="s-card-body">
+                        <div class="s-card-top">
+                            <span class="s-type">Festa</span>
+                            <span class="s-points">21 ★</span>
+                        </div>
+                        <h3 class="s-name">Les Patrones</h3>
+                        <p class="s-desc">Santa Juliana i Santa Semproniana.</p>
+                    </div>
+                </article>
+
             </div>
-            <div class="meter">
-                <div class="meter-label">Objectiu etapa</div>
-                <div class="meter-num" id="stage-target">95</div>
+
+            <!-- Action buttons -->
+            <div class="arena-actions" style="margin-top:10px;">
+                <button class="ui-btn primary"   id="play-cards-btn">▶ JUGAR CARTES</button>
+                <button class="ui-btn secondary"  id="reroll-btn">↺ BARREJAR MÀ</button>
+                <button class="ui-btn ghost"      id="activate-bonus-btn">✦ ACTIVAR BONUS +6</button>
             </div>
-            <div class="meter">
-                <div class="meter-label">Vides de la colla</div>
-                <div class="hearts" id="hearts-container">
-                    <span class="heart">❤</span>
-                    <span class="heart">❤</span>
-                    <span class="heart">❤</span>
+
+            <!-- Result overlay -->
+            <div class="result-overlay" id="result-overlay" style="display:none;">
+                <div class="result-card">
+                    <div class="result-icon" id="result-icon">★</div>
+                    <h2 class="result-title-big" id="result-title">Resultat</h2>
+                    <p class="result-text-big"   id="result-text">Text de resultat</p>
+                    <div class="result-actions">
+                        <button class="flash-btn primary"   id="restart-game-btn">TORNAR A JUGAR</button>
+                        <button class="flash-btn secondary" id="btn-result-menu">MENÚ PRINCIPAL</button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="game-grid">
-            <div class="game-main">
-                <div class="card-lane" aria-label="Cartes disponibles">
-                    <article class="s-card gegant" data-type="Personatge" data-points="22">
-                        <span class="s-emoji">🧔</span>
-                        <div class="s-card-body">
-                            <div class="s-card-top">
-                                <span class="s-type">Personatge</span>
-                                <span class="s-points">22 ★</span>
-                            </div>
-                            <h3 class="s-name">Robafaves</h3>
-                            <p class="s-desc">Carta forta amb energia de cercavila.</p>
-                        </div>
-                    </article>
-
-                    <article class="s-card nans" data-type="Personatge" data-points="16">
-                        <span class="s-emoji">🧒</span>
-                        <div class="s-card-body">
-                            <div class="s-card-top">
-                                <span class="s-type">Personatge</span>
-                                <span class="s-points">16 ★</span>
-                            </div>
-                            <h3 class="s-name">Nans</h3>
-                            <p class="s-desc">Moviment rapid i alegria per tota la placa.</p>
-                        </div>
-                    </article>
-
-                    <article class="s-card aliga" data-type="Tradicio" data-points="18">
-                        <span class="s-emoji">🦅</span>
-                        <div class="s-card-body">
-                            <div class="s-card-top">
-                                <span class="s-type">Tradicio</span>
-                                <span class="s-points">18 ★</span>
-                            </div>
-                            <h3 class="s-name">L'Aliga</h3>
-                            <p class="s-desc">Classe i ritme amb dansa solemne i amable.</p>
-                        </div>
-                    </article>
-
-                    <article class="s-card diable" data-type="Festa" data-points="15">
-                        <span class="s-emoji">😈</span>
-                        <div class="s-card-body">
-                            <div class="s-card-top">
-                                <span class="s-type">Festa</span>
-                                <span class="s-points">15 ★</span>
-                            </div>
-                            <h3 class="s-name">Diables kids</h3>
-                            <p class="s-desc">Correfoc cartoon, simpatic i no agressiu.</p>
-                        </div>
-                    </article>
-
-                    <article class="s-card focs" data-type="Festa" data-points="20">
-                        <span class="s-emoji">🎆</span>
-                        <div class="s-card-body">
-                            <div class="s-card-top">
-                                <span class="s-type">Festa</span>
-                                <span class="s-points">20 ★</span>
-                            </div>
-                            <h3 class="s-name">Focs finals</h3>
-                            <p class="s-desc">Particules suaus i lluentor de celebracio.</p>
-                        </div>
-                    </article>
-
-                    <article class="s-card tambor" data-type="Musica" data-points="21">
-                        <span class="s-emoji">🥁</span>
-                        <div class="s-card-body">
-                            <div class="s-card-top">
-                                <span class="s-type">Musica</span>
-                                <span class="s-points">21 ★</span>
-                            </div>
-                            <h3 class="s-name">Tabalada</h3>
-                            <p class="s-desc">Marca el compas amb un feedback molt clar.</p>
-                        </div>
-                    </article>
-                </div>
-
-                <div class="arena-actions">
-                    <button class="ui-btn primary" id="play-cards-btn">▶ Jugar cartes</button>
-                    <button class="ui-btn primary" id="confirm-play-btn">🎯 Confirmar jugada</button>
-                    <button class="ui-btn secondary" id="reroll-btn">🔄 Barrejar ma</button>
-                    <button class="ui-btn secondary" id="activate-bonus-btn">✨ Activar bonus</button>
-                    <button class="ui-btn ghost" id="quick-help-btn">🧠 Veure ajuda rapida</button>
-                    <button class="ui-btn ghost" id="selection-hint-btn" disabled>⏳ Esperant 2 cartes</button>
-                </div>
-
-                <div class="result-box" id="result-box" style="display:none;">
-                    <h3 id="result-title">Resultat</h3>
-                    <p id="result-text">Text de resultat</p>
-                    <button class="ui-btn primary" id="restart-game-btn" style="max-width:220px; margin:0 auto;">🔁 Tornar a jugar</button>
-                </div>
-            </div>
-
-            <aside class="game-side" aria-label="Com jugar">
-                <h2 class="panel-title">Com es juga</h2>
-                <div class="rules-list">
-                    <div class="rules-item"><strong>1.</strong> Tria 2 cartes fent clic.</div>
-                    <div class="rules-item"><strong>2.</strong> Prem "Jugar cartes" o "Confirmar jugada".</div>
-                    <div class="rules-item"><strong>3.</strong> Si combines tipus igual, tens bonus sinergia.</div>
-                    <div class="rules-item"><strong>4.</strong> Si arribes a l'objectiu, passes d'etapa.</div>
-                    <div class="rules-item"><strong>5.</strong> Si no arribes, perds una vida.</div>
-                    <div class="rules-item"><strong>6.</strong> Guanyes en completar les 4 etapes.</div>
-                </div>
-            </aside>
-        </div>
     </div>
 </section>
+
 
 <section class="info-banner">
     <div class="info-inner">
@@ -1006,24 +1710,129 @@
 </footer>
 
 <script>
+    // ================================================================
+    //  MOBILE NAV
+    // ================================================================
     function toggleMenu() {
-        const menu = document.getElementById('mobile-menu');
-        menu.classList.toggle('open');
+        var menu = document.getElementById('mobile-menu');
+        if (menu) menu.classList.toggle('open');
     }
-
-    document.querySelectorAll('.mobile-menu a').forEach(a => {
-        a.addEventListener('click', () => document.getElementById('mobile-menu').classList.remove('open'));
+    document.querySelectorAll('.mobile-menu a').forEach(function(a) {
+        a.addEventListener('click', function() {
+            var menu = document.getElementById('mobile-menu');
+            if (menu) menu.classList.remove('open');
+        });
     });
 
-    (function () {
-        const STAGES = [
-            { name: 'El Prego', target: 95 },
-            { name: 'Cercavila', target: 105 },
-            { name: 'Ball de Gegants', target: 115 },
-            { name: 'Final de Festa', target: 125 }
+    // ================================================================
+    //  SCREEN MANAGER
+    // ================================================================
+    var currentScreen = 'lobby';
+
+    function showScreen(name) {
+        document.querySelectorAll('.screen').forEach(function(s) {
+            s.classList.remove('active');
+        });
+        var target = document.getElementById('screen-' + name);
+        if (target) target.classList.add('active');
+        currentScreen = name;
+
+        if (name === 'lobby') {
+            startLobbyConfetti();
+        } else {
+            stopLobbyConfetti();
+        }
+        if (name === 'game') {
+            resetGame('Nova partida! Tria 2 cartes per comencar.');
+        }
+    }
+
+    // ================================================================
+    //  FULLSCREEN
+    // ================================================================
+    function toggleFullscreen() {
+        var container = document.getElementById('game-container');
+        if (!document.fullscreenElement) {
+            container.requestFullscreen().catch(function(err) { console.log(err); });
+        } else {
+            document.exitFullscreen();
+        }
+    }
+
+    ['fullscreen-btn-lobby', 'fullscreen-btn-tut', 'fullscreen-btn-opt',
+     'fullscreen-btn-game', 'btn-fullscreen-opt'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.addEventListener('click', toggleFullscreen);
+    });
+
+    // ================================================================
+    //  LOBBY CONFETTI (canvas-confetti CDN)
+    // ================================================================
+    var confettiInterval = null;
+    var confettiColors = ['#3f9fcb','#63bfe3','#ffbf3a','#ff6f61','#7bcde9','#ffffff','#a8d8f0','#ffd580'];
+
+    function startLobbyConfetti() {
+        if (confettiInterval) return;
+        confettiInterval = setInterval(function() {
+            if (typeof confetti === 'undefined') return;
+            confetti({
+                particleCount: 4,
+                spread: 90,
+                origin: { x: Math.random(), y: -0.02 },
+                colors: confettiColors,
+                gravity: 0.75,
+                scalar: 0.85,
+                ticks: 200
+            });
+        }, 350);
+    }
+
+    function stopLobbyConfetti() {
+        if (confettiInterval) {
+            clearInterval(confettiInterval);
+            confettiInterval = null;
+        }
+        if (typeof confetti !== 'undefined') confetti.reset();
+    }
+
+    // ================================================================
+    //  NAVIGATION BUTTONS
+    // ================================================================
+    document.getElementById('btn-jugar').addEventListener('click',    function() { showScreen('game'); });
+    document.getElementById('btn-tutorial').addEventListener('click', function() { showScreen('tutorial'); });
+    document.getElementById('btn-options').addEventListener('click',  function() { showScreen('options'); });
+    document.getElementById('btn-back-tut').addEventListener('click', function() { showScreen('lobby'); });
+    document.getElementById('btn-tut-back2').addEventListener('click',function() { showScreen('lobby'); });
+    document.getElementById('btn-tut-play').addEventListener('click', function() { showScreen('game'); });
+    document.getElementById('btn-back-opt').addEventListener('click', function() { showScreen('lobby'); });
+    document.getElementById('btn-back-game').addEventListener('click',function() { showScreen('lobby'); });
+
+    // ================================================================
+    //  OPTIONS TOGGLES
+    // ================================================================
+    function setupToggle(id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener('click', function() {
+            this.classList.toggle('on');
+            this.setAttribute('aria-checked', this.classList.contains('on') ? 'true' : 'false');
+        });
+    }
+    setupToggle('toggle-sound');
+    setupToggle('toggle-fx');
+
+    // ================================================================
+    //  GAME LOGIC
+    // ================================================================
+    (function() {
+        var STAGES = [
+            { name: 'El Prego',         target: 95 },
+            { name: 'Cercavila',        target: 105 },
+            { name: 'Ball de Gegants',  target: 115 },
+            { name: 'Final de Festa',   target: 125 }
         ];
 
-        const state = {
+        var state = {
             stageIndex: 0,
             score: 0,
             lives: 3,
@@ -1034,130 +1843,136 @@
             ended: false
         };
 
-        const cards = Array.from(document.querySelectorAll('.s-card'));
-        const scoreCurrentEl = document.getElementById('score-current');
-        const stageTargetEl = document.getElementById('stage-target');
-        const heartsContainerEl = document.getElementById('hearts-container');
-        const stageChipEl = document.getElementById('stage-chip');
-        const synergyChipEl = document.getElementById('synergy-chip');
-        const feedbackChipEl = document.getElementById('feedback-chip');
-        const playCardsBtn = document.getElementById('play-cards-btn');
-        const confirmPlayBtn = document.getElementById('confirm-play-btn');
-        const rerollBtn = document.getElementById('reroll-btn');
-        const activateBonusBtn = document.getElementById('activate-bonus-btn');
-        const selectionHintBtn = document.getElementById('selection-hint-btn');
-        const quickHelpBtn = document.getElementById('quick-help-btn');
-        const resultBoxEl = document.getElementById('result-box');
-        const resultTitleEl = document.getElementById('result-title');
-        const resultTextEl = document.getElementById('result-text');
-        const restartGameBtn = document.getElementById('restart-game-btn');
+        var cards              = Array.from(document.querySelectorAll('.s-card'));
+        var scoreCurrentEl     = document.getElementById('score-current');
+        var stageTargetEl      = document.getElementById('stage-target');
+        var heartsContainerEl  = document.getElementById('hearts-container');
+        var stageChipEl        = document.getElementById('stage-chip');
+        var synergyChipEl      = document.getElementById('synergy-chip');
+        var feedbackChipEl     = document.getElementById('feedback-chip');
+        var playCardsBtn       = document.getElementById('play-cards-btn');
+        var rerollBtn          = document.getElementById('reroll-btn');
+        var activateBonusBtn   = document.getElementById('activate-bonus-btn');
+        var resultOverlay      = document.getElementById('result-overlay');
+        var resultIconEl       = document.getElementById('result-icon');
+        var resultTitleEl      = document.getElementById('result-title');
+        var resultTextEl       = document.getElementById('result-text');
+        var restartGameBtn     = document.getElementById('restart-game-btn');
+        var btnResultMenu      = document.getElementById('btn-result-menu');
+        var stageProgressEl    = document.getElementById('stage-progress');
+
+        function updateStageProgress() {
+            if (!stageProgressEl) return;
+            stageProgressEl.querySelectorAll('.stage-dot').forEach(function(dot, i) {
+                dot.classList.remove('done', 'active');
+                if (i < state.stageIndex)      dot.classList.add('done');
+                else if (i === state.stageIndex) dot.classList.add('active');
+            });
+        }
 
         function setGameEnd(enabled) {
             state.ended = enabled;
-            cards.forEach(card => {
-                card.style.pointerEvents = enabled ? 'none' : '';
-            });
-            playCardsBtn.disabled = enabled || state.selectedCards.length !== 2;
-            confirmPlayBtn.disabled = enabled || state.selectedCards.length !== 2;
-            rerollBtn.disabled = enabled;
+            cards.forEach(function(c) { c.style.pointerEvents = enabled ? 'none' : ''; });
+            playCardsBtn.disabled     = enabled || state.selectedCards.length !== 2;
+            rerollBtn.disabled        = enabled;
             activateBonusBtn.disabled = enabled || state.bonusUsed;
-            quickHelpBtn.disabled = enabled;
-            selectionHintBtn.disabled = true;
         }
 
-        function showResult(title, text) {
+        function showResultOverlay(isWin, title, text) {
+            resultIconEl.textContent = isWin ? '★' : '✕';
+            resultIconEl.className   = 'result-icon ' + (isWin ? 'win' : 'lose');
             resultTitleEl.textContent = title;
-            resultTextEl.textContent = text;
-            resultBoxEl.style.display = '';
+            resultTextEl.textContent  = text;
+            resultOverlay.style.display = 'flex';
             setGameEnd(true);
+            if (isWin && typeof confetti !== 'undefined') {
+                confetti({ particleCount: 130, spread: 70, origin: { y: 0.6 }, colors: confettiColors });
+                setTimeout(function() {
+                    confetti({ particleCount: 60, spread: 100, origin: { x: 0.1, y: 0.5 }, colors: confettiColors });
+                    confetti({ particleCount: 60, spread: 100, origin: { x: 0.9, y: 0.5 }, colors: confettiColors });
+                }, 500);
+            }
         }
 
-        function hideResult() {
-            resultBoxEl.style.display = 'none';
+        function hideResultOverlay() {
+            resultOverlay.style.display = 'none';
             setGameEnd(false);
         }
 
         function renderHearts() {
             heartsContainerEl.innerHTML = '';
-            for (let i = 0; i < 3; i++) {
-                const heart = document.createElement('span');
-                heart.className = 'heart';
-                heart.textContent = i < state.lives ? '❤' : '♡';
-                if (i >= state.lives) {
-                    heart.style.opacity = '0.35';
-                }
-                heartsContainerEl.appendChild(heart);
+            for (var i = 0; i < 3; i++) {
+                var h = document.createElement('span');
+                h.className   = 'heart';
+                h.textContent = i < state.lives ? '❤' : '♡';
+                if (i >= state.lives) h.style.opacity = '0.3';
+                heartsContainerEl.appendChild(h);
             }
         }
 
         function updateButtons() {
-            const hasTwo = state.selectedCards.length === 2;
-            playCardsBtn.disabled = state.ended || !hasTwo;
-            confirmPlayBtn.disabled = state.ended || !hasTwo;
-            selectionHintBtn.textContent = hasTwo ? '✅ Jugada preparada' : '⏳ Esperant 2 cartes';
+            playCardsBtn.disabled     = state.ended || state.selectedCards.length !== 2;
             activateBonusBtn.disabled = state.ended || state.bonusUsed;
         }
 
-        function setFeedback(msg) {
-            feedbackChipEl.textContent = msg;
-        }
+        function setFeedback(msg) { if (feedbackChipEl) feedbackChipEl.textContent = msg; }
 
         function refreshHUD() {
             scoreCurrentEl.textContent = state.score;
-            stageTargetEl.textContent = STAGES[state.stageIndex].target;
-            stageChipEl.textContent = 'Etapa ' + (state.stageIndex + 1) + ' · ' + STAGES[state.stageIndex].name;
-            synergyChipEl.textContent = 'Bonus sinergia +' + state.synergyBonus + (state.pendingBonus ? ' · Bonus actiu +' + state.pendingBonus : '');
+            stageTargetEl.textContent  = STAGES[state.stageIndex].target;
+            stageChipEl.textContent    = 'Etapa ' + (state.stageIndex + 1) + ' · ' + STAGES[state.stageIndex].name;
+            synergyChipEl.textContent  = 'Sinergia +' + state.synergyBonus + (state.pendingBonus ? ' · Bonus actiu +' + state.pendingBonus : '');
             renderHearts();
+            updateStageProgress();
             updateButtons();
         }
 
         function clearSelection() {
             state.selectedCards = [];
-            cards.forEach(card => card.classList.remove('selected', 'dimmed'));
+            cards.forEach(function(c) { c.classList.remove('selected', 'dimmed'); });
         }
 
         function highlightSelection() {
-            cards.forEach(card => {
-                const selected = state.selectedCards.includes(card);
-                card.classList.toggle('selected', selected);
-                card.classList.toggle('dimmed', state.selectedCards.length === 2 && !selected);
+            var two = state.selectedCards.length === 2;
+            cards.forEach(function(c) {
+                var sel = state.selectedCards.includes(c);
+                c.classList.toggle('selected', sel);
+                c.classList.toggle('dimmed', two && !sel);
             });
             updateButtons();
         }
 
         function shuffleCards() {
-            const lane = document.querySelector('.card-lane');
-            const shuffled = cards.slice().sort(() => Math.random() - 0.5);
-            shuffled.forEach(card => lane.appendChild(card));
+            var lane = document.querySelector('.card-lane');
+            cards.slice().sort(function() { return Math.random() - 0.5; })
+                 .forEach(function(c) { lane.appendChild(c); });
             clearSelection();
-            setFeedback('Ma barrejada. Tria 2 cartes!');
             updateButtons();
         }
 
         function resetStageSelection() {
             state.pendingBonus = 0;
-            state.bonusUsed = false;
+            state.bonusUsed    = false;
             clearSelection();
             refreshHUD();
         }
 
-        function resetGame(fullResetMessage) {
+        function resetGame(msg) {
             state.stageIndex = 0;
-            state.score = 0;
-            state.lives = 3;
-            state.ended = false;
+            state.score      = 0;
+            state.lives      = 3;
+            state.ended      = false;
             resetStageSelection();
-            hideResult();
+            hideResultOverlay();
             shuffleCards();
-            setFeedback(fullResetMessage || 'Nova partida! Tria 2 cartes per començar.');
+            setFeedback(msg || 'Nova partida! Tria 2 cartes per comencar.');
         }
 
         function nextStage() {
             if (state.stageIndex === STAGES.length - 1) {
-                showResult('🏆 Has guanyat!', 'Has completat totes les etapes de Les Santes. Prem "Tornar a jugar" per començar una nova partida.');
+                showResultOverlay(true, 'HAS GUANYAT!', 'Has completat totes les etapes de Les Santes. Fantastic!');
                 return;
             }
-
             state.stageIndex += 1;
             state.score = 0;
             resetStageSelection();
@@ -1167,56 +1982,49 @@
 
         function playTurn() {
             if (state.ended) return;
-
             if (state.selectedCards.length !== 2) {
                 setFeedback('Selecciona exactament 2 cartes per jugar.');
                 return;
             }
-
-            const [cardA, cardB] = state.selectedCards;
-            const pointsA = Number(cardA.dataset.points || 0);
-            const pointsB = Number(cardB.dataset.points || 0);
-            const typeA = cardA.dataset.type;
-            const typeB = cardB.dataset.type;
-
-            let gained = pointsA + pointsB;
-            if (typeA === typeB) {
-                gained += state.synergyBonus;
-            }
+            var cardA   = state.selectedCards[0];
+            var cardB   = state.selectedCards[1];
+            var pA      = Number(cardA.dataset.points || 0);
+            var pB      = Number(cardB.dataset.points || 0);
+            var gained  = pA + pB;
+            if (cardA.dataset.type === cardB.dataset.type) gained += state.synergyBonus;
             gained += state.pendingBonus;
 
             state.score += gained;
-            const target = STAGES[state.stageIndex].target;
+            var target = STAGES[state.stageIndex].target;
 
             if (state.score >= target) {
-                setFeedback('✨ +' + gained + ' punts! Objectiu superat.');
+                setFeedback('+' + gained + ' punts! Objectiu superat!');
                 nextStage();
                 return;
             }
 
             state.lives -= 1;
             state.pendingBonus = 0;
-            state.bonusUsed = false;
+            state.bonusUsed    = false;
 
             if (state.lives <= 0) {
-                showResult('💫 Has perdut', 'T\'has quedat sense vides abans d\'arribar a l\'objectiu. Prem "Tornar a jugar" per reintentar-ho.');
+                showResultOverlay(false, 'HAS PERDUT', 'T\'has quedat sense vides. Torna a intentar-ho!');
                 return;
             }
 
             clearSelection();
             refreshHUD();
-            setFeedback('+' + gained + ' punts. Encara falten ' + (target - state.score) + '.');
+            setFeedback('+' + gained + ' punts. Falten ' + (target - state.score) + ' punts per superar l\'etapa.');
         }
 
-        cards.forEach(card => {
-            card.addEventListener('click', () => {
-                const idx = state.selectedCards.indexOf(card);
+        cards.forEach(function(card) {
+            card.addEventListener('click', function() {
+                if (state.ended) return;
+                var idx = state.selectedCards.indexOf(card);
                 if (idx >= 0) {
                     state.selectedCards.splice(idx, 1);
                 } else {
-                    if (state.selectedCards.length >= 2) {
-                        state.selectedCards.shift();
-                    }
+                    if (state.selectedCards.length >= 2) state.selectedCards.shift();
                     state.selectedCards.push(card);
                 }
                 highlightSelection();
@@ -1224,35 +2032,31 @@
         });
 
         playCardsBtn.addEventListener('click', playTurn);
-        confirmPlayBtn.addEventListener('click', playTurn);
 
-        rerollBtn.addEventListener('click', () => {
+        rerollBtn.addEventListener('click', function() {
             if (state.ended) return;
             shuffleCards();
-            refreshHUD();
+            setFeedback('Ma barrejada! Tria 2 cartes noves.');
         });
 
-        activateBonusBtn.addEventListener('click', () => {
-            if (state.ended) return;
-            if (state.bonusUsed) return;
+        activateBonusBtn.addEventListener('click', function() {
+            if (state.ended || state.bonusUsed) return;
             state.pendingBonus = 6;
-            state.bonusUsed = true;
+            state.bonusUsed    = true;
             refreshHUD();
-            setFeedback('Bonus activat: +6 punts a la propera jugada.');
+            setFeedback('Bonus activat: +6 punts a la propera jugada!');
         });
 
-        quickHelpBtn.addEventListener('click', () => {
-            setFeedback('Ajuda: tria 2 cartes, busca mateix tipus i juga per arribar a l\'objectiu.');
+        restartGameBtn.addEventListener('click', function() {
+            resetGame('Nova partida! Sort!');
         });
 
-        restartGameBtn.addEventListener('click', () => {
-            resetGame('Nova partida iniciada. Sort!');
+        btnResultMenu.addEventListener('click', function() {
+            showScreen('lobby');
         });
 
-        refreshHUD();
-        shuffleCards();
-        hideResult();
-        setFeedback('Tria 2 cartes per començar la partida.');
+        // Init: show lobby with confetti
+        showScreen('lobby');
     }());
 </script>
 </body>
