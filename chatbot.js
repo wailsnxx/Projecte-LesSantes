@@ -132,8 +132,11 @@
 
         if (!panel) return;
 
+        var resetBtn = document.getElementById('resetChatbot');
+
         if (fab)      fab.addEventListener('click', open);
         if (closeBtn) closeBtn.addEventListener('click', close);
+        if (resetBtn) resetBtn.addEventListener('click', reset);
         if (sendBtn)  sendBtn.addEventListener('click', send);
         if (input)    input.addEventListener('keydown', function(e){ if (e.key === 'Enter') send(); });
 
@@ -159,6 +162,11 @@
         panel.classList.remove('open');
         setTimeout(function(){ panel.classList.remove('cb-visible'); }, 230);
         if (fab) fab.style.display = 'flex';
+    }
+    function reset() {
+        clear();
+        if (!events) { loadJSON().then(welcome); }
+        else          { welcome(); }
     }
 
     /* ── Carrega JSON ─────────────────────────────────────────────────── */

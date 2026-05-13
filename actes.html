@@ -68,7 +68,7 @@
         .page-header .stats { display:flex; gap:24px; margin-top:20px; }
         .stat { font-size:13px; color:rgba(0,0,0,0.5); }
         .stat strong { color:var(--blau); font-size:22px; display:block; font-weight:800; }
-        .main-layout { max-width:960px; margin:0 auto; padding:36px 48px 50px; display:grid; grid-template-columns:200px 1fr; gap:34px; align-items:start; }
+        .main-layout { width:100%; padding:36px 40px 50px 200px; display:flex; flex-direction:row; gap:34px; align-items:start; }
         .sidebar {
             position:sticky;
             top:84px;
@@ -84,8 +84,8 @@
         .category-btn:hover,.category-btn.active { background:rgba(64,157,201,0.08); color:var(--blau); }
         .color-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
         .sidebar-sep { height:1px; background:rgba(0,0,0,0.08); margin:12px 4px; }
-        .favorits-content { min-width:0; }
-        .favorits-empty { text-align:center; padding:80px 32px; color:rgba(0,0,0,0.4); }
+        .favorits-content { flex:1; min-width:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+        .favorits-empty { text-align:center; padding:40px 32px; color:rgba(0,0,0,0.4); width:100%; max-width:420px; }
         .favorits-empty .empty-icon { font-size:4rem; margin-bottom:16px; display:block; }
         .favorits-empty h2 { font-size:22px; font-weight:700; color:var(--negre); margin-bottom:8px; }
         .agenda-day { margin-bottom:40px; }
@@ -125,8 +125,8 @@
         .btn-crimson:hover { transform:translateY(-1px); box-shadow:0 8px 16px rgba(255,242,97,0.35); }
         /* footer handled by style.css .footer-light */
         @media (max-width:900px) {
-            .main-layout { grid-template-columns:160px 1fr; padding:24px 20px; gap:20px; }
-            .sidebar { position:sticky; top:84px; }
+            .main-layout { padding:24px 20px; gap:20px; }
+            .sidebar { width:160px; flex-shrink:0; position:sticky; top:84px; }
             .category-btn { font-size:11.5px; padding:7px 8px; gap:7px; }
             .sidebar h3 { font-size:9px; }
             .page-header { padding:32px 24px 24px; }
@@ -137,8 +137,8 @@
             .mobile-menu { inset:64px 0 0 0; }
         }
         @media (max-width:640px) {
-            .main-layout { grid-template-columns:1fr; padding:16px; gap:16px; }
-            .sidebar { position:static; }
+            .main-layout { flex-direction:column; padding:16px; gap:16px; }
+            .sidebar { width:100%; position:static; }
             .sidebar .category-menu { flex-direction:row; flex-wrap:wrap; gap:6px; }
             .category-btn { font-size:11px; padding:6px 10px; border:1.5px solid rgba(64,157,201,0.2); border-radius:20px; }
             .sidebar-sep { display:none; }
@@ -295,7 +295,10 @@
         <span class="cb-subtitle">Assistent de la Festa Major de Mataró</span>
       </div>
     </div>
-    <button id="closeChatbot" class="cb-close" aria-label="Tancar">✕</button>
+    <div class="cb-header-actions">
+      <button id="resetChatbot" class="cb-reset" aria-label="Reiniciar" title="Reiniciar conversa">&#8635;</button>
+      <button id="closeChatbot" class="cb-close" aria-label="Tancar">&#x2715;</button>
+    </div>
   </div>
   <div class="cb-tabs">
     <button class="cb-tab active" data-category="all">Actes</button>
