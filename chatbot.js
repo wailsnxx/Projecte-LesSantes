@@ -1,4 +1,4 @@
-/* ── Chatbot Les Santes ─────────────────────────────────────────────────── */
+/* Chatbot Les Santes  */
 (function () {
     'use strict';
 
@@ -6,7 +6,7 @@
     var events     = null;
     var welcomed   = false;
 
-    /* ── Categories ───────────────────────────────────────────────────── */
+    /* Categories */
     var CATS = {
         families: {
             label: 'Famílies',
@@ -29,7 +29,7 @@
         }
     };
 
-    /* ── Sinònims per ampliar la cerca ────────────────────────────────── */
+    /* Sinònims per ampliar la cerca */
     var SYNONYMS = {
         'musica':    ['concert','actuacio','jazz','rock','gospel','coral','banda','orquestra','cantata'],
         'concert':   ['musica','actuacio','coral','banda'],
@@ -54,6 +54,17 @@
         'havaneres': ['havanera','mar','cant','musica'],
         'cercavila': ['gegants','bestiari','desfile','passada'],
         'passada':   ['cercavila','gegants','bestiari']
+    };
+
+    /* Mapa de dies de la setmana (català + castellà) */
+    var DAY_MAP = {
+        'dilluns':   'dilluns',   'lunes':     'dilluns',
+        'dimarts':   'dimarts',   'martes':    'dimarts',
+        'dimecres':  'dimecres',  'miercoles': 'dimecres',
+        'dijous':    'dijous',    'jueves':    'dijous',
+        'divendres': 'divendres', 'viernes':   'divendres',
+        'dissabte':  'dissabte',  'sabado':    'dissabte',
+        'diumenge':  'diumenge',  'domingo':   'diumenge'
     };
 
     /* Expandeix paraules de cerca amb sinònims */
@@ -101,10 +112,10 @@
                    .map(function(x){ return x.e; });
     }
 
-    /* ── DOM ──────────────────────────────────────────────────────────── */
+    /* DOM */
     var panel, msgs, input, sendBtn, fab;
 
-    /* ── Normalitza text per a cerca ─────────────────────────────────── */
+    /*Normalitza text per a cerca */
     function n(s) {
         return (s || '').toLowerCase()
             .normalize('NFD')
@@ -121,7 +132,7 @@
         ].map(n).join(' ');
     }
 
-    /* ── Init ─────────────────────────────────────────────────────────── */
+    /*  Init */
     function init() {
         fab      = document.querySelector('.fab');
         panel    = document.getElementById('chatbotPanel');
@@ -148,7 +159,7 @@
         });
     }
 
-    /* ── Obre / tanca ─────────────────────────────────────────────────── */
+    /*  Obre / tanca  */
     function open() {
         panel.classList.add('cb-visible');
         requestAnimationFrame(function(){ panel.classList.add('open'); });
@@ -169,7 +180,7 @@
         else          { welcome(); }
     }
 
-    /* ── Carrega JSON ─────────────────────────────────────────────────── */
+    /* Carrega JSON  */
     function loadJSON() {
         return fetch(EVENTS_URL)
             .then(function(r){ return r.json(); })
@@ -177,7 +188,7 @@
             .catch(function(){ events = []; });
     }
 
-    /* ── Pantalla 1: Benvinguda ───────────────────────────────────────── */
+    /* Pantalla 1: Benvinguda */
     function welcome() {
         welcomed = true;
         bot('Hola! Soc el Chatbot Les Santes 🧡');
@@ -190,7 +201,7 @@
         ]);
     }
 
-    /* ── Tab click ────────────────────────────────────────────────────── */
+    /* Tab click */
     function onTab(cat) {
         clear();
         if (cat === 'all') { welcome(); return; }
@@ -202,7 +213,7 @@
         }, 500);
     }
 
-    /* ── Cerca per categoria (amb puntuació) ────────────────────────── */
+    /* Cerca per categoria (amb puntuació) */
     function byCat(cat) {
         var def = CATS[cat];
         if (!def || !events) return;
@@ -223,7 +234,7 @@
         cards(res, 2);
     }
 
-    /* ── Cerca per text lliure ───────────────────────────────────────── */
+    /* Cerca per text lliure */
     function send() {
         var q = (input.value || '').trim();
         if (!q) return;
@@ -246,11 +257,21 @@
         }
 
         /* Detecció d'intencions clares → redirigeix */
-        if (/\b(concert|concerts|musica|musical|actuaci[oó])\b/.test(nq)) { byCat('concerts'); return; }
-        if (/\b(familiar|famil[ei]|nens|canalla|infants|infantil)\b/.test(nq)) { byCat('families'); return; }
-        if (/\b(foc|correfoc|diables|bestiari|pirotecnia)\b/.test(nq)) { byCat('foc'); return; }
+        if (/\b(concert|concerts|musica|musical|actuaci[oó]|concierto|conciertos)\b/.test(nq)) { byCat('concerts'); return; }
+        if (/\b(familiar|famil[ei]|nens|canalla|infants|infantil|ni[nñ]os|ninos|familia)\b/.test(nq)) { byCat('families'); return; }
+        if (/\b(foc|correfoc|diables|bestiari|pirotecnia|fuego|diablos)\b/.test(nq)) { byCat('foc'); return; }
         if (/desvetllament/.test(nq)) { byKw('desvetllament','Actes del Desvetllament:'); return; }
-        if (/\b(27|vint-i-set)\b.*juliol|juliol.*\b27\b|dia\s+de\s+les\s+santes/.test(nq)) { dia27(); return; }
+        if (/dia\s+de\s+les\s+santes|vint-i-set/.test(nq)) { byDayNum(27); return; }
+
+        /* Detecció de número de dia — només en context de data */
+        var numMatch = nq.match(/(?:dia\s+|el\s+dia\s+|el\s+|actes\s+del\s+)\b(0?[1-9]|[12]\d|3[01])\b|(?:\b(0?[1-9]|[12]\d|3[01])\b\s*(?:de\s+juliol|de\s+julio))/);
+        if (numMatch) { byDayNum(parseInt(numMatch[1] || numMatch[2], 10)); return; }
+
+        /* Detecció de dia de la setmana (català i castellà) */
+        var dayKeys = Object.keys(DAY_MAP);
+        for (var di = 0; di < dayKeys.length; di++) {
+            if (nq.indexOf(dayKeys[di]) !== -1) { byDay(DAY_MAP[dayKeys[di]]); return; }
+        }
 
         /* Cerca per puntuació amb sinònims */
         var words  = expandWords(raw);
@@ -267,7 +288,7 @@
         cards(res, 2);
     }
 
-    /* ── Botons ràpids ───────────────────────────────────────────────── */
+    /* Botons ràpids  */
     function action(a) {
         typing();
         setTimeout(function(){
@@ -282,7 +303,7 @@
             case 'desvetllament': byKw('desvetllament', 'Actes del Desvetllament:'); break;
             case 'correfoc':     byKw('correfoc', 'Actes de Correfoc:');            break;
             case 'families':     byCat('families');                                  break;
-            case 'dia27':        dia27();                                             break;
+            case 'dia27':        byDayNum(27);                                        break;
             case 'concerts':     byCat('concerts');                                  break;
             case 'foc':          byCat('foc');                                        break;
             default:             byKw(a, 'Actes relacionats:');
@@ -299,17 +320,26 @@
         cards(topResults(scored), 2);
     }
 
-    function dia27() {
+    function byDayNum(day) {
+        var pad = (day < 10 ? '0' + day : String(day));
         var res = events.filter(function(e){
-            return (e.date_initial || '').startsWith('27.07')
-                || n(e.date_to_ca_detail || '').includes('27 de juliol');
+            return (e.date_initial || '').startsWith(pad + '.07');
         });
-        if (!res.length) { bot('No he trobat actes del 27 de juliol.'); return; }
-        bot('Actes del 27 de juliol (' + res.length + ' actes):');
-        cards(res, 2);
+        if (!res.length) { bot('No he trobat actes el dia ' + day + ' de juliol.'); return; }
+        bot('Actes del ' + day + ' de juliol (' + res.length + ' actes):');
+        cards(res, 3);
     }
 
-    /* ── DOM helpers ──────────────────────────────────────────────────── */
+    function byDay(dayName) {
+        var res = events.filter(function(e){
+            return n(e.date_to_ca_detail || '').indexOf(dayName) === 0;
+        });
+        if (!res.length) { bot('No he trobat actes el ' + dayName + '.'); return; }
+        var label = dayName.charAt(0).toUpperCase() + dayName.slice(1);
+        bot('Actes del ' + label + ' (' + res.length + ' actes):');
+        cards(res, 3);
+    }
+
     function bot(text) {
         var row = document.createElement('div');
         row.className = 'cb-msg cb-msg-bot';
@@ -389,7 +419,6 @@
         scroll();
     }
 
-    /* ── Targetes d'actes ─────────────────────────────────────────────── */
     function cards(list, max) {
         var total = list.length;
         var shown = Math.min(max, total);
@@ -464,7 +493,7 @@
         return card;
     }
 
-    /* ── Pantalla 4: Sense resultats ─────────────────────────────────── */
+    /* Pantalla 4: Sense resultats  */
     function noResults(q) {
         var d = document.createElement('div');
         d.className = 'cb-no-results';
@@ -513,7 +542,7 @@
         scroll();
     }
 
-    /* ── Utilitats ────────────────────────────────────────────────────── */
+    /* Utilitats  */
     function scroll() {
         if (msgs) msgs.scrollTop = msgs.scrollHeight;
     }
@@ -526,7 +555,7 @@
         t.classList.add('active');
     }
 
-    /* ── Arrencada ────────────────────────────────────────────────────── */
+    /* Arrencada*/
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
