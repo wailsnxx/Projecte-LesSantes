@@ -1042,11 +1042,13 @@
     <li><a href="galeria.html">Galeria</a></li>
   </ul>
   <div class="nav-right">
-    <div class="nav-search-wrap" id="nav-search-wrap" style="position:relative;">
-      <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);pointer-events:none;" width="13" height="13" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input id="nav-search-input" type="text" placeholder="Cerca un acte..." autocomplete="off"
+    <form class="nav-search-wrap" id="nav-search-wrap" action="agenda.html" method="GET" style="position:relative;">
+      <button type="submit" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;padding:0;display:flex;align-items:center;">
+        <svg width="13" height="13" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </button>
+      <input id="nav-search-input" name="q" type="text" placeholder="Cerca un acte..." autocomplete="off"
         style="background:rgba(255,255,255,0.14); border:1px solid rgba(255,255,255,0.28); border-radius:8px; padding:7px 12px 7px 32px; font-size:13px; color:#fff; outline:none; width:200px;" />
-    </div>
+    </form>
     <a href="agenda.html" class="nav-cta">Agenda →</a>
     <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
       <span></span><span></span><span></span>
@@ -1458,14 +1460,6 @@
     a.addEventListener('click', () => document.getElementById('mobile-menu').classList.remove('open'));
   });
 
-  // Nav search
-  const navInput = document.getElementById('nav-search-input');
-  navInput.addEventListener('keydown', e => {
-    if (e.key === 'Enter') {
-      const q = navInput.value.trim();
-      window.location.href = 'agenda.html' + (q ? '?q=' + encodeURIComponent(q) : '');
-    }
-  });
 
   // Smooth scrolling for in-page navigation
   document.querySelectorAll('a[href^="#"]').forEach(link => {

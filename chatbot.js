@@ -2,9 +2,10 @@
 (function () {
     'use strict';
 
-    var EVENTS_URL = 'actes_santes_2025_pia.json';
-    var events     = null;
-    var welcomed   = false;
+    var EVENTS_URL    = 'actes_santes_2025_pia.json';
+    var events        = null;
+    var welcomed      = false;
+    var festivalRange = null;
 
     /* Categories */
     var CATS = {
@@ -184,7 +185,19 @@
     function loadJSON() {
         return fetch(EVENTS_URL)
             .then(function(r){ return r.json(); })
-            .then(function(d){ events = d.events || d; })
+            .then(function(d){
+                events = d.events || d;
+                var days = events.map(function(e){
+                    var m = (e.date_initial || '').match(/^(\d{2})\.07/);
+                    return m ? parseInt(m[1]) : null;
+                }).filter(function(x){ return x !== null; });
+                if (days.length) {
+                    festivalRange = {
+                        min: Math.min.apply(null, days),
+                        max: Math.max.apply(null, days)
+                    };
+                }
+            })
             .catch(function(){ events = []; });
     }
 
@@ -263,9 +276,9 @@
         if (/desvetllament/.test(nq)) { byKw('desvetllament','Actes del Desvetllament:'); return; }
         if (/dia\s+de\s+les\s+santes|vint-i-set/.test(nq)) { byDayNum(27); return; }
 
-        /* Detecció de número de dia — només en context de data */
-        var numMatch = nq.match(/(?:dia\s+|el\s+dia\s+|el\s+|actes\s+del\s+)\b(0?[1-9]|[12]\d|3[01])\b|(?:\b(0?[1-9]|[12]\d|3[01])\b\s*(?:de\s+juliol|de\s+julio))/);
-        if (numMatch) { byDayNum(parseInt(numMatch[1] || numMatch[2], 10)); return; }
+        /* Detecció de número de dia */
+        var numMatch = nq.match(/(?:dia\s+|el\s+dia\s+|el\s+|del?\s+|actes\s+(?:del?\s+)?|horari\s+|programa\s+)\b(0?[1-9]|[12]\d|3[01])\b|\b(0?[1-9]|[12]\d|3[01])\b\s*(?:de\s+juliol|de\s+julio)|^(0?[1-9]|[12]\d|3[01])$/);
+        if (numMatch) { byDayNum(parseInt(numMatch[1] || numMatch[2] || numMatch[3], 10)); return; }
 
         /* Detecció de dia de la setmana (català i castellà) */
         var dayKeys = Object.keys(DAY_MAP);
@@ -321,13 +334,22 @@
     }
 
     function byDayNum(day) {
-        var pad = (day < 10 ? '0' + day : String(day));
-        var res = events.filter(function(e){
+        var pad   = (day < 10 ? '0' + day : String(day));
+        var range = festivalRange || { min: 5, max: 29 };
+        var res   = events.filter(function(e){
             return (e.date_initial || '').startsWith(pad + '.07');
         });
-        if (!res.length) { bot('No he trobat actes el dia ' + day + ' de juliol.'); return; }
-        bot('Actes del ' + day + ' de juliol (' + res.length + ' actes):');
-        cards(res, 3);
+        if (!res.length) {
+            if (day < range.min || day > range.max) {
+                bot('Les Santes 2025 se celebra del ' + range.min + ' al ' + range.max +
+                    ' de juliol. El dia ' + day + ' no forma part de la programació.');
+            } else {
+                bot('No hi ha cap acte el dia ' + day + ' de juliol a la programació.');
+            }
+            return;
+        }
+        bot('Actes del ' + day + ' de juliol (' + res.length + ' actes en total):');
+        cards(res, 2);
     }
 
     function byDay(dayName) {
