@@ -48,9 +48,9 @@
         a { color: inherit; text-decoration: none; }
 
         .site-nav {
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
             align-items: center;
-            justify-content: space-between;
             padding: 0 30px;
             height: 68px;
             background: var(--blau);
@@ -62,6 +62,8 @@
         }
 
         .nav-logo { display: flex; align-items: center; gap: 12px; }
+
+        .nav-logo img { height: 42px; width: auto; display: block; flex-shrink: 0; }
 
         .logo-icon {
             width: 44px;
@@ -95,7 +97,7 @@
         .nav-links a:hover { transform: translateY(-1px); background: rgba(255,255,255,0.22); }
         .nav-links a.active { background: rgba(255,255,255,0.32); }
 
-        .nav-right { display: flex; align-items: center; gap: 10px; }
+        .nav-right { display: flex; align-items: center; gap: 10px; justify-self: end; }
         .nav-search {
             display: flex;
             align-items: center;
@@ -1494,7 +1496,7 @@
     <div class="bento-grid">
         <!-- Fila 1 -->
         <div class="bento-cell">
-            <img src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_4,y_19,w_1963,h_1090|c_fit,w_768,h_426|c_auto/bea354601387219072c5daee94e91605.jpeg" alt="Comparses" />
+            <img src="imgs/El_Manelo_i_La_Toneta.png" alt="El Manelo i La Toneta" />
         </div>
         <div class="bento-cell blue-cell" onclick="document.getElementById('jocs').scrollIntoView({behavior:'smooth'})">
             <div class="bento-cell-label">Pinta les comparses</div>
@@ -1505,7 +1507,7 @@
             <span class="bento-arrow">→</span>
         </div>
         <div class="bento-cell">
-            <img src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_134,w_960,h_533|c_fit,w_768,h_426|c_auto/3ed3afd91d825859b5ff69ccd5a7ce70.jpeg" alt="Gegants" />
+            <img src="imgs/La_Gegantera.png.png" alt="La Gegantera" />
         </div>
 
         <!-- Fila 2 -->
@@ -1514,10 +1516,10 @@
             <span class="bento-arrow">→</span>
         </div>
         <div class="bento-cell">
-            <img src="https://assets.appculturamataro.cat/medias/agenda/2023/c_crop,x_29,y_90,w_1539,h_854|c_fit,w_768,h_426|c_auto/fef48a3daef386a8d91bccb00e8369f2.jpeg" alt="Diables" />
+            <img src="imgs/els_Diables.png" alt="Els Diables" />
         </div>
         <div class="bento-cell">
-            <img src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_31,w_2048,h_1136|c_fit,w_768,h_426|c_auto/57b929a07ac86fc470c16f500eaab1e9.jpeg" alt="Broadway" />
+            <img src="imgs/La_momerota_i_momeroteta.png" alt="La Momerota i Momeroteta" />
         </div>
         <div class="bento-cell blue-cell" onclick="document.getElementById('jocs').scrollIntoView({behavior:'smooth'})">
             <div class="bento-cell-label">Fes la teva careta o figura</div>
@@ -1530,8 +1532,8 @@
 <div class="pdf-banner">
     <a class="pdf-banner-inner" href="https://www.lessantes.cat/" target="_blank">
         <img class="pdf-banner-img"
-             src="https://assets.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_0,w_1963,h_1090|c_fit,w_768,h_426|c_auto/bea354601387219072c5daee94e91605.jpeg"
-             alt="Gegants del Maresme" />
+             src="imgs/les_Patrones.png"
+             alt="Les Patrones" />
         <div class="pdf-banner-text">
             <div class="pdf-banner-badge">Recurs educatiu · PDF</div>
             <div class="pdf-banner-title">Gegantes i Gegants del Maresme</div>

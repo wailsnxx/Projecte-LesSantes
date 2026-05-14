@@ -38,9 +38,9 @@
 
     /* ── NAV ── */
     .site-nav {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
       align-items: center;
-      justify-content: space-between;
       padding: 0 48px;
       height: 68px;
       background: var(--blau);
@@ -54,6 +54,13 @@
       align-items: center;
       gap: 12px;
       text-decoration: none;
+    }
+
+    .nav-logo img {
+      height: 42px;
+      width: auto;
+      display: block;
+      flex-shrink: 0;
     }
 
     .nav-logo .logo-icon {
@@ -114,6 +121,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      justify-self: end;
     }
 
     .nav-search {
