@@ -199,10 +199,12 @@
         <li><a href="galeria.html">Galeria</a></li>
     </ul>
     <div class="nav-right">
-        <div style="position:relative;">
-            <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);pointer-events:none;" width="13" height="13" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            <input id="nav-search-input" type="text" placeholder="Cerca un acte..." autocomplete="off" class="nav-search" style="padding:7px 12px 7px 32px; cursor:text; width:190px;" />
-        </div>
+        <form id="nav-search-form" action="agenda.html" method="GET" style="position:relative;">
+            <button type="submit" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;padding:0;display:flex;align-items:center;">
+                <svg width="13" height="13" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            </button>
+            <input id="nav-search-input" name="q" type="text" placeholder="Cerca un acte..." autocomplete="off" class="nav-search" style="padding:7px 12px 7px 32px; cursor:text; width:190px;" />
+        </form>
         <a href="actes.html" class="nav-cta">Els meus actes →</a>
         <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
             <span></span><span></span><span></span>
@@ -641,11 +643,10 @@ function closeModal() {
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
 const navSearchInput = document.getElementById('nav-search-input');
-navSearchInput?.addEventListener('keydown', e => {
-    if (e.key === 'Enter') {
-        const q = navSearchInput.value.trim();
-        if (searchInput) { searchInput.value = q; applyFilters(); searchInput.focus(); }
-    }
+const navSearchForm = document.getElementById('nav-search-form');
+navSearchForm?.addEventListener('submit', e => {
+    e.preventDefault();
+    if (searchInput) { searchInput.value = navSearchInput.value; applyFilters(); searchInput.focus(); }
 });
 navSearchInput?.addEventListener('input', () => {
     if (searchInput) { searchInput.value = navSearchInput.value; applyFilters(); }
