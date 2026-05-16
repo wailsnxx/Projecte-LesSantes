@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Ruta de Les Santes – Joc</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --blau: #409DC9;
+            --groc: #F0CF3C;
+            --negre: #2A2A2A;
+            --taronja: #F99D5B;
+            --verd: #AEF4A8;
+            --rosa: #FF9FF3;
+            --morat: #EA80F4;
+            --c-ink: #2A2A2A;
+            --c-ink-soft: #4f5b64;
+            --c-border: rgba(64, 157, 201, 0.26);
+            --s-soft: 0 12px 28px rgba(60, 82, 145, 0.16);
+            --s-pop: 0 16px 34px rgba(60, 82, 145, 0.24);
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            background:
+                radial-gradient(circle at 10% 10%, rgba(174,244,168,0.25) 0%, transparent 26%),
+                radial-gradient(circle at 86% 14%, rgba(255,159,243,0.18) 0%, transparent 28%),
+                radial-gradient(circle at 20% 88%, rgba(255,242,97,0.18) 0%, transparent 30%),
+                linear-gradient(180deg, #f0f8ff 0%, #e8f4ff 50%, #eff3ff 100%);
+            color: var(--c-ink);
+            font-family: 'Fredoka', 'Baloo 2', system-ui, sans-serif;
+            font-size: 15px;
+            line-height: 1.55;
+            min-height: 100vh;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        /* ── GAME WRAPPER ── */
+        .game-wrapper {
+            max-width: 1080px;
+            margin: 24px auto 48px;
+            padding: 0 16px;
+        }
+
+        /* ================================================================
+           GAME CONTAINER & MULTI-SCREEN SYSTEM
+        ================================================================ */
+        .game-section { width: 100%; }
+
+        .game-container {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 24px 64px rgba(5, 20, 40, 0.45), 0 0 0 3px rgba(63,159,203,0.3);
+            position: relative;
+            background: #0a2030;
+        }
+        .game-container:fullscreen,
+        .game-container:-webkit-full-screen {
+            border-radius: 0;
+            width: 100vw !important;
+            height: 100vh !important;
+            max-width: none !important;
+            overflow-y: auto;
+        }
+        .game-container:fullscreen .screen.active,
+        .game-container:-webkit-full-screen .screen.active { min-height: 100vh; }
+        .game-container:fullscreen .screen-lobby,
+        .game-container:-webkit-full-screen .screen-lobby { min-height: 100vh; justify-content: center; }
+        .game-container:fullscreen .screen-tutorial,
+        .game-container:fullscreen .screen-options,
+        .game-container:fullscreen .screen-game,
+        .game-container:-webkit-full-screen .screen-tutorial,
+        .game-container:-webkit-full-screen .screen-options,
+        .game-container:-webkit-full-screen .screen-game { min-height: 100vh; }
+
+        .screen { display: none; }
+        .screen.active { display: flex; flex-direction: column; }
+
+        /* ================================================================
+           LOBBY SCREEN
+        ================================================================ */
+        .screen-lobby {
+            min-height: 580px;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(165deg, #071d30 0%, #0e3456 30%, #1a4e72 65%, #091e34 100%);
+            padding: 48px 24px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lobby-star {
+            position: absolute;
+            width: 4px; height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle-s 2.4s ease-in-out infinite;
+            pointer-events: none;
+        }
+        @keyframes twinkle-s {
+            0%, 100% { opacity: 0.15; transform: scale(0.7); }
+            50% { opacity: 0.9; transform: scale(1.3); }
+        }
+
+        .screen-lobby::before {
+            content: '';
+            position: absolute;
+            width: 340px; height: 340px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(63,159,203,0.18) 0%, transparent 70%);
+            top: -80px; left: -80px;
+            pointer-events: none;
+        }
+        .screen-lobby::after {
+            content: '';
+            position: absolute;
+            width: 280px; height: 280px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,191,58,0.12) 0%, transparent 70%);
+            bottom: -60px; right: -60px;
+            pointer-events: none;
+        }
+
+        .lobby-inner { position: relative; z-index: 2; }
+
+        .lobby-badge {
+            display: inline-block;
+            background: rgba(255,242,97,0.18);
+            border: 1.5px solid rgba(255,242,97,0.5);
+            border-radius: 999px;
+            color: var(--groc);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            padding: 7px 20px;
+            margin-bottom: 22px;
+        }
+
+        .lobby-title {
+            font-family: 'Baloo 2', 'Fredoka', sans-serif;
+            font-size: clamp(46px, 7.5vw, 92px);
+            line-height: 0.88;
+            color: #fff;
+            text-shadow: 0 0 40px rgba(63,159,203,0.5), 0 4px 0 rgba(0,0,0,0.35);
+            margin-bottom: 10px;
+            letter-spacing: -0.01em;
+        }
+        .lobby-title span { color: #ffbf3a; text-shadow: 0 0 30px rgba(255,191,58,0.55), 0 4px 0 rgba(0,0,0,0.3); }
+
+        .lobby-sub {
+            color: #a8d8f0;
+            font-size: 16px;
+            margin-bottom: 36px;
+            font-weight: 500;
+            max-width: 420px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .lobby-buttons { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+
+        .lobby-btn {
+            width: 290px;
+            padding: 17px 28px;
+            border: 0;
+            border-radius: 14px;
+            font-family: 'Baloo 2', 'Fredoka', sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: transform 0.14s, box-shadow 0.14s, filter 0.14s;
+            position: relative;
+            overflow: hidden;
+        }
+        .lobby-btn::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 48%;
+            background: rgba(255,255,255,0.14);
+            pointer-events: none;
+        }
+        .lobby-btn:hover  { transform: translateY(-3px); filter: brightness(1.1); }
+        .lobby-btn:active { transform: translateY(0);    filter: brightness(0.94); }
+
+        .lobby-btn-play {
+            background: linear-gradient(160deg, #e85d20 0%, #ff8c42 100%);
+            color: #fff;
+            box-shadow: 0 8px 22px rgba(232,93,32,0.5), inset 0 -3px 0 rgba(0,0,0,0.2);
+        }
+        .lobby-btn-play:hover { box-shadow: 0 14px 30px rgba(232,93,32,0.55), inset 0 -3px 0 rgba(0,0,0,0.2); }
+
+        .lobby-btn-tutorial {
+            background: var(--blau);
+            color: #fff;
+            box-shadow: 0 8px 22px rgba(64,157,201,0.45), inset 0 -3px 0 rgba(0,0,0,0.18);
+        }
+        .lobby-btn-tutorial:hover { box-shadow: 0 14px 30px rgba(64,157,201,0.5), inset 0 -3px 0 rgba(0,0,0,0.18); }
+
+        .lobby-btn-options {
+            background: linear-gradient(160deg, #243d50 0%, #2e5266 100%);
+            color: #a8d8f0;
+            box-shadow: 0 8px 22px rgba(15,40,60,0.45), inset 0 -3px 0 rgba(0,0,0,0.22);
+        }
+        .lobby-btn-options:hover { box-shadow: 0 14px 30px rgba(15,40,60,0.55), inset 0 -3px 0 rgba(0,0,0,0.22); }
+
+        .lobby-footer { color: rgba(168,216,240,0.4); font-size: 11px; margin-top: 30px; letter-spacing: 0.1em; text-transform: uppercase; }
+
+        /* ================================================================
+           FULLSCREEN BUTTON
+        ================================================================ */
+        .fullscreen-btn {
+            position: absolute;
+            top: 12px; right: 12px;
+            z-index: 20;
+            background: rgba(255,255,255,0.1);
+            border: 1.5px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            color: rgba(255,255,255,0.75);
+            width: 38px; height: 38px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+            padding: 0;
+        }
+        .fullscreen-btn:hover { background: rgba(255,255,255,0.2); color: #fff; }
+
+        /* ================================================================
+           SCREEN BACK BUTTON
+        ================================================================ */
+        .screen-back-btn {
+            align-self: flex-start;
+            background: rgba(255,255,255,0.1);
+            border: 1.5px solid rgba(255,255,255,0.18);
+            border-radius: 10px;
+            color: rgba(255,255,255,0.8);
+            font-family: 'Fredoka', inherit;
+            font-size: 13px;
+            font-weight: 700;
+            padding: 9px 16px;
+            cursor: pointer;
+            transition: background 0.14s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin: 16px 0 6px 16px;
+        }
+        .screen-back-btn:hover { background: rgba(255,255,255,0.18); color: #fff; }
+
+        /* ================================================================
+           TUTORIAL SCREEN
+        ================================================================ */
+        .screen-tutorial {
+            background: linear-gradient(165deg, #071d30 0%, #0e3456 50%, #091e34 100%);
+            min-height: 580px;
+            padding: 0 0 36px;
+            color: #fff;
+            position: relative;
+        }
+
+        .screen-title {
+            font-family: 'Baloo 2', 'Fredoka', sans-serif;
+            font-size: 38px;
+            font-weight: 800;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(63,159,203,0.4);
+            margin: 4px 0 24px;
+            text-align: center;
+        }
+
+        .tutorial-steps {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            max-width: 760px;
+            margin: 0 auto 24px;
+            padding: 0 20px;
+        }
+
+        .tut-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 14px;
+            padding: 14px;
+        }
+        .tut-num {
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2d7ea8, #63bfe3);
+            color: #fff;
+            font-family: 'Baloo 2', sans-serif;
+            font-size: 17px;
+            font-weight: 800;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .tut-text strong { display: block; color: #fff; font-size: 14px; margin-bottom: 3px; }
+        .tut-text span   { color: #a8d8f0; font-size: 13px; line-height: 1.4; }
+
+        .type-legend {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin: 0 auto 24px;
+            max-width: 640px;
+            padding: 0 20px;
+        }
+        .type-pill {
+            border-radius: 999px;
+            padding: 8px 18px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: #fff;
+        }
+        .type-pill.personatge { background: linear-gradient(120deg, #c0392b, #e74c3c); }
+        .type-pill.tradicio   { background: linear-gradient(120deg, #a06800, #d48a00); }
+        .type-pill.festa      { background: linear-gradient(120deg, #1a8c55, #27ae60); }
+        .type-pill.musica     { background: linear-gradient(120deg, #2d7ea8, #3f9fcb); }
+
+        .tut-actions { display: flex; justify-content: center; padding: 0 20px; gap: 12px; }
+
+        /* ================================================================
+           OPTIONS SCREEN
+        ================================================================ */
+        .screen-options {
+            background: linear-gradient(165deg, #071d30 0%, #0e3456 50%, #091e34 100%);
+            min-height: 580px;
+            padding: 0 0 36px;
+            color: #fff;
+            position: relative;
+        }
+
+        .options-inner { width: 100%; max-width: 500px; margin: 0 auto; padding: 0 20px; }
+
+        .option-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 14px;
+            padding: 18px 20px;
+            margin-bottom: 12px;
+        }
+        .option-label strong { display: block; font-size: 15px; color: #fff; margin-bottom: 3px; }
+        .option-label span   { font-size: 12px; color: #a8d8f0; }
+
+        .toggle-switch {
+            width: 52px; height: 28px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 999px;
+            position: relative;
+            cursor: pointer;
+            border: 1.5px solid rgba(255,255,255,0.2);
+            transition: background 0.2s;
+            flex-shrink: 0;
+        }
+        .toggle-switch.on { background: linear-gradient(120deg, #2d7ea8, #63bfe3); border-color: #63bfe3; }
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px; left: 2px;
+            width: 20px; height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            transition: transform 0.2s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+        }
+        .toggle-switch.on::after { transform: translateX(24px); }
+
+        /* ================================================================
+           GAME SCREEN
+        ================================================================ */
+        .screen-game {
+            background: linear-gradient(180deg, #f0f8ff 0%, #e4f4ff 100%);
+            min-height: 580px;
+            padding: 12px;
+            position: relative;
+        }
+
+        .game-topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            gap: 8px;
+        }
+        .game-topbar-left { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .game-header-title {
+            font-family: 'Baloo 2', 'Fredoka', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            color: #123142;
+            line-height: 1;
+        }
+
+        .back-lobby-btn {
+            background: rgba(45,126,168,0.12);
+            border: 1px solid rgba(45,126,168,0.25);
+            border-radius: 10px;
+            color: #2d7ea8;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 7px 12px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .back-lobby-btn:hover { background: rgba(45,126,168,0.22); }
+
+        .stage-progress { display: flex; gap: 5px; align-items: center; }
+        .stage-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: rgba(63,159,203,0.25);
+            border: 1.5px solid rgba(63,159,203,0.45);
+            transition: background 0.3s;
+        }
+        .stage-dot.done   { background: #3f9fcb; border-color: #3f9fcb; }
+        .stage-dot.active { background: #ffbf3a; border-color: #ffbf3a; box-shadow: 0 0 6px rgba(255,191,58,0.55); }
+
+        .fullscreen-btn-inline {
+            background: rgba(45,126,168,0.12);
+            border: 1px solid rgba(45,126,168,0.25);
+            border-radius: 10px;
+            color: #2d7ea8;
+            width: 34px; height: 34px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: background 0.15s;
+            padding: 0;
+            flex-shrink: 0;
+        }
+        .fullscreen-btn-inline:hover { background: rgba(45,126,168,0.22); }
+
+        /* Score row */
+        .score-row {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .meter {
+            padding: 10px;
+            border-radius: 14px;
+            background: #fff;
+            border: 1px solid var(--c-border);
+        }
+        .meter-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--c-ink-soft);
+            margin-bottom: 4px;
+        }
+        .meter-num {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blau);
+            line-height: 1;
+        }
+
+        .hearts { display: flex; gap: 6px; margin-top: 6px; }
+        .heart {
+            width: 28px; height: 28px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(240,64,112,0.1);
+            border: 1px solid rgba(240,64,112,0.3);
+            color: #f04070;
+            font-size: 16px;
+        }
+
+        /* Status chips */
+        .status-row {
+            margin-top: 10px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .status-chip {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            border-radius: 999px;
+            padding: 6px 10px;
+            background: rgba(255,255,255,0.75);
+            border: 1px solid rgba(255,255,255,0.9);
+            color: var(--c-ink-soft);
+        }
+
+        /* Card lane */
+        .card-lane {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .s-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            border: 2px solid rgba(255,255,255,0.8);
+            box-shadow: 0 10px 18px rgba(68, 93, 167, 0.16);
+            min-height: 210px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            transition: transform 0.2s, box-shadow 0.2s;
+            isolation: isolate;
+            cursor: pointer;
+        }
+        .s-card:hover { transform: translateY(-5px) rotate(-0.8deg) scale(1.01); box-shadow: var(--s-pop); }
+        .s-card.selected { transform: translateY(-6px) scale(1.02); box-shadow: 0 0 0 3px rgba(45,126,168,0.55), var(--s-pop); }
+        .s-card.dimmed { opacity: 0.42; filter: grayscale(30%); }
+        .s-card::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(145deg, rgba(255,255,255,0.22) 0%, transparent 42%);
+            pointer-events: none; z-index: 1;
+        }
+        .s-card.t-personatge { border-color: rgba(232,74,74,0.6); }
+        .s-card.t-tradicio   { border-color: rgba(240,168,50,0.6); }
+        .s-card.t-festa      { border-color: rgba(46,204,113,0.6); }
+        .s-card.t-musica     { border-color: rgba(63,159,203,0.6); }
+        .s-card.t-personatge .s-points { background: linear-gradient(120deg, #8a1a1a, #c0392b); }
+        .s-card.t-tradicio   .s-points { background: linear-gradient(120deg, #7a5000, #c47a10); }
+        .s-card.t-festa      .s-points { background: linear-gradient(120deg, #0f5c38, #1a8c55); }
+        .s-card.t-musica     .s-points { background: var(--blau); }
+        .s-card .s-card-body { background: rgba(10,20,30,0.72); border-top: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(4px); }
+        .s-card .s-type { color: rgba(200,230,255,0.75); }
+        .s-card .s-name { color: #fff; }
+        .s-card .s-desc { color: rgba(200,230,255,0.65); }
+
+        .s-img {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            object-fit: cover; object-position: top center;
+            z-index: 0; border-radius: 18px;
+        }
+        .s-card::after {
+            content: '';
+            position: absolute; bottom: 0; left: 0; right: 0; height: 55%;
+            background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 100%);
+            z-index: 1; border-radius: 0 0 18px 18px; pointer-events: none;
+        }
+        .s-card-body {
+            position: relative; z-index: 2;
+            background: rgba(255,255,255,0.86);
+            border-top: 2px solid rgba(255,255,255,0.8);
+            padding: 10px;
+        }
+        .s-card-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 4px; }
+        .s-type { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--c-ink-soft); }
+        .s-points { font-size: 12px; font-weight: 800; color: #fff; background: var(--blau); padding: 5px 8px; border-radius: 999px; }
+        .s-name { font-family: 'Baloo 2', 'Fredoka', sans-serif; font-size: 18px; line-height: 1; color: var(--c-ink); margin-bottom: 3px; }
+        .s-desc { font-size: 12px; color: var(--c-ink-soft); }
+
+        /* Arena actions */
+        .arena-actions {
+            margin-top: 10px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+        }
+
+        .ui-btn {
+            width: 100%;
+            border: 0;
+            border-radius: 14px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            padding: 10px 12px;
+            cursor: pointer;
+            transition: transform 0.14s, box-shadow 0.14s, filter 0.14s;
+        }
+        .ui-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 14px rgba(68,93,167,0.2); }
+        .ui-btn:active { transform: translateY(0); }
+        .ui-btn:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; transform: none; }
+        .ui-btn.primary   { background: var(--blau); color: #fff; }
+        .ui-btn.secondary { background: var(--groc); color: var(--negre); }
+        .ui-btn.ghost     { background: #ffffff; color: var(--c-ink-soft); border: 1px solid var(--c-border); }
+
+        /* ================================================================
+           RESULT OVERLAY
+        ================================================================ */
+        .result-overlay {
+            position: absolute; inset: 0;
+            background: rgba(5,18,35,0.85);
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; z-index: 50;
+            backdrop-filter: blur(6px);
+        }
+        .result-card {
+            background: linear-gradient(160deg, #0e3456 0%, #1a4e72 100%);
+            border: 2px solid rgba(255,255,255,0.18);
+            border-radius: 22px;
+            padding: 40px 36px;
+            max-width: 420px;
+            width: 92%;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+        }
+        .result-icon {
+            width: 76px; height: 76px;
+            border-radius: 50%;
+            margin: 0 auto 18px;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Baloo 2', sans-serif;
+            font-size: 38px; font-weight: 800;
+        }
+        .result-icon.win  { background: linear-gradient(135deg, #c47a10, #ffbf3a); color: #fff; }
+        .result-icon.lose { background: linear-gradient(135deg, #a02020, #e84a4a); color: #fff; }
+        .result-title-big { font-family: 'Baloo 2', 'Fredoka', sans-serif; font-size: 36px; color: #fff; line-height: 1; margin-bottom: 10px; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+        .result-text-big  { color: #a8d8f0; font-size: 15px; margin-bottom: 26px; line-height: 1.5; }
+        .result-actions   { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+        /* ================================================================
+           FLASH BUTTONS
+        ================================================================ */
+        .flash-btn {
+            padding: 13px 26px;
+            border-radius: 12px;
+            font-family: 'Baloo 2', 'Fredoka', sans-serif;
+            font-size: 16px; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 0.05em;
+            border: 0; cursor: pointer;
+            transition: transform 0.14s, filter 0.14s;
+            color: #fff;
+        }
+        .flash-btn:hover  { transform: translateY(-2px); filter: brightness(1.1); }
+        .flash-btn:active { transform: translateY(0);    filter: brightness(0.94); }
+        .flash-btn.primary   { background: linear-gradient(135deg, #e85d20, #ff8c42); box-shadow: 0 6px 16px rgba(232,93,32,0.4); }
+        .flash-btn.secondary { background: linear-gradient(135deg, #2d7ea8, #3f9fcb); box-shadow: 0 6px 16px rgba(45,126,168,0.4); }
+
+        /* ================================================================
+           BLIND BAR
+        ================================================================ */
+        .blind-bar {
+            display: flex; align-items: center; gap: 12px;
+            background: linear-gradient(135deg, #0d2840 0%, #142f4a 100%);
+            border: 1px solid rgba(63,159,203,0.3);
+            border-radius: 14px; padding: 10px 14px; margin-bottom: 8px; flex-wrap: wrap;
+        }
+        .blind-left { min-width: 80px; }
+        .blind-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.14em; color: rgba(168,216,240,0.45); margin-bottom: 2px; }
+        .blind-name-big { font-family: 'Baloo 2', sans-serif; font-size: 15px; font-weight: 800; color: #fff; line-height: 1; }
+        .blind-center { flex: 1; min-width: 120px; }
+        .blind-score-wrap { display: flex; align-items: baseline; gap: 4px; margin-bottom: 5px; }
+        .blind-cur { font-family: 'Baloo 2', sans-serif; font-size: 26px; font-weight: 800; color: #ffbf3a; line-height: 1; }
+        .blind-sep { color: rgba(168,216,240,0.35); font-size: 16px; }
+        .blind-tgt { font-size: 15px; color: rgba(168,216,240,0.55); font-weight: 600; }
+        .blind-track { height: 7px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden; }
+        .blind-fill { height: 100%; background: linear-gradient(90deg, #3f9fcb 0%, #ffbf3a 100%); border-radius: 999px; transition: width 0.5s cubic-bezier(.4,0,.2,1); min-width: 4px; }
+        .blind-right { display: flex; gap: 12px; }
+        .blind-counter { font-size: 12px; color: rgba(168,216,240,0.65); display: flex; align-items: center; gap: 4px; white-space: nowrap; }
+        .blind-counter b { color: #fff; font-size: 14px; }
+
+        /* ================================================================
+           JOKER ROW
+        ================================================================ */
+        .joker-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+        /* ── Combinacions bar ── */
+        .combos-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: rgba(255,255,255,0.04);
+            border-top: 1px solid rgba(255,255,255,0.06);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            overflow: hidden;
+        }
+        .combos-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: rgba(168,216,240,0.5);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .combos-list {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding-bottom: 2px;
+        }
+        .combos-list::-webkit-scrollbar { display: none; }
+        .combo-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 9px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: default;
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+        .combo-pill em {
+            font-style: normal;
+            font-weight: 400;
+            font-size: 10px;
+            opacity: .7;
+        }
+        .c-festa   { background: rgba(255,215,0,  .12); color: #ffd700; }
+        .c-colla   { background: rgba(100,200,255,.12); color: #64c8ff; }
+        .c-trio    { background: rgba(160,110,255,.12); color: #a06eff; }
+        .c-barreja { background: rgba(255,140, 80,.12); color: #ff8c50; }
+        .c-parella { background: rgba(255,100,150,.12); color: #ff6496; }
+        .c-duo     { background: rgba(80, 220,180,.12); color: #50dcb4; }
+        .c-sol     { background: rgba(200,200,200,.10); color: #c8c8c8; }
+
+        .joker-row-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--c-ink-soft); flex-shrink: 0; }
+        .joker-slots { display: flex; gap: 8px; flex-wrap: wrap; }
+        .joker-card {
+            display: flex; align-items: center; gap: 9px;
+            background: linear-gradient(135deg, #fffde7 0%, #fff3c4 100%);
+            border: 2px solid rgba(240,168,50,0.55);
+            border-radius: 12px; padding: 8px 12px;
+            box-shadow: 0 4px 12px rgba(240,168,50,0.22);
+            transition: transform 0.15s;
+        }
+        .joker-card:hover { transform: translateY(-2px); }
+        .joker-emoji { font-size: 22px; line-height: 1; }
+        .joker-info strong { display: block; font-size: 12px; font-weight: 800; color: var(--c-ink); line-height: 1; margin-bottom: 2px; }
+        .joker-info span { font-size: 11px; color: var(--c-ink-soft); line-height: 1.3; max-width: 160px; display: block; }
+
+        /* ================================================================
+           FORMULA DISPLAY
+        ================================================================ */
+        .formula-display {
+            background: linear-gradient(135deg, #0d2840 0%, #142f4a 100%);
+            border: 1px solid rgba(63,159,203,0.3);
+            border-radius: 14px; padding: 10px 16px; margin-bottom: 8px;
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 8px; flex-wrap: wrap;
+        }
+        .fd-hand-name {
+            font-family: 'Baloo 2', sans-serif;
+            font-size: 13px; font-weight: 800;
+            color: #ffbf3a; text-transform: uppercase; letter-spacing: 0.07em;
+            min-width: 100px;
+        }
+        .fd-calc { display: flex; align-items: baseline; gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
+        .fd-chips { font-family: 'Baloo 2', sans-serif; font-size: 26px; font-weight: 800; color: #63bfe3; }
+        .fd-tag   { font-size: 10px; color: rgba(168,216,240,0.45); align-self: center; }
+        .fd-op    { font-size: 18px; color: rgba(168,216,240,0.4); }
+        .fd-mult  { font-family: 'Baloo 2', sans-serif; font-size: 26px; font-weight: 800; color: #ff8c42; }
+        .fd-total { font-family: 'Baloo 2', sans-serif; font-size: 32px; font-weight: 800; color: #fff; text-shadow: 0 0 18px rgba(255,191,58,0.35); }
+
+        /* ================================================================
+           RESPONSIVE
+        ================================================================ */
+        @media (max-width: 720px) {
+            .top-bar { padding: 0 14px; }
+            .game-wrapper { padding: 0 10px; margin-top: 16px; }
+            .card-lane { grid-template-columns: repeat(2, 1fr); }
+            .arena-actions { grid-template-columns: 1fr 1fr; }
+            .score-row { grid-template-columns: 1fr 1fr; }
+            .score-row .meter:last-child { grid-column: span 2; }
+        }
+        @media (max-width: 480px) {
+            .card-lane { grid-template-columns: repeat(2, 1fr); }
+            .tutorial-steps { grid-template-columns: 1fr; }
+            .lobby-btn { width: 250px; font-size: 19px; padding: 14px 20px; }
+            .lobby-title { font-size: 52px; }
+            .screen-title { font-size: 30px; }
+            .arena-actions { grid-template-columns: 1fr; }
+            .logo-sub { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- GAME -->
+<div class="game-wrapper">
+<section class="game-section" id="jocs">
+    <div class="game-container" id="game-container">
+
+        <!-- SCREEN 1 · LOBBY -->
+        <div class="screen screen-lobby active" id="screen-lobby">
+            <button class="fullscreen-btn" id="fullscreen-btn-lobby" title="Pantalla completa" aria-label="Pantalla completa">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+            </button>
+            <span class="lobby-star" style="left:7%;  top:12%; animation-delay:0s;   width:3px; height:3px;"></span>
+            <span class="lobby-star" style="left:19%; top:38%; animation-delay:0.4s; width:4px; height:4px;"></span>
+            <span class="lobby-star" style="left:72%; top:20%; animation-delay:0.8s; width:3px; height:3px;"></span>
+            <span class="lobby-star" style="left:86%; top:52%; animation-delay:1.2s; width:5px; height:5px;"></span>
+            <span class="lobby-star" style="left:34%; top:75%; animation-delay:0.2s; width:4px; height:4px;"></span>
+            <span class="lobby-star" style="left:61%; top:8%;  animation-delay:1.6s; width:3px; height:3px;"></span>
+            <span class="lobby-star" style="left:48%; top:88%; animation-delay:0.7s; width:5px; height:5px;"></span>
+            <span class="lobby-star" style="left:93%; top:30%; animation-delay:1.9s; width:3px; height:3px;"></span>
+            <span class="lobby-star" style="left:4%;  top:65%; animation-delay:1.0s; width:6px; height:6px;"></span>
+            <span class="lobby-star" style="left:56%; top:50%; animation-delay:1.4s; width:2px; height:2px;"></span>
+            <span class="lobby-star" style="left:78%; top:80%; animation-delay:0.5s; width:4px; height:4px;"></span>
+            <span class="lobby-star" style="left:25%; top:55%; animation-delay:1.1s; width:3px; height:3px;"></span>
+            <div class="lobby-inner">
+                <div class="lobby-badge">Les Santes · Mataró 2025</div>
+                <h1 class="lobby-title">LA RUTA<br><span>DE LES SANTES</span></h1>
+                <p class="lobby-sub">Selecciona cartes, acumula punts i guia la colla festiva fins al final!</p>
+                <div class="lobby-buttons">
+                    <button class="lobby-btn lobby-btn-play"     id="btn-jugar">   JUGAR   </button>
+                    <button class="lobby-btn lobby-btn-tutorial" id="btn-tutorial">TUTORIAL</button>
+                    <button class="lobby-btn lobby-btn-options"  id="btn-options"> OPCIONS </button>
+                </div>
+                <p class="lobby-footer">v1.0 · Joc de cartes festiu · Minisantes</p>
+            </div>
+        </div>
+
+        <!-- SCREEN 2 · TUTORIAL -->
+        <div class="screen screen-tutorial" id="screen-tutorial">
+            <button class="fullscreen-btn" id="fullscreen-btn-tut">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+            </button>
+            <button class="screen-back-btn" id="btn-back-tut">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+                Tornar al menú
+            </button>
+            <h2 class="screen-title">COM ES JUGA</h2>
+            <div class="tutorial-steps">
+                <div class="tut-step">
+                    <div class="tut-num">1</div>
+                    <div class="tut-text"><strong>Tria fins a 5 cartes</strong><span>Fes clic a les cartes que vols jugar. Com més cartes, millors combinacions!</span></div>
+                </div>
+                <div class="tut-step">
+                    <div class="tut-num">2</div>
+                    <div class="tut-text"><strong>Punts base × Multiplicador = Punts totals</strong><span>Cada combinació de cartes dona un nombre de punts base i un multiplicador. El resultat és la teva puntuació!</span></div>
+                </div>
+                <div class="tut-step">
+                    <div class="tut-num">3</div>
+                    <div class="tut-text"><strong>Combinacions especials</strong><span>Trio (3 cartes del mateix tipus), Colla Completa (4+ cartes de 3 tipus) o Festa Major (5 cartes) donen molts més punts!</span></div>
+                </div>
+                <div class="tut-step">
+                    <div class="tut-num">4</div>
+                    <div class="tut-text"><strong>Poders Màgics</strong><span>Cada partida té 2 poders especials aleatoris que milloren les teves jugades. Llegeix-los bé!</span></div>
+                </div>
+                <div class="tut-step">
+                    <div class="tut-num">5</div>
+                    <div class="tut-text"><strong>4 jugades + 3 canvis</strong><span>Tens 4 oportunitats de jugar cartes i 3 vegades pots canviar les cartes que no t'agraden.</span></div>
+                </div>
+                <div class="tut-step">
+                    <div class="tut-num">6</div>
+                    <div class="tut-text"><strong>Supera les 4 etapes!</strong><span>El Prego (150), La Cercavila (250), Ball de Gegants (400) i Final de Festa (600). Bona sort!</span></div>
+                </div>
+            </div>
+            <h3 style="text-align:center; color:#a8d8f0; font-size:14px; margin-bottom:12px; text-transform:uppercase; letter-spacing:0.08em;">Tipus de cartes i colors</h3>
+            <div class="type-legend">
+                <span class="type-pill personatge">Personatge · vermell</span>
+                <span class="type-pill tradicio">Tradicio · daurat</span>
+                <span class="type-pill festa">Festa · verd</span>
+                <span class="type-pill musica">Musica · blau</span>
+            </div>
+            <div class="tut-actions">
+                <button class="flash-btn primary"   id="btn-tut-play">Jugar ara!</button>
+                <button class="flash-btn secondary" id="btn-tut-back2">Tornar</button>
+            </div>
+        </div>
+
+        <!-- SCREEN 3 · OPTIONS -->
+        <div class="screen screen-options" id="screen-options">
+            <button class="fullscreen-btn" id="fullscreen-btn-opt">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+            </button>
+            <button class="screen-back-btn" id="btn-back-opt">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+                Tornar al menú
+            </button>
+            <h2 class="screen-title">OPCIONS</h2>
+            <div class="options-inner">
+                <div class="option-row">
+                    <div class="option-label"><strong>So del joc</strong><span>Activar o desactivar la musica de fons</span></div>
+                    <div class="toggle-switch" id="toggle-sound" role="switch" aria-checked="false"></div>
+                </div>
+                <div class="option-row">
+                    <div class="option-label"><strong>Efectes visuals</strong><span>Animar cartes i transicions</span></div>
+                    <div class="toggle-switch on" id="toggle-fx" role="switch" aria-checked="true"></div>
+                </div>
+                <div class="option-row">
+                    <div class="option-label"><strong>Pantalla completa</strong><span>Expandir el joc a tota la pantalla</span></div>
+                    <button class="flash-btn secondary" id="btn-fullscreen-opt" style="font-size:13px; padding:10px 18px;">Activar</button>
+                </div>
+                <div style="margin-top:20px; padding:16px; background:rgba(255,255,255,0.05); border-radius:12px; text-align:center; color:rgba(168,216,240,0.5); font-size:12px; border:1px solid rgba(255,255,255,0.08);">
+                    La Ruta de Les Santes v1.0 · Projecte Minisantes 2025
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 4 · GAME -->
+        <div class="screen screen-game" id="screen-game">
+            <div class="game-topbar">
+                <div class="game-topbar-left">
+                    <button class="back-lobby-btn" id="btn-back-game">← Menú</button>
+                    <span class="game-header-title">La Ruta de Les Santes</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <div class="stage-progress" id="stage-progress">
+                        <span class="stage-dot active" data-stage="0"></span>
+                        <span class="stage-dot"        data-stage="1"></span>
+                        <span class="stage-dot"        data-stage="2"></span>
+                        <span class="stage-dot"        data-stage="3"></span>
+                    </div>
+                    <button class="fullscreen-btn-inline" id="fullscreen-btn-game" title="Pantalla completa">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Blind bar -->
+            <div class="blind-bar">
+                <div class="blind-left">
+                    <div class="blind-label">OBJECTIU</div>
+                    <div class="blind-name-big" id="blind-name">El Prego</div>
+                </div>
+                <div class="blind-center">
+                    <div class="blind-score-wrap">
+                        <span class="blind-cur" id="blind-cur">0</span>
+                        <span class="blind-sep">/</span>
+                        <span class="blind-tgt" id="blind-tgt">150</span>
+                    </div>
+                    <div class="blind-track"><div class="blind-fill" id="blind-fill" style="width:0%"></div></div>
+                </div>
+                <div class="blind-right">
+                    <div class="blind-counter">🃏 <b id="hands-left">4</b> jugades</div>
+                    <div class="blind-counter">🔄 <b id="discards-left">3</b> canvis</div>
+                </div>
+            </div>
+
+            <!-- Jokers -->
+            <div class="joker-row">
+                <div class="joker-row-label">PODERS MÀGICS</div>
+                <div class="joker-slots" id="joker-slots"></div>
+            </div>
+
+            <!-- Formula display -->
+            <div class="formula-display">
+                <div class="fd-hand-name" id="fd-hand-name">Tria les teves cartes! 👆</div>
+                <div class="fd-calc">
+                    <span class="fd-chips" id="fd-chips">—</span>
+                    <span class="fd-tag">punts base</span>
+                    <span class="fd-op">×</span>
+                    <span class="fd-mult" id="fd-mult">—</span>
+                    <span class="fd-tag">multiplicador</span>
+                    <span class="fd-op">=</span>
+                    <span class="fd-total" id="fd-total">—</span>
+                </div>
+            </div>
+
+            <!-- Combinacions reference -->
+            <div class="combos-bar">
+                <span class="combos-label">Combinacions:</span>
+                <div class="combos-list">
+                    <span class="combo-pill c-festa">🎉 Festa Major <em>5 cartes · 120×5</em></span>
+                    <span class="combo-pill c-colla">👥 Colla Completa <em>4+ cartes 3 tipus · 80×4</em></span>
+                    <span class="combo-pill c-trio">🔺 Trio <em>3 iguals · 60×3</em></span>
+                    <span class="combo-pill c-barreja">🎨 Barreja Festiva <em>3 barrejades · 40×2</em></span>
+                    <span class="combo-pill c-parella">👫 Parella <em>2 iguals · 30×2</em></span>
+                    <span class="combo-pill c-duo">🤝 Duo Festiu <em>2 cartes · 20×1.5</em></span>
+                    <span class="combo-pill c-sol">⭐ Solitari <em>1 carta · 10×1</em></span>
+                </div>
+            </div>
+
+            <!-- Cards (seleciona fins a 5) -->
+            <div class="card-lane" id="card-lane" aria-label="Cartes disponibles">
+                <article class="s-card t-personatge" data-type="Personatge" data-points="30">
+                    <img class="s-img" src="imgs/Robafaves.png.png" alt="Robafaves" loading="lazy">
+                    <div class="s-card-body">
+                        <div class="s-card-top"><span class="s-type">Personatge</span><span class="s-points">30</span></div>
+                        <h3 class="s-name">Robafaves</h3>
+                        <p class="s-desc">Figura icònica de la cercavila.</p>
+                    </div>
+                </article>
+                <article class="s-card t-personatge" data-type="Personatge" data-points="25">
+                    <img class="s-img" src="imgs/La_Gegantera.png.png" alt="La Gegantera" loading="lazy">
+                    <div class="s-card-body">
+                        <div class="s-card-top"><span class="s-type">Personatge</span><span class="s-points">25</span></div>
+                        <h3 class="s-name">La Gegantera</h3>
+                        <p class="s-desc">Reina majestuosa de la festa major.</p>
+                    </div>
+                </article>
+                <article class="s-card t-personatge" data-type="Personatge" data-points="28">
+                    <img class="s-img" src="imgs/El_Manelo_i_La_Toneta.png" alt="El Manelo i La Toneta" loading="lazy">
+                    <div class="s-card-body">
+                        <div class="s-card-top"><span class="s-type">Personatge</span><span class="s-points">28</span></div>
+                        <h3 class="s-name">El Manelo i La Toneta</h3>
+                        <p class="s-desc">La parella gegant de Mataró.</p>
+                    </div>
+                </article>
+                <article class="s-card t-personatge" data-type="Personatge" data-points="22">
+                    <img class="s-img" src="imgs/La_momerota_i_momeroteta.png" alt="La Momerota" loading="lazy">
+                    <div class="s-card-body">
+                        <div class="s-card-top"><span class="s-type">Personatge</span><span class="s-points">22</span></div>
+                        <h3 class="s-name">La Momerota</h3>
+                        <p class="s-desc">Duo fantàstic i divertit.</p>
+                    </div>
+                </article>
+                <article class="s-card t-tradicio" data-type="Tradicio" data-points="35">
+                    <img class="s-img" src="imgs/L'Aliga.png" alt="L'Àliga" loading="lazy">
+                    <div class="s-card-body">
+                        <div class="s-card-top"><span class="s-type">Tradició</span><span class="s-points">35</span></div>
+                        <h3 class="s-name">L'Àliga</h3>
+                        <p class="s-desc">Dansa solemne i plena de classe.</p>
+                    </div>
+                </article>
+                <article class="s-card t-tradicio" data-type="Tradicio" data-points="28">
+                    <img class="s-img" src="imgs/la_draga.png.png" alt="La Draga" loading="lazy">
+                    <div class="s-card-body">
+                        <div class="s-card-top"><span class="s-type">Tradició</span><span class="s-points">28</span></div>
+                        <h3 class="s-name">La Draga</h3>
+                        <p class="s-desc">Bèstia mítica de les festes.</p>
+                    </div>
+                </article>
+                <article class="s-card t-festa" data-type="Festa" data-points="26">
+                    <img class="s-img" src="imgs/els_Diables.png" alt="Els Diables" loading="lazy">
+                    <div class="s-card-body">
+                        <div class="s-card-top"><span class="s-type">Festa</span><span class="s-points">26</span></div>
+                        <h3 class="s-name">Els Diables</h3>
+                        <p class="s-desc">Correfoc de foc i alegria!</p>
+                    </div>
+                </article>
+                <article class="s-card t-festa" data-type="Festa" data-points="40">
+                    <img class="s-img" src="imgs/les_Patrones.png" alt="Les Patrones" loading="lazy">
+                    <div class="s-card-body">
+                        <div class="s-card-top"><span class="s-type">Festa</span><span class="s-points">40</span></div>
+                        <h3 class="s-name">Les Patrones</h3>
+                        <p class="s-desc">Santa Juliana i Santa Semproniana.</p>
+                    </div>
+                </article>
+            </div>
+
+            <div class="arena-actions" style="margin-top:10px;grid-template-columns:1fr 1fr;">
+                <button class="ui-btn primary"   id="play-cards-btn" disabled>▶ JUGAR!</button>
+                <button class="ui-btn secondary"  id="discard-btn"   disabled>↺ CANVIAR CARTES</button>
+            </div>
+
+            <div class="result-overlay" id="result-overlay" style="display:none;">
+                <div class="result-card">
+                    <div class="result-icon" id="result-icon">★</div>
+                    <h2 class="result-title-big" id="result-title">Resultat</h2>
+                    <p class="result-text-big"   id="result-text">Text de resultat</p>
+                    <div class="result-actions">
+                        <button class="flash-btn primary"   id="restart-game-btn">TORNAR A JUGAR</button>
+                        <button class="flash-btn secondary" id="btn-result-menu">MENÚ PRINCIPAL</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+</div>
+
+<script>
+    // ================================================================
+    //  SCREEN MANAGER
+    // ================================================================
+    var currentScreen = 'lobby';
+
+    function showScreen(name) {
+        document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+        var t = document.getElementById('screen-' + name);
+        if (t) t.classList.add('active');
+        currentScreen = name;
+        if (name === 'lobby') startLobbyConfetti();
+        else stopLobbyConfetti();
+        if (name === 'game') resetGame();
+    }
+
+    // ================================================================
+    //  FULLSCREEN
+    // ================================================================
+    function toggleFullscreen() {
+        var c = document.getElementById('game-container');
+        if (!document.fullscreenElement) c.requestFullscreen().catch(function(){});
+        else document.exitFullscreen();
+    }
+    ['fullscreen-btn-lobby','fullscreen-btn-tut','fullscreen-btn-opt',
+     'fullscreen-btn-game','btn-fullscreen-opt'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.addEventListener('click', toggleFullscreen);
+    });
+
+    // ================================================================
+    //  LOBBY CONFETTI
+    // ================================================================
+    var confettiInterval = null;
+    var confettiColors = ['#3f9fcb','#63bfe3','#ffbf3a','#ff6f61','#7bcde9','#ffffff','#a8d8f0','#ffd580'];
+
+    function startLobbyConfetti() {
+        if (confettiInterval) return;
+        confettiInterval = setInterval(function() {
+            if (typeof confetti === 'undefined') return;
+            confetti({ particleCount: 4, spread: 90, origin: { x: Math.random(), y: -0.02 },
+                colors: confettiColors, gravity: 0.75, scalar: 0.85, ticks: 200 });
+        }, 350);
+    }
+
+    function stopLobbyConfetti() {
+        if (confettiInterval) { clearInterval(confettiInterval); confettiInterval = null; }
+        if (typeof confetti !== 'undefined') confetti.reset();
+    }
+
+    // ================================================================
+    //  NAVIGATION
+    // ================================================================
+    document.getElementById('btn-jugar').addEventListener('click',    function() { showScreen('game'); });
+    document.getElementById('btn-tutorial').addEventListener('click', function() { showScreen('tutorial'); });
+    document.getElementById('btn-options').addEventListener('click',  function() { showScreen('options'); });
+    document.getElementById('btn-back-tut').addEventListener('click', function() { showScreen('lobby'); });
+    document.getElementById('btn-tut-back2').addEventListener('click',function() { showScreen('lobby'); });
+    document.getElementById('btn-tut-play').addEventListener('click', function() { showScreen('game'); });
+    document.getElementById('btn-back-opt').addEventListener('click', function() { showScreen('lobby'); });
+    document.getElementById('btn-back-game').addEventListener('click',function() { showScreen('lobby'); });
+
+    ['toggle-sound','toggle-fx'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener('click', function() {
+            this.classList.toggle('on');
+            this.setAttribute('aria-checked', this.classList.contains('on') ? 'true' : 'false');
+        });
+    });
+
+    // ================================================================
+    //  BALATRO-STYLE GAME ENGINE
+    // ================================================================
+    (function() {
+
+        var STAGES = [
+            { name: 'El Prego',        target: 150  },
+            { name: 'La Cercavila',    target: 250  },
+            { name: 'Ball de Gegants', target: 400  },
+            { name: 'Final de Festa',  target: 600  }
+        ];
+
+        // Hand types — evaluated in order, first match wins
+        var HAND_TYPES = [
+            { name: 'Festa Major',     baseChips: 120, baseMult: 5,
+              test: function(s){ return s.length === 5; } },
+            { name: 'Colla Completa',  baseChips: 80,  baseMult: 4,
+              test: function(s){ return s.length >= 4 && uTypes(s) >= 3; } },
+            { name: 'Trio',            baseChips: 60,  baseMult: 3,
+              test: function(s){ return s.length === 3 && uTypes(s) === 1; } },
+            { name: 'Barreja Festiva', baseChips: 40,  baseMult: 2,
+              test: function(s){ return s.length === 3; } },
+            { name: 'Parella',         baseChips: 30,  baseMult: 2,
+              test: function(s){ return s.length === 2 && s[0].type === s[1].type; } },
+            { name: 'Duo Festiu',      baseChips: 20,  baseMult: 1.5,
+              test: function(s){ return s.length === 2; } },
+            { name: 'Solitari',        baseChips: 10,  baseMult: 1,
+              test: function(s){ return s.length >= 1; } }
+        ];
+
+        var JOKER_POOL = [
+            { id:'robafaves', emoji:'🎭', name:'El Robafaves',
+              desc:'+20 punts extra a cada jugada',
+              apply: function(ctx){ ctx.chips += 20; } },
+            { id:'aliga',     emoji:'🦅', name:"L'Àliga Daurada",
+              desc:'Duplica el multiplicador a la primera jugada de cada etapa',
+              apply: function(ctx){ if (ctx.firstHand) ctx.mult *= 2; } },
+            { id:'diables',   emoji:'🔥', name:'Els Diables',
+              desc:'Les cartes de Festa valen el doble!',
+              apply: function(ctx){ ctx.festaDouble = true; } },
+            { id:'gegantera', emoji:'👸', name:'La Gegantera',
+              desc:'+3 al multiplicador quan jugues una Parella o Trio',
+              apply: function(ctx){ if (ctx.handName==='Parella'||ctx.handName==='Trio') ctx.mult += 3; } },
+            { id:'draga',     emoji:'🐉', name:'La Draga',
+              desc:'+1 al multiplicador per cada tipus de carta diferent',
+              apply: function(ctx){ ctx.mult += ctx.uniqueTypes; } },
+            { id:'patrones',  emoji:'✨', name:'Les Patrones',
+              desc:'+80 punts extra quan fas "Colla Completa"',
+              apply: function(ctx){ if (ctx.handName==='Colla Completa') ctx.chips += 80; } },
+            { id:'manelo',    emoji:'💃', name:'El Manelo',
+              desc:'+2 al multiplicador si tries 3 o més cartes',
+              apply: function(ctx){ if (ctx.cardCount >= 3) ctx.mult += 2; } },
+            { id:'momerota',  emoji:'🌟', name:'La Momerota',
+              desc:'Cada carta de Personatge dona +8 punts extra',
+              apply: function(ctx){ ctx.chips += ctx.personatgeCount * 8; } }
+        ];
+
+        function uTypes(sel) {
+            return new Set(sel.map(function(c){ return c.type; })).size;
+        }
+
+        var state = {
+            stageIndex: 0, roundScore: 0,
+            handsLeft: 4,  discardsLeft: 3,
+            jokers: [], selected: [],
+            firstHand: true, ended: false
+        };
+
+        var cards          = Array.from(document.querySelectorAll('#card-lane .s-card'));
+        var jokerSlotsEl   = document.getElementById('joker-slots');
+        var blindCurEl     = document.getElementById('blind-cur');
+        var blindTgtEl     = document.getElementById('blind-tgt');
+        var blindNameEl    = document.getElementById('blind-name');
+        var blindFillEl    = document.getElementById('blind-fill');
+        var handsLeftEl    = document.getElementById('hands-left');
+        var discardsLeftEl = document.getElementById('discards-left');
+        var fdHandNameEl   = document.getElementById('fd-hand-name');
+        var fdChipsEl      = document.getElementById('fd-chips');
+        var fdMultEl       = document.getElementById('fd-mult');
+        var fdTotalEl      = document.getElementById('fd-total');
+        var playBtn        = document.getElementById('play-cards-btn');
+        var discardBtn     = document.getElementById('discard-btn');
+        var resultOverlay  = document.getElementById('result-overlay');
+        var resultIconEl   = document.getElementById('result-icon');
+        var resultTitleEl  = document.getElementById('result-title');
+        var resultTextEl   = document.getElementById('result-text');
+        var restartBtn     = document.getElementById('restart-game-btn');
+        var resultMenuBtn  = document.getElementById('btn-result-menu');
+        var stageDots      = document.getElementById('stage-progress');
+
+        function pickJokers() {
+            var pool = JOKER_POOL.slice().sort(function(){ return Math.random() - 0.5; });
+            state.jokers = pool.slice(0, 2);
+        }
+
+        function renderJokers() {
+            jokerSlotsEl.innerHTML = '';
+            state.jokers.forEach(function(j) {
+                var d = document.createElement('div');
+                d.className = 'joker-card';
+                d.innerHTML = '<span class="joker-emoji">' + j.emoji + '</span>'
+                    + '<div class="joker-info"><strong>' + j.name + '</strong>'
+                    + '<span>' + j.desc + '</span></div>';
+                jokerSlotsEl.appendChild(d);
+            });
+        }
+
+        function getSelData() {
+            return state.selected.map(function(el) {
+                return { type: el.dataset.type, points: Number(el.dataset.points || 0) };
+            });
+        }
+
+        function detectHand(sel) {
+            if (!sel.length) return null;
+            for (var i = 0; i < HAND_TYPES.length; i++) {
+                if (HAND_TYPES[i].test(sel)) return HAND_TYPES[i];
+            }
+            return HAND_TYPES[HAND_TYPES.length - 1];
+        }
+
+        function calcScore(sel, hand) {
+            var ctx = {
+                chips: hand.baseChips, mult: hand.baseMult,
+                firstHand: state.firstHand, handName: hand.name,
+                cardCount: sel.length, uniqueTypes: uTypes(sel),
+                personatgeCount: sel.filter(function(c){ return c.type === 'Personatge'; }).length,
+                festaDouble: false
+            };
+            state.jokers.forEach(function(j) { j.apply(ctx); });
+            sel.forEach(function(c) {
+                var pts = c.points;
+                if (ctx.festaDouble && c.type === 'Festa') pts *= 2;
+                ctx.chips += pts;
+            });
+            return { chips: Math.round(ctx.chips), mult: ctx.mult,
+                     total: Math.round(ctx.chips * ctx.mult) };
+        }
+
+        function updateFormula() {
+            var sel = getSelData();
+            if (!sel.length) {
+                fdHandNameEl.textContent = 'Tria les teves cartes! 👆';
+                fdChipsEl.textContent = '—'; fdMultEl.textContent = '—'; fdTotalEl.textContent = '—';
+                return;
+            }
+            var hand  = detectHand(sel);
+            var score = calcScore(sel, hand);
+            fdHandNameEl.textContent = hand.name;
+            fdChipsEl.textContent = score.chips;
+            fdMultEl.textContent  = '×' + score.mult;
+            fdTotalEl.textContent = score.total;
+        }
+
+        function updateStageProgress() {
+            if (!stageDots) return;
+            stageDots.querySelectorAll('.stage-dot').forEach(function(dot, i) {
+                dot.classList.remove('done','active');
+                if (i < state.stageIndex) dot.classList.add('done');
+                else if (i === state.stageIndex) dot.classList.add('active');
+            });
+        }
+
+        function updateHUD() {
+            var stage = STAGES[state.stageIndex];
+            blindNameEl.textContent    = stage.name;
+            blindCurEl.textContent     = state.roundScore;
+            blindTgtEl.textContent     = stage.target;
+            handsLeftEl.textContent    = state.handsLeft;
+            discardsLeftEl.textContent = state.discardsLeft;
+            var pct = Math.min(100, Math.round((state.roundScore / stage.target) * 100));
+            blindFillEl.style.width = pct + '%';
+            updateStageProgress();
+            updateFormula();
+            playBtn.disabled    = state.ended || state.selected.length === 0;
+            discardBtn.disabled = state.ended || state.selected.length === 0 || state.discardsLeft <= 0;
+        }
+
+        function clearSel() {
+            state.selected = [];
+            cards.forEach(function(c) { c.classList.remove('selected','dimmed'); });
+            updateHUD();
+        }
+
+        function highlightCards() {
+            var n = state.selected.length;
+            cards.forEach(function(c) {
+                var sel = state.selected.indexOf(c) >= 0;
+                c.classList.toggle('selected', sel);
+                c.classList.toggle('dimmed', n === 5 && !sel);
+            });
+            updateHUD();
+        }
+
+        function showResult(isWin, title, text) {
+            state.ended = true;
+            resultIconEl.textContent = isWin ? '★' : '✕';
+            resultIconEl.className   = 'result-icon ' + (isWin ? 'win' : 'lose');
+            resultTitleEl.textContent = title;
+            resultTextEl.textContent  = text;
+            resultOverlay.style.display = 'flex';
+            cards.forEach(function(c) { c.style.pointerEvents = 'none'; });
+            playBtn.disabled = true; discardBtn.disabled = true;
+            if (isWin && typeof confetti !== 'undefined') {
+                confetti({ particleCount: 140, spread: 70, origin: { y: 0.6 }, colors: confettiColors });
+                setTimeout(function() {
+                    confetti({ particleCount: 70, spread: 110, origin: { x: 0.1, y: 0.5 }, colors: confettiColors });
+                    confetti({ particleCount: 70, spread: 110, origin: { x: 0.9, y: 0.5 }, colors: confettiColors });
+                }, 500);
+            }
+        }
+
+        function hideResult() {
+            resultOverlay.style.display = 'none';
+            state.ended = false;
+            cards.forEach(function(c) { c.style.pointerEvents = ''; });
+        }
+
+        function shuffleCards() {
+            var lane = document.getElementById('card-lane');
+            cards.slice().sort(function(){ return Math.random() - 0.5; })
+                 .forEach(function(c){ lane.appendChild(c); });
+        }
+
+        function nextStage() {
+            if (state.stageIndex >= STAGES.length - 1) {
+                showResult(true, 'HAS GUANYAT!',
+                    'Has completat totes les etapes de Les Santes. Fantàstic!');
+                return;
+            }
+            state.stageIndex++;
+            state.roundScore   = 0;
+            state.handsLeft    = 4;
+            state.discardsLeft = 3;
+            state.firstHand    = true;
+            clearSel();
+            shuffleCards();
+            updateHUD();
+        }
+
+        function resetGame() {
+            state.stageIndex   = 0;
+            state.roundScore   = 0;
+            state.handsLeft    = 4;
+            state.discardsLeft = 3;
+            state.selected     = [];
+            state.firstHand    = true;
+            state.ended        = false;
+            hideResult();
+            pickJokers();
+            renderJokers();
+            shuffleCards();
+            clearSel();
+            updateHUD();
+        }
+
+        cards.forEach(function(card) {
+            card.addEventListener('click', function() {
+                if (state.ended) return;
+                var idx = state.selected.indexOf(card);
+                if (idx >= 0) {
+                    state.selected.splice(idx, 1);
+                } else {
+                    if (state.selected.length >= 5) return;
+                    state.selected.push(card);
+                }
+                highlightCards();
+            });
+        });
+
+        playBtn.addEventListener('click', function() {
+            if (state.ended || state.selected.length === 0) return;
+            var sel   = getSelData();
+            var hand  = detectHand(sel);
+            var score = calcScore(sel, hand);
+            state.roundScore += score.total;
+            state.handsLeft--;
+            state.firstHand = false;
+            // Flash result in formula bar
+            fdHandNameEl.textContent = '✦ ' + hand.name + '  +' + score.total + ' pts!';
+            fdChipsEl.textContent = score.chips;
+            fdMultEl.textContent  = '×' + score.mult;
+            fdTotalEl.textContent = score.total;
+            clearSel();
+            var target = STAGES[state.stageIndex].target;
+            if (state.roundScore >= target) {
+                updateHUD();
+                setTimeout(nextStage, 700);
+                return;
+            }
+            if (state.handsLeft <= 0) {
+                updateHUD();
+                showResult(false, 'HO POTS FER MILLOR!',
+                    'Ja no queden jugades. Faltaven ' + (target - state.roundScore) + ' punts. Torna-ho a intentar!');
+                return;
+            }
+            updateHUD();
+        });
+
+        discardBtn.addEventListener('click', function() {
+            if (state.ended || state.selected.length === 0 || state.discardsLeft <= 0) return;
+            state.discardsLeft--;
+            clearSel();
+            shuffleCards();
+            updateHUD();
+        });
+
+        restartBtn.addEventListener('click',    function() { hideResult(); resetGame(); });
+        resultMenuBtn.addEventListener('click', function() { showScreen('lobby'); });
+
+        showScreen('lobby');
+
+    }());
+</script>
+</body>
+</html>
+
+</body>
+</html>

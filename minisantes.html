@@ -337,7 +337,7 @@
             position: relative;
             z-index: 1;
             font-family: 'Baloo 2', 'Fredoka', sans-serif;
-            font-size: clamp(52px, 7.4vw, 94px);
+            font-size: clamp(36px, 11vw, 94px);
             line-height: 0.9;
             color: var(--c-coral);
             text-shadow: 0 3px 0 rgba(255,255,255,0.82);
@@ -924,14 +924,127 @@
             50% { transform: translate(-50%, -75%); }
         }
 
+        /* ================================================================
+           BLIND BAR
+        ================================================================ */
+        .blind-bar {
+            display: flex; align-items: center; gap: 12px;
+            background: linear-gradient(135deg, #0d2840 0%, #142f4a 100%);
+            border: 1px solid rgba(63,159,203,0.3);
+            border-radius: 14px; padding: 10px 14px; margin-bottom: 8px; flex-wrap: wrap;
+        }
+        .blind-left { min-width: 80px; }
+        .blind-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.14em; color: rgba(168,216,240,0.45); margin-bottom: 2px; }
+        .blind-name-big { font-family: 'Baloo 2', sans-serif; font-size: 15px; font-weight: 800; color: #fff; line-height: 1; }
+        .blind-center { flex: 1; min-width: 120px; }
+        .blind-score-wrap { display: flex; align-items: baseline; gap: 4px; margin-bottom: 5px; }
+        .blind-cur { font-family: 'Baloo 2', sans-serif; font-size: 26px; font-weight: 800; color: #ffbf3a; line-height: 1; }
+        .blind-sep { color: rgba(168,216,240,0.35); font-size: 16px; }
+        .blind-tgt { font-size: 15px; color: rgba(168,216,240,0.55); font-weight: 600; }
+        .blind-track { height: 7px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden; }
+        .blind-fill { height: 100%; background: linear-gradient(90deg, #3f9fcb 0%, #ffbf3a 100%); border-radius: 999px; transition: width 0.5s cubic-bezier(.4,0,.2,1); min-width: 4px; }
+        .blind-right { display: flex; gap: 12px; }
+        .blind-counter { font-size: 12px; color: rgba(168,216,240,0.65); display: flex; align-items: center; gap: 4px; white-space: nowrap; }
+        .blind-counter b { color: #fff; font-size: 14px; }
+        /* ================================================================
+           JOKER ROW
+        ================================================================ */
+        .joker-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+        /* ── Combinacions bar ── */
+        .combos-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: rgba(255,255,255,0.04);
+            border-top: 1px solid rgba(255,255,255,0.06);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            overflow: hidden;
+        }
+        .combos-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: rgba(168,216,240,0.5);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .combos-list {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding-bottom: 2px;
+        }
+        .combos-list::-webkit-scrollbar { display: none; }
+        .combo-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 9px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: default;
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+        .combo-pill em {
+            font-style: normal;
+            font-weight: 400;
+            font-size: 10px;
+            opacity: .7;
+        }
+        .c-festa   { background: rgba(255,215,0,  .12); color: #ffd700; }
+        .c-colla   { background: rgba(100,200,255,.12); color: #64c8ff; }
+        .c-trio    { background: rgba(160,110,255,.12); color: #a06eff; }
+        .c-barreja { background: rgba(255,140, 80,.12); color: #ff8c50; }
+        .c-parella { background: rgba(255,100,150,.12); color: #ff6496; }
+        .c-duo     { background: rgba(80, 220,180,.12); color: #50dcb4; }
+        .c-sol     { background: rgba(200,200,200,.10); color: #c8c8c8; }
+
+        .joker-row-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--c-ink-soft); flex-shrink: 0; }
+        .joker-slots { display: flex; gap: 8px; flex-wrap: wrap; }
+        .joker-card {
+            display: flex; align-items: center; gap: 9px;
+            background: linear-gradient(135deg, #fffde7 0%, #fff3c4 100%);
+            border: 2px solid rgba(240,168,50,0.55);
+            border-radius: 12px; padding: 8px 12px;
+            box-shadow: 0 4px 12px rgba(240,168,50,0.22); transition: transform 0.15s;
+        }
+        .joker-card:hover { transform: translateY(-2px); }
+        .joker-emoji { font-size: 22px; line-height: 1; }
+        .joker-info strong { display: block; font-size: 12px; font-weight: 800; color: var(--c-ink); line-height: 1; margin-bottom: 2px; }
+        .joker-info span { font-size: 11px; color: var(--c-ink-soft); line-height: 1.3; max-width: 160px; display: block; }
+        /* ================================================================
+           FORMULA DISPLAY
+        ================================================================ */
+        .formula-display {
+            background: linear-gradient(135deg, #0d2840 0%, #142f4a 100%);
+            border: 1px solid rgba(63,159,203,0.3);
+            border-radius: 14px; padding: 10px 16px; margin-bottom: 8px;
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 8px; flex-wrap: wrap;
+        }
+        .fd-hand-name { font-family: 'Baloo 2', sans-serif; font-size: 13px; font-weight: 800; color: #ffbf3a; text-transform: uppercase; letter-spacing: 0.07em; min-width: 100px; }
+        .fd-calc { display: flex; align-items: baseline; gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
+        .fd-chips { font-family: 'Baloo 2', sans-serif; font-size: 26px; font-weight: 800; color: #63bfe3; }
+        .fd-tag   { font-size: 10px; color: rgba(168,216,240,0.45); align-self: center; }
+        .fd-op    { font-size: 18px; color: rgba(168,216,240,0.4); }
+        .fd-mult  { font-family: 'Baloo 2', sans-serif; font-size: 26px; font-weight: 800; color: #ff8c42; }
+        .fd-total { font-family: 'Baloo 2', sans-serif; font-size: 32px; font-weight: 800; color: #fff; text-shadow: 0 0 18px rgba(255,191,58,0.35); }
+
         @media (max-width: 1000px) {
             .game-grid { grid-template-columns: 1fr; }
             .arena-actions { grid-template-columns: 1fr 1fr; }
         }
 
         @media (max-width: 820px) {
-            .site-nav { padding: 0 18px; height: 66px; }
+            .site-nav { display: flex; justify-content: space-between; align-items: center; padding: 0 16px; height: 60px; }
             .nav-links, .nav-search { display: none; }
+            .nav-cta { display: none; }
+            .nav-right > form { display: none; }
             .nav-hamburger { display: flex; }
             .hero-quickstats { grid-template-columns: 1fr 1fr; }
             .card-lane { grid-template-columns: 1fr 1fr; }
@@ -939,7 +1052,7 @@
         }
 
         @media (max-width: 560px) {
-            .hero-title { font-size: 64px; }
+            .hero-title { font-size: clamp(36px, 13vw, 64px); }
             .card-lane { grid-template-columns: 1fr 1fr; }
             .arena-actions { grid-template-columns: 1fr; }
             .download-grid { grid-template-columns: 1fr; }
@@ -1598,43 +1711,43 @@
                 <div class="tut-step">
                     <div class="tut-num">1</div>
                     <div class="tut-text">
-                        <strong>Tria 2 cartes</strong>
-                        <span>Fes clic a dues cartes del tauler per seleccionar-les.</span>
+                        <strong>Selecciona fins a 5 cartes</strong>
+                        <span>Fes clic a les cartes que vols jugar. Combina fins a 5 cartes per formar mans poderoses.</span>
                     </div>
                 </div>
                 <div class="tut-step">
                     <div class="tut-num">2</div>
                     <div class="tut-text">
-                        <strong>Juga la mà</strong>
-                        <span>Prem "JUGAR CARTES" per sumar els punts de les dues cartes.</span>
+                        <strong>Chips × Mult = Punts</strong>
+                        <span>Cada mà té un valor base de Chips i Multiplicador. Els Jokers i els tipus de cartes el modifiquen.</span>
                     </div>
                 </div>
                 <div class="tut-step">
                     <div class="tut-num">3</div>
                     <div class="tut-text">
-                        <strong>Bonus Sinergia</strong>
-                        <span>Si les dues cartes son del mateix tipus, guanyes +10 punts extra.</span>
+                        <strong>Mans especials</strong>
+                        <span>Trio (3 cartes mateix tipus), Colla Completa (4+ cartes de 3 tipus), Festa Major (5 cartes) donen molts més punts!</span>
                     </div>
                 </div>
                 <div class="tut-step">
                     <div class="tut-num">4</div>
                     <div class="tut-text">
-                        <strong>Supera l'objectiu</strong>
-                        <span>Cada etapa te un nombre de punts a arribar. Aconsegueix-ho!</span>
+                        <strong>Jokers</strong>
+                        <span>Cada partida rep 2 Jokers aleatoris que apliquen efectes especials a les teves jugades.</span>
                     </div>
                 </div>
                 <div class="tut-step">
                     <div class="tut-num">5</div>
                     <div class="tut-text">
-                        <strong>Vides de la colla</strong>
-                        <span>Si no arribes a l'objectiu, perds una vida. En tens 3 per partida.</span>
+                        <strong>4 mans + 3 descarts</strong>
+                        <span>Tens 4 oportunitats de jugar i 3 descarts per renovar cartes. Gestiona-les bé!</span>
                     </div>
                 </div>
                 <div class="tut-step">
                     <div class="tut-num">6</div>
                     <div class="tut-text">
-                        <strong>Guanya la festa!</strong>
-                        <span>Supera les 4 etapes per completar la Ruta de Les Santes.</span>
+                        <strong>Supera les 4 etapes!</strong>
+                        <span>El Prego (150), La Cercavila (250), Ball de Gegants (400) i Final de Festa (600). Bona sort!</span>
                     </div>
                 </div>
             </div>
@@ -1693,163 +1806,110 @@
             </div>
         </div>
 
-        <!-- ====================================================
-             SCREEN 4 · GAME
-        ==================================================== -->
+        <!-- SCREEN 4 · GAME -->
         <div class="screen screen-game" id="screen-game">
-            <!-- Top bar -->
             <div class="game-topbar">
                 <div class="game-topbar-left">
                     <button class="back-lobby-btn" id="btn-back-game">← Menú</button>
                     <span class="game-header-title">La Ruta de Les Santes</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
                     <div class="stage-progress" id="stage-progress">
                         <span class="stage-dot active" data-stage="0"></span>
                         <span class="stage-dot"        data-stage="1"></span>
                         <span class="stage-dot"        data-stage="2"></span>
                         <span class="stage-dot"        data-stage="3"></span>
                     </div>
+                    <button class="fullscreen-btn-inline" id="fullscreen-btn-game" title="Pantalla completa">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                    </button>
                 </div>
-                <button class="fullscreen-btn-inline" id="fullscreen-btn-game" title="Pantalla completa">
-                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
-                </button>
             </div>
-
-            <!-- Score row -->
-            <div class="score-row" aria-label="Marcador">
-                <div class="meter">
-                    <div class="meter-label">Punts actuals</div>
-                    <div class="meter-num" id="score-current">0</div>
+            <div class="blind-bar">
+                <div class="blind-left">
+                    <div class="blind-label">OBJECTIU</div>
+                    <div class="blind-name-big" id="blind-name">El Prego</div>
                 </div>
-                <div class="meter">
-                    <div class="meter-label">Objectiu etapa</div>
-                    <div class="meter-num" id="stage-target">95</div>
-                </div>
-                <div class="meter">
-                    <div class="meter-label">Vides de la colla</div>
-                    <div class="hearts" id="hearts-container">
-                        <span class="heart">❤</span>
-                        <span class="heart">❤</span>
-                        <span class="heart">❤</span>
+                <div class="blind-center">
+                    <div class="blind-score-wrap">
+                        <span class="blind-cur" id="blind-cur">0</span>
+                        <span class="blind-sep">/</span>
+                        <span class="blind-tgt" id="blind-tgt">150</span>
                     </div>
+                    <div class="blind-track"><div class="blind-fill" id="blind-fill" style="width:0%"></div></div>
+                </div>
+                <div class="blind-right">
+                    <div class="blind-counter">🃏 <b id="hands-left">4</b> jugades</div>
+                    <div class="blind-counter">🔄 <b id="discards-left">3</b> canvis</div>
                 </div>
             </div>
-
-            <!-- Status chips -->
-            <div class="status-row">
-                <span class="status-chip" id="stage-chip">Etapa 1 · El Prego</span>
-                <span class="status-chip" id="synergy-chip">Bonus sinergia +10</span>
-                <span class="status-chip" id="feedback-chip">Tria 2 cartes per jugar</span>
+            <div class="joker-row">
+                <div class="joker-row-label">PODERS MÀGICS</div>
+                <div class="joker-slots" id="joker-slots"></div>
             </div>
-
-            <!-- Card lane -->
-            <div class="card-lane" style="margin-top:10px;" aria-label="Cartes disponibles">
-
-                <article class="s-card t-personatge" data-type="Personatge" data-points="22">
+            <div class="formula-display">
+                <div class="fd-hand-name" id="fd-hand-name">Tria les teves cartes! 👆</div>
+                <div class="fd-calc">
+                    <span class="fd-chips" id="fd-chips">—</span>
+                    <span class="fd-tag">punts base</span>
+                    <span class="fd-op">×</span>
+                    <span class="fd-mult" id="fd-mult">—</span>
+                    <span class="fd-tag">multiplicador</span>
+                    <span class="fd-op">=</span>
+                    <span class="fd-total" id="fd-total">—</span>
+                </div>
+            </div>
+            <!-- Combinacions reference -->
+            <div class="combos-bar">
+                <span class="combos-label">Combinacions:</span>
+                <div class="combos-list">
+                    <span class="combo-pill c-festa">🎉 Festa Major <em>5 cartes · 120×5</em></span>
+                    <span class="combo-pill c-colla">👥 Colla Completa <em>4+ cartes 3 tipus · 80×4</em></span>
+                    <span class="combo-pill c-trio">🔺 Trio <em>3 iguals · 60×3</em></span>
+                    <span class="combo-pill c-barreja">🎨 Barreja Festiva <em>3 barrejades · 40×2</em></span>
+                    <span class="combo-pill c-parella">👫 Parella <em>2 iguals · 30×2</em></span>
+                    <span class="combo-pill c-duo">🤝 Duo Festiu <em>2 cartes · 20×1.5</em></span>
+                    <span class="combo-pill c-sol">⭐ Solitari <em>1 carta · 10×1</em></span>
+                </div>
+            </div>
+            <div class="card-lane" id="card-lane" style="margin-top:10px;" aria-label="Cartes disponibles">
+                <article class="s-card t-personatge" data-type="Personatge" data-points="30">
                     <img class="s-img" src="imgs/Robafaves.png.png" alt="Robafaves" loading="lazy">
-                    <div class="s-card-body">
-                        <div class="s-card-top">
-                            <span class="s-type">Personatge</span>
-                            <span class="s-points">22 ★</span>
-                        </div>
-                        <h3 class="s-name">Robafaves</h3>
-                        <p class="s-desc">Figura iconic de la cercavila.</p>
-                    </div>
+                    <div class="s-card-body"><div class="s-card-top"><span class="s-type">Personatge</span><span class="s-points">30</span></div><h3 class="s-name">Robafaves</h3><p class="s-desc">Figura icònica de la cercavila.</p></div>
                 </article>
-
-                <article class="s-card t-personatge" data-type="Personatge" data-points="19">
+                <article class="s-card t-personatge" data-type="Personatge" data-points="25">
                     <img class="s-img" src="imgs/La_Gegantera.png.png" alt="La Gegantera" loading="lazy">
-                    <div class="s-card-body">
-                        <div class="s-card-top">
-                            <span class="s-type">Personatge</span>
-                            <span class="s-points">19 ★</span>
-                        </div>
-                        <h3 class="s-name">La Gegantera</h3>
-                        <p class="s-desc">Reina majestuosa de la festa major.</p>
-                    </div>
+                    <div class="s-card-body"><div class="s-card-top"><span class="s-type">Personatge</span><span class="s-points">25</span></div><h3 class="s-name">La Gegantera</h3><p class="s-desc">Reina majestuosa de la festa major.</p></div>
                 </article>
-
-                <article class="s-card t-personatge" data-type="Personatge" data-points="18">
+                <article class="s-card t-personatge" data-type="Personatge" data-points="28">
                     <img class="s-img" src="imgs/El_Manelo_i_La_Toneta.png" alt="El Manelo i La Toneta" loading="lazy">
-                    <div class="s-card-body">
-                        <div class="s-card-top">
-                            <span class="s-type">Personatge</span>
-                            <span class="s-points">18 ★</span>
-                        </div>
-                        <h3 class="s-name">El Manelo i La Toneta</h3>
-                        <p class="s-desc">La parella gegant de Mataro.</p>
-                    </div>
+                    <div class="s-card-body"><div class="s-card-top"><span class="s-type">Personatge</span><span class="s-points">28</span></div><h3 class="s-name">El Manelo i La Toneta</h3><p class="s-desc">La parella gegant de Mataró.</p></div>
                 </article>
-
-                <article class="s-card t-personatge" data-type="Personatge" data-points="16">
-                    <img class="s-img" src="imgs/La_momerota_i_momeroteta.png" alt="La Momerota i Momeroteta" loading="lazy">
-                    <div class="s-card-body">
-                        <div class="s-card-top">
-                            <span class="s-type">Personatge</span>
-                            <span class="s-points">16 ★</span>
-                        </div>
-                        <h3 class="s-name">La Momerota i Momeroteta</h3>
-                        <p class="s-desc">Duo fantastic i divertit.</p>
-                    </div>
+                <article class="s-card t-personatge" data-type="Personatge" data-points="22">
+                    <img class="s-img" src="imgs/La_momerota_i_momeroteta.png" alt="La Momerota" loading="lazy">
+                    <div class="s-card-body"><div class="s-card-top"><span class="s-type">Personatge</span><span class="s-points">22</span></div><h3 class="s-name">La Momerota</h3><p class="s-desc">Duo fantàstic i divertit.</p></div>
                 </article>
-
-                <article class="s-card t-tradicio" data-type="Tradicio" data-points="20">
-                    <img class="s-img" src="imgs/L'Aliga.png" alt="L'Aliga" loading="lazy">
-                    <div class="s-card-body">
-                        <div class="s-card-top">
-                            <span class="s-type">Tradicio</span>
-                            <span class="s-points">20 ★</span>
-                        </div>
-                        <h3 class="s-name">L'Aliga</h3>
-                        <p class="s-desc">Dansa solemne i plena de classe.</p>
-                    </div>
+                <article class="s-card t-tradicio" data-type="Tradicio" data-points="35">
+                    <img class="s-img" src="imgs/L'Aliga.png" alt="L'Àliga" loading="lazy">
+                    <div class="s-card-body"><div class="s-card-top"><span class="s-type">Tradició</span><span class="s-points">35</span></div><h3 class="s-name">L'Àliga</h3><p class="s-desc">Dansa solemne i plena de classe.</p></div>
                 </article>
-
-                <article class="s-card t-tradicio" data-type="Tradicio" data-points="17">
+                <article class="s-card t-tradicio" data-type="Tradicio" data-points="28">
                     <img class="s-img" src="imgs/la_draga.png.png" alt="La Draga" loading="lazy">
-                    <div class="s-card-body">
-                        <div class="s-card-top">
-                            <span class="s-type">Tradicio</span>
-                            <span class="s-points">17 ★</span>
-                        </div>
-                        <h3 class="s-name">La Draga</h3>
-                        <p class="s-desc">Bestia mitica de les festes.</p>
-                    </div>
+                    <div class="s-card-body"><div class="s-card-top"><span class="s-type">Tradició</span><span class="s-points">28</span></div><h3 class="s-name">La Draga</h3><p class="s-desc">Bèstia mítica de les festes.</p></div>
                 </article>
-
-                <article class="s-card t-festa" data-type="Festa" data-points="15">
+                <article class="s-card t-festa" data-type="Festa" data-points="26">
                     <img class="s-img" src="imgs/els_Diables.png" alt="Els Diables" loading="lazy">
-                    <div class="s-card-body">
-                        <div class="s-card-top">
-                            <span class="s-type">Festa</span>
-                            <span class="s-points">15 ★</span>
-                        </div>
-                        <h3 class="s-name">Els Diables</h3>
-                        <p class="s-desc">Correfoc de foc i alegria!</p>
-                    </div>
+                    <div class="s-card-body"><div class="s-card-top"><span class="s-type">Festa</span><span class="s-points">26</span></div><h3 class="s-name">Els Diables</h3><p class="s-desc">Correfoc de foc i alegria!</p></div>
                 </article>
-
-                <article class="s-card t-festa" data-type="Festa" data-points="21">
+                <article class="s-card t-festa" data-type="Festa" data-points="40">
                     <img class="s-img" src="imgs/les_Patrones.png" alt="Les Patrones" loading="lazy">
-                    <div class="s-card-body">
-                        <div class="s-card-top">
-                            <span class="s-type">Festa</span>
-                            <span class="s-points">21 ★</span>
-                        </div>
-                        <h3 class="s-name">Les Patrones</h3>
-                        <p class="s-desc">Santa Juliana i Santa Semproniana.</p>
-                    </div>
+                    <div class="s-card-body"><div class="s-card-top"><span class="s-type">Festa</span><span class="s-points">40</span></div><h3 class="s-name">Les Patrones</h3><p class="s-desc">Santa Juliana i Santa Semproniana.</p></div>
                 </article>
-
             </div>
-
-            <!-- Action buttons -->
-            <div class="arena-actions" style="margin-top:10px;">
-                <button class="ui-btn primary"   id="play-cards-btn">▶ JUGAR CARTES</button>
-                <button class="ui-btn secondary"  id="reroll-btn">↺ BARREJAR MÀ</button>
-                <button class="ui-btn ghost"      id="activate-bonus-btn">✦ ACTIVAR BONUS +6</button>
+            <div class="arena-actions" style="margin-top:10px;grid-template-columns:1fr 1fr;">
+                <button class="ui-btn primary"   id="play-cards-btn" disabled>▶ JUGAR!</button>
+                <button class="ui-btn secondary" id="discard-btn"    disabled>↺ CANVIAR CARTES</button>
             </div>
-
-            <!-- Result overlay -->
             <div class="result-overlay" id="result-overlay" style="display:none;">
                 <div class="result-card">
                     <div class="result-icon" id="result-icon">★</div>
@@ -1941,7 +2001,7 @@
             stopLobbyConfetti();
         }
         if (name === 'game') {
-            resetGame('Nova partida! Tria 2 cartes per comencar.');
+            if (typeof resetGame === 'function') resetGame();
         }
     }
 
@@ -2020,240 +2080,171 @@
     setupToggle('toggle-fx');
 
     // ================================================================
-    //  GAME LOGIC
+    //  BALATRO-STYLE GAME ENGINE
     // ================================================================
     (function() {
         var STAGES = [
-            { name: 'El Prego',         target: 95 },
-            { name: 'Cercavila',        target: 105 },
-            { name: 'Ball de Gegants',  target: 115 },
-            { name: 'Final de Festa',   target: 125 }
+            { name: 'El Prego',        target: 150  },
+            { name: 'La Cercavila',    target: 250  },
+            { name: 'Ball de Gegants', target: 400  },
+            { name: 'Final de Festa',  target: 600  }
         ];
-
-        var state = {
-            stageIndex: 0,
-            score: 0,
-            lives: 3,
-            selectedCards: [],
-            synergyBonus: 10,
-            pendingBonus: 0,
-            bonusUsed: false,
-            ended: false
-        };
-
-        var cards              = Array.from(document.querySelectorAll('.s-card'));
-        var scoreCurrentEl     = document.getElementById('score-current');
-        var stageTargetEl      = document.getElementById('stage-target');
-        var heartsContainerEl  = document.getElementById('hearts-container');
-        var stageChipEl        = document.getElementById('stage-chip');
-        var synergyChipEl      = document.getElementById('synergy-chip');
-        var feedbackChipEl     = document.getElementById('feedback-chip');
-        var playCardsBtn       = document.getElementById('play-cards-btn');
-        var rerollBtn          = document.getElementById('reroll-btn');
-        var activateBonusBtn   = document.getElementById('activate-bonus-btn');
-        var resultOverlay      = document.getElementById('result-overlay');
-        var resultIconEl       = document.getElementById('result-icon');
-        var resultTitleEl      = document.getElementById('result-title');
-        var resultTextEl       = document.getElementById('result-text');
-        var restartGameBtn     = document.getElementById('restart-game-btn');
-        var btnResultMenu      = document.getElementById('btn-result-menu');
-        var stageProgressEl    = document.getElementById('stage-progress');
-
+        var HAND_TYPES = [
+            { name: 'Festa Major',     baseChips: 120, baseMult: 5,   test: function(s){ return s.length === 5; } },
+            { name: 'Colla Completa',  baseChips: 80,  baseMult: 4,   test: function(s){ return s.length >= 4 && uT(s) >= 3; } },
+            { name: 'Trio',            baseChips: 60,  baseMult: 3,   test: function(s){ return s.length === 3 && uT(s) === 1; } },
+            { name: 'Barreja Festiva', baseChips: 40,  baseMult: 2,   test: function(s){ return s.length === 3; } },
+            { name: 'Parella',         baseChips: 30,  baseMult: 2,   test: function(s){ return s.length === 2 && s[0].type === s[1].type; } },
+            { name: 'Duo Festiu',      baseChips: 20,  baseMult: 1.5, test: function(s){ return s.length === 2; } },
+            { name: 'Solitari',        baseChips: 10,  baseMult: 1,   test: function(s){ return s.length >= 1; } }
+        ];
+        var JOKER_POOL = [
+            { id:'robafaves', emoji:'🎩', name:'El Robafaves',    desc:'+20 punts extra a cada jugada',                              apply: function(ctx){ ctx.chips += 20; } },
+            { id:'aliga',     emoji:'🦅', name:"L'Àliga Daurada", desc:'Duplica el multiplicador a la primera jugada de cada etapa', apply: function(ctx){ if (ctx.firstHand) ctx.mult *= 2; } },
+            { id:'diables',   emoji:'🔥', name:'Els Diables',     desc:'Les cartes de Festa valen el doble!',                       apply: function(ctx){ ctx.festaDouble = true; } },
+            { id:'gegantera', emoji:'👸', name:'La Gegantera',    desc:'+3 al multiplicador quan jugues una Parella o Trio',         apply: function(ctx){ if (ctx.handName==='Parella'||ctx.handName==='Trio') ctx.mult += 3; } },
+            { id:'draga',     emoji:'🐉', name:'La Draga',        desc:'+1 al multiplicador per cada tipus de carta diferent',      apply: function(ctx){ ctx.mult += ctx.uniqueTypes; } },
+            { id:'patrones',  emoji:'✨',  name:'Les Patrones',    desc:'+80 punts extra quan fas "Colla Completa"',                  apply: function(ctx){ if (ctx.handName==='Colla Completa') ctx.chips += 80; } },
+            { id:'manelo',    emoji:'💃', name:'El Manelo',       desc:'+2 al multiplicador si tries 3 o més cartes',               apply: function(ctx){ if (ctx.cardCount >= 3) ctx.mult += 2; } },
+            { id:'momerota',  emoji:'🌟', name:'La Momerota',     desc:'Cada carta de Personatge dona +8 punts extra',              apply: function(ctx){ ctx.chips += ctx.personatgeCount * 8; } }
+        ];
+        function uT(sel) { return new Set(sel.map(function(c){ return c.type; })).size; }
+        var state = { stageIndex:0, roundScore:0, handsLeft:4, discardsLeft:3, jokers:[], selected:[], firstHand:true, ended:false };
+        var cards          = Array.from(document.querySelectorAll('#card-lane .s-card'));
+        var jokerSlotsEl   = document.getElementById('joker-slots');
+        var blindCurEl     = document.getElementById('blind-cur');
+        var blindTgtEl     = document.getElementById('blind-tgt');
+        var blindNameEl    = document.getElementById('blind-name');
+        var blindFillEl    = document.getElementById('blind-fill');
+        var handsLeftEl    = document.getElementById('hands-left');
+        var discardsLeftEl = document.getElementById('discards-left');
+        var fdHandNameEl   = document.getElementById('fd-hand-name');
+        var fdChipsEl      = document.getElementById('fd-chips');
+        var fdMultEl       = document.getElementById('fd-mult');
+        var fdTotalEl      = document.getElementById('fd-total');
+        var playBtn        = document.getElementById('play-cards-btn');
+        var discardBtn     = document.getElementById('discard-btn');
+        var resultOverlay  = document.getElementById('result-overlay');
+        var resultIconEl   = document.getElementById('result-icon');
+        var resultTitleEl  = document.getElementById('result-title');
+        var resultTextEl   = document.getElementById('result-text');
+        var restartBtn     = document.getElementById('restart-game-btn');
+        var resultMenuBtn  = document.getElementById('btn-result-menu');
+        var stageDots      = document.getElementById('stage-progress');
+        function pickJokers() {
+            var pool = JOKER_POOL.slice().sort(function(){ return Math.random() - 0.5; });
+            state.jokers = pool.slice(0, 2);
+        }
+        function renderJokers() {
+            jokerSlotsEl.innerHTML = '';
+            state.jokers.forEach(function(j) {
+                var d = document.createElement('div');
+                d.className = 'joker-card';
+                d.innerHTML = '<span class="joker-emoji">' + j.emoji + '</span><div class="joker-info"><strong>' + j.name + '</strong><span>' + j.desc + '</span></div>';
+                jokerSlotsEl.appendChild(d);
+            });
+        }
+        function getSelData() {
+            return state.selected.map(function(el){ return { type: el.dataset.type, points: Number(el.dataset.points||0) }; });
+        }
+        function detectHand(sel) {
+            if (!sel.length) return null;
+            for (var i = 0; i < HAND_TYPES.length; i++) { if (HAND_TYPES[i].test(sel)) return HAND_TYPES[i]; }
+            return HAND_TYPES[HAND_TYPES.length-1];
+        }
+        function calcScore(sel, hand) {
+            var ctx = { chips: hand.baseChips, mult: hand.baseMult, firstHand: state.firstHand, handName: hand.name,
+                cardCount: sel.length, uniqueTypes: uT(sel),
+                personatgeCount: sel.filter(function(c){ return c.type==='Personatge'; }).length, festaDouble: false };
+            state.jokers.forEach(function(j){ j.apply(ctx); });
+            sel.forEach(function(c){ var pts = c.points; if (ctx.festaDouble && c.type==='Festa') pts *= 2; ctx.chips += pts; });
+            return { chips: Math.round(ctx.chips), mult: ctx.mult, total: Math.round(ctx.chips * ctx.mult) };
+        }
+        function updateFormula() {
+            var sel = getSelData();
+            if (!sel.length) { fdHandNameEl.textContent='Tria les teves cartes! 👆'; fdChipsEl.textContent=fdMultEl.textContent=fdTotalEl.textContent='—'; return; }
+            var hand = detectHand(sel); var score = calcScore(sel, hand);
+            fdHandNameEl.textContent = hand.name;
+            fdChipsEl.textContent = score.chips; fdMultEl.textContent = '×'+score.mult; fdTotalEl.textContent = score.total;
+        }
         function updateStageProgress() {
-            if (!stageProgressEl) return;
-            stageProgressEl.querySelectorAll('.stage-dot').forEach(function(dot, i) {
-                dot.classList.remove('done', 'active');
-                if (i < state.stageIndex)      dot.classList.add('done');
-                else if (i === state.stageIndex) dot.classList.add('active');
+            if (!stageDots) return;
+            stageDots.querySelectorAll('.stage-dot').forEach(function(dot, i) {
+                dot.classList.remove('done','active');
+                if (i < state.stageIndex) dot.classList.add('done'); else if (i===state.stageIndex) dot.classList.add('active');
             });
         }
-
-        function setGameEnd(enabled) {
-            state.ended = enabled;
-            cards.forEach(function(c) { c.style.pointerEvents = enabled ? 'none' : ''; });
-            playCardsBtn.disabled     = enabled || state.selectedCards.length !== 2;
-            rerollBtn.disabled        = enabled;
-            activateBonusBtn.disabled = enabled || state.bonusUsed;
+        function updateHUD() {
+            var stage = STAGES[state.stageIndex];
+            blindNameEl.textContent = stage.name; blindCurEl.textContent = state.roundScore; blindTgtEl.textContent = stage.target;
+            handsLeftEl.textContent = state.handsLeft; discardsLeftEl.textContent = state.discardsLeft;
+            blindFillEl.style.width = Math.min(100, Math.round((state.roundScore/stage.target)*100)) + '%';
+            updateStageProgress(); updateFormula();
+            playBtn.disabled    = state.ended || state.selected.length === 0;
+            discardBtn.disabled = state.ended || state.selected.length === 0 || state.discardsLeft <= 0;
         }
-
-        function showResultOverlay(isWin, title, text) {
-            resultIconEl.textContent = isWin ? '★' : '✕';
-            resultIconEl.className   = 'result-icon ' + (isWin ? 'win' : 'lose');
-            resultTitleEl.textContent = title;
-            resultTextEl.textContent  = text;
+        function clearSel() {
+            state.selected = [];
+            cards.forEach(function(c){ c.classList.remove('selected','dimmed'); });
+            updateHUD();
+        }
+        function highlightCards() {
+            var n = state.selected.length;
+            cards.forEach(function(c){ var s=state.selected.indexOf(c)>=0; c.classList.toggle('selected',s); c.classList.toggle('dimmed',n===5&&!s); });
+            updateHUD();
+        }
+        function showResultScreen(isWin, title, text) {
+            state.ended = true;
+            resultIconEl.textContent = isWin ? '★' : '✕'; resultIconEl.className = 'result-icon '+(isWin?'win':'lose');
+            resultTitleEl.textContent = title; resultTextEl.textContent = text;
             resultOverlay.style.display = 'flex';
-            setGameEnd(true);
+            cards.forEach(function(c){ c.style.pointerEvents='none'; }); playBtn.disabled=true; discardBtn.disabled=true;
             if (isWin && typeof confetti !== 'undefined') {
-                confetti({ particleCount: 130, spread: 70, origin: { y: 0.6 }, colors: confettiColors });
-                setTimeout(function() {
-                    confetti({ particleCount: 60, spread: 100, origin: { x: 0.1, y: 0.5 }, colors: confettiColors });
-                    confetti({ particleCount: 60, spread: 100, origin: { x: 0.9, y: 0.5 }, colors: confettiColors });
-                }, 500);
+                confetti({ particleCount:140, spread:70, origin:{y:0.6}, colors:confettiColors });
+                setTimeout(function(){ confetti({particleCount:70,spread:110,origin:{x:0.1,y:0.5},colors:confettiColors}); confetti({particleCount:70,spread:110,origin:{x:0.9,y:0.5},colors:confettiColors}); }, 500);
             }
         }
-
-        function hideResultOverlay() {
-            resultOverlay.style.display = 'none';
-            setGameEnd(false);
-        }
-
-        function renderHearts() {
-            heartsContainerEl.innerHTML = '';
-            for (var i = 0; i < 3; i++) {
-                var h = document.createElement('span');
-                h.className   = 'heart';
-                h.textContent = i < state.lives ? '❤' : '♡';
-                if (i >= state.lives) h.style.opacity = '0.3';
-                heartsContainerEl.appendChild(h);
-            }
-        }
-
-        function updateButtons() {
-            playCardsBtn.disabled     = state.ended || state.selectedCards.length !== 2;
-            activateBonusBtn.disabled = state.ended || state.bonusUsed;
-        }
-
-        function setFeedback(msg) { if (feedbackChipEl) feedbackChipEl.textContent = msg; }
-
-        function refreshHUD() {
-            scoreCurrentEl.textContent = state.score;
-            stageTargetEl.textContent  = STAGES[state.stageIndex].target;
-            stageChipEl.textContent    = 'Etapa ' + (state.stageIndex + 1) + ' · ' + STAGES[state.stageIndex].name;
-            synergyChipEl.textContent  = 'Sinergia +' + state.synergyBonus + (state.pendingBonus ? ' · Bonus actiu +' + state.pendingBonus : '');
-            renderHearts();
-            updateStageProgress();
-            updateButtons();
-        }
-
-        function clearSelection() {
-            state.selectedCards = [];
-            cards.forEach(function(c) { c.classList.remove('selected', 'dimmed'); });
-        }
-
-        function highlightSelection() {
-            var two = state.selectedCards.length === 2;
-            cards.forEach(function(c) {
-                var sel = state.selectedCards.includes(c);
-                c.classList.toggle('selected', sel);
-                c.classList.toggle('dimmed', two && !sel);
-            });
-            updateButtons();
-        }
-
+        function hideResultScreen() { resultOverlay.style.display='none'; state.ended=false; cards.forEach(function(c){ c.style.pointerEvents=''; }); }
         function shuffleCards() {
-            var lane = document.querySelector('.card-lane');
-            cards.slice().sort(function() { return Math.random() - 0.5; })
-                 .forEach(function(c) { lane.appendChild(c); });
-            clearSelection();
-            updateButtons();
+            var lane = document.getElementById('card-lane');
+            cards.slice().sort(function(){ return Math.random()-0.5; }).forEach(function(c){ lane.appendChild(c); });
         }
-
-        function resetStageSelection() {
-            state.pendingBonus = 0;
-            state.bonusUsed    = false;
-            clearSelection();
-            refreshHUD();
-        }
-
-        function resetGame(msg) {
-            state.stageIndex = 0;
-            state.score      = 0;
-            state.lives      = 3;
-            state.ended      = false;
-            resetStageSelection();
-            hideResultOverlay();
-            shuffleCards();
-            setFeedback(msg || 'Nova partida! Tria 2 cartes per comencar.');
-        }
-
         function nextStage() {
-            if (state.stageIndex === STAGES.length - 1) {
-                showResultOverlay(true, 'HAS GUANYAT!', 'Has completat totes les etapes de Les Santes. Fantastic!');
-                return;
-            }
-            state.stageIndex += 1;
-            state.score = 0;
-            resetStageSelection();
-            shuffleCards();
-            setFeedback('Etapa superada! Ara toca: ' + STAGES[state.stageIndex].name + '.');
+            if (state.stageIndex >= STAGES.length-1) { showResultScreen(true,'HAS GUANYAT!','Has completat totes les etapes de Les Santes. Fantàstic!'); return; }
+            state.stageIndex++; state.roundScore=0; state.handsLeft=4; state.discardsLeft=3; state.firstHand=true;
+            clearSel(); shuffleCards(); updateHUD();
         }
-
-        function playTurn() {
-            if (state.ended) return;
-            if (state.selectedCards.length !== 2) {
-                setFeedback('Selecciona exactament 2 cartes per jugar.');
-                return;
-            }
-            var cardA   = state.selectedCards[0];
-            var cardB   = state.selectedCards[1];
-            var pA      = Number(cardA.dataset.points || 0);
-            var pB      = Number(cardB.dataset.points || 0);
-            var gained  = pA + pB;
-            if (cardA.dataset.type === cardB.dataset.type) gained += state.synergyBonus;
-            gained += state.pendingBonus;
-
-            state.score += gained;
-            var target = STAGES[state.stageIndex].target;
-
-            if (state.score >= target) {
-                setFeedback('+' + gained + ' punts! Objectiu superat!');
-                nextStage();
-                return;
-            }
-
-            state.lives -= 1;
-            state.pendingBonus = 0;
-            state.bonusUsed    = false;
-
-            if (state.lives <= 0) {
-                showResultOverlay(false, 'HAS PERDUT', 'T\'has quedat sense vides. Torna a intentar-ho!');
-                return;
-            }
-
-            clearSelection();
-            refreshHUD();
-            setFeedback('+' + gained + ' punts. Falten ' + (target - state.score) + ' punts per superar l\'etapa.');
+        function resetGame() {
+            state.stageIndex=0; state.roundScore=0; state.handsLeft=4; state.discardsLeft=3; state.selected=[]; state.firstHand=true; state.ended=false;
+            hideResultScreen(); pickJokers(); renderJokers(); shuffleCards(); clearSel(); updateHUD();
         }
-
         cards.forEach(function(card) {
             card.addEventListener('click', function() {
                 if (state.ended) return;
-                var idx = state.selectedCards.indexOf(card);
-                if (idx >= 0) {
-                    state.selectedCards.splice(idx, 1);
-                } else {
-                    if (state.selectedCards.length >= 2) state.selectedCards.shift();
-                    state.selectedCards.push(card);
-                }
-                highlightSelection();
+                var idx = state.selected.indexOf(card);
+                if (idx >= 0) state.selected.splice(idx,1);
+                else { if (state.selected.length >= 5) return; state.selected.push(card); }
+                highlightCards();
             });
         });
-
-        playCardsBtn.addEventListener('click', playTurn);
-
-        rerollBtn.addEventListener('click', function() {
-            if (state.ended) return;
-            shuffleCards();
-            setFeedback('Ma barrejada! Tria 2 cartes noves.');
+        playBtn.addEventListener('click', function() {
+            if (state.ended || state.selected.length === 0) return;
+            var sel=getSelData(), hand=detectHand(sel), score=calcScore(sel,hand);
+            state.roundScore += score.total; state.handsLeft--; state.firstHand=false;
+            fdHandNameEl.textContent = '✦ '+hand.name+'  +'+score.total+' pts!';
+            fdChipsEl.textContent=score.chips; fdMultEl.textContent='×'+score.mult; fdTotalEl.textContent=score.total;
+            clearSel();
+            var target = STAGES[state.stageIndex].target;
+            if (state.roundScore >= target) { updateHUD(); setTimeout(nextStage, 700); return; }
+            if (state.handsLeft <= 0) { updateHUD(); showResultScreen(false,'HO POTS FER MILLOR!','Ja no queden jugades. Faltaven '+(target-state.roundScore)+' punts. Torna-ho a intentar!'); return; }
+            updateHUD();
         });
-
-        activateBonusBtn.addEventListener('click', function() {
-            if (state.ended || state.bonusUsed) return;
-            state.pendingBonus = 6;
-            state.bonusUsed    = true;
-            refreshHUD();
-            setFeedback('Bonus activat: +6 punts a la propera jugada!');
+        discardBtn.addEventListener('click', function() {
+            if (state.ended || state.selected.length===0 || state.discardsLeft<=0) return;
+            state.discardsLeft--; clearSel(); shuffleCards(); updateHUD();
         });
-
-        restartGameBtn.addEventListener('click', function() {
-            resetGame('Nova partida! Sort!');
-        });
-
-        btnResultMenu.addEventListener('click', function() {
-            showScreen('lobby');
-        });
-
-        // Init: show lobby with confetti
+        restartBtn.addEventListener('click',    function(){ hideResultScreen(); resetGame(); });
+        resultMenuBtn.addEventListener('click', function(){ showScreen('lobby'); });
         showScreen('lobby');
     }());
 </script>

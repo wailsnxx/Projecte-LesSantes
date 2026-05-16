@@ -886,9 +886,11 @@
 
     /* ── TABLET ≤ 900px ── */
     @media (max-width: 900px) {
-      .site-nav { padding: 0 20px; height: 64px; }
+      .site-nav { display: flex; justify-content: space-between; align-items: center; padding: 0 16px; height: 64px; }
       .nav-links { display: none; }
       .nav-search { display: none; }
+      #nav-search-wrap { display: none; }
+      .nav-cta { display: none; }
       .nav-hamburger { display: flex; }
       .mobile-menu { inset: 64px 0 0 0; }
       .que-son { grid-template-columns: 1fr; gap: 28px; padding: 24px 24px 36px; }

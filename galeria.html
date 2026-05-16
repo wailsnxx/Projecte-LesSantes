@@ -6,7 +6,7 @@
   <title>Galeria – Les Santes 2026, Mataró</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;0,14..32,900;1,14..32,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -43,10 +43,10 @@
     .hero-galeria:hover .hero-galeria-bg { transform: scale(1); }
     .hero-galeria::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.08) 40%, rgba(0,0,0,0.72) 100%); }
     .hero-galeria-content { position: relative; z-index: 2; max-width: 960px; margin: 0 auto; padding: 0 48px 60px; width: 100%; }
-    .hero-pill { display: inline-flex; align-items: center; gap: 8px; background: #F0CF3C; color: #2A2A2A; font-size: 11px; font-weight: 800; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 18px; }
-    .hero-galeria h1 { font-size: clamp(36px, 5.5vw, 68px); font-weight: 900; color: #fff; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 14px; }
+    .hero-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(63,159,203,0.32); border: 1px solid rgba(63,159,203,0.55); color: #d5edf7; font-size: 11px; font-weight: 700; padding: 5px 16px; border-radius: 20px; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 24px; }
+    .hero-galeria h1 { font-size: clamp(30px, 4.5vw, 52px); font-weight: 800; color: #fff; letter-spacing: -0.01em; line-height: 1.15; margin-bottom: 14px; }
     .hero-galeria h1 em { font-style: normal; color: #F0CF3C; }
-    .hero-galeria p { font-size: 16px; color: rgba(255,255,255,0.75); max-width: 480px; margin-bottom: 28px; }
+    .hero-galeria p { font-size: 15px; color: rgba(255,255,255,0.8); max-width: 480px; margin-bottom: 28px; }
     .hero-cta-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
     .btn-hero-primary { background: #F0CF3C; color: #2A2A2A; font-size: 13px; font-weight: 800; padding: 12px 28px; border-radius: 10px; transition: opacity 0.15s, transform 0.15s; }
     .btn-hero-primary:hover { opacity: 0.88; transform: translateY(-1px); }
@@ -177,8 +177,10 @@
 
     /* RESPONSIVE */
     @media (max-width: 860px) {
-      .site-nav { padding: 0 20px; }
+      .site-nav { display: flex; justify-content: space-between; align-items: center; padding: 0 16px; }
       .nav-links, .nav-search { display: none; }
+      .nav-cta { display: none; }
+      .nav-right > form { display: none; }
       .nav-hamburger { display: flex; }
       .mobile-menu { inset: 68px 0 0 0; }
       .split-row { grid-template-columns: 1fr; height: auto; }

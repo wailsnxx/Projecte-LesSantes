@@ -601,15 +601,25 @@ footer.footer-light .footer-legal a:hover { color: #fff; }
    RESPONSIVE
    ================================================================= */
 @media (max-width: 900px) {
-  .site-nav   { padding: 0 20px; height: 60px; }
+  .site-nav   { display: flex; justify-content: space-between; align-items: center; padding: 0 16px; height: 60px; }
   .nav-links  { display: none; }
   .nav-search { display: none; }
+  .nav-cta    { display: none; }
+  .nav-right > form { display: none; }
   .nav-hamburger { display: flex; }
   .footer-top { grid-template-columns: 1fr; gap: 28px; padding: 32px 24px 28px; }
   .footer-bottom-inner { padding: 16px 24px; flex-direction: column; align-items: flex-start; }
 }
 
 @media (max-width: 600px) {
+  .site-nav { padding: 0 14px; }
   .events-grid { grid-template-columns: 1fr; }
   .footer-social { flex-wrap: wrap; }
+  .footer-bottom-inner { padding: 14px 16px; }
+  .footer-top { padding: 24px 16px 20px; }
+}
+
+@media (max-width: 420px) {
+  .site-nav { grid-template-columns: 1fr auto; }
+  .nav-links { display: none; }
 }
